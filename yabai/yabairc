@@ -1,0 +1,78 @@
+# defualt layout (can be bsp, stack or floating, defualt float)
+yabai -m config layout bsp
+
+# new window spawns to the right of the current window for vertical split
+# new window spawns below the current window for horizontal split
+yabai -m config window_placement first_child
+
+# padding(gap) between windows
+# lets make it as close as possible, but not 0
+yabai -m config top_padding 2
+yabai -m config bottom_padding 4
+yabai -m config right_padding 4
+yabai -m config left_padding 4
+
+# mouse follows focus
+yabai -m config mouse_follows_focus on
+
+# mouse motion
+# trigger/leader key
+yabai -m config mouse_modifier alt
+
+# left click + drag to move window
+yabai -m config mouse_action1 move
+
+# right click + drag to resize window
+yabai -m config mouse_action2 resize
+
+# when a window is place on the center of another window, their place will swap
+yabai -m mouse_drop_action swap
+
+# Rotate the window tree clock-wise (options: 90, 180, 270 degree)
+yabai -m space --rotate 90
+
+# disable yabai window manage for specific app
+yabai -m rule --add app="^System Settings$" manage=off
+yabai -m rule --add app="^Calculator$" manage=off
+yabai -m rule --add app="^Calendar$" manage=off
+yabai -m rule --add app="^WeChat$" manage=off
+yabai -m rule --add app="^QQ$" manage=off
+yabai -m rule --add app="^WhatsApp$" manage=off
+yabai -m rule --add app="^Microsoft Teams$" manage=off
+yabai -m rule --add app="^Telegram$" manage=off
+yabai -m rule --add app="^Notes$" manage=off
+yabai -m rule --add app="^Spark$" manage=off
+yabai -m rule --add app="^Dash$" manage=off
+yabai -m rule --add app="^Microsoft Outlook$" manage=off
+yabai -m rule --add app="^Finder$" manage=off
+yabai -m rule --add app="^Messages$" manage=off
+yabai -m rule --add app="^网易有道翻译$" manage=off
+yabai -m rule --add app="^Discord$" manage=off
+yabai -m rule --add app="^1Password$" manage=off
+yabai -m rule --add app="^zoom.us$" manage=off
+yabai -m rule --add app="^Weather$" manage=off
+yabai -m rule --add app="^Raindrop.io$" manage=off
+yabai -m rule --add app="^Reminders$" manage=off
+yabai -m rule --add app="^Slack$" manage=off
+yabai -m rule --add app="^Notion$" manage=off
+yabai -m rule --add app="^VooV$" manage=off
+yabai -m rule --add app="^Postman$" manage=off
+yabai -m rule --add app="^Apifox$" manage=off
+yabai -m rule --add app="^Docker Desktop$" manage=off
+yabai -m rule --add app="^Things$" manage=off
+yabai -m rule --add app="^Photos$" manage=off
+yabai -m rule --add app="^Activity Monitor$" manage=off
+yabai -m rule --add app="^Clock$" manage=off
+yabai -m rule --add app="^Obsidian$" manage=off
+yabai -m rule --add app="^Voice Memos$" manage=off
+yabai -m rule --add app="^QuickTime Player$" manage=off
+yabai -m rule --add app="^FaceTime$" manage=off
+yabai -m rule --add app="^Spotify$" manage=off
+yabai -m rule --add app="^Surfshark$" manage=off
+
+# In order to prevent simple-bar freezing upon yabai restart, you'll need to add
+# this line at the start of your .yabairc file
+# https://www.jeantinland.com/toolbox/simple-bar/documentation/installation/#update-your-yabai-config
+osascript -e 'tell application id "tracesOf.Uebersicht" to refresh'
+
+yabai -m rule --apply
