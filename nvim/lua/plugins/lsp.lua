@@ -827,7 +827,7 @@ return {
 
                 -- zig 14 dev version zls setup
                 zls = {
-                    cmd = { "/Users/tengjungao/.zvm/bin/zls" },
+                    cmd = { "/Users/tengjungao/zls/zig-out/bin/zls" },
                     settings = {
                         zls = {
                             -- Whether to enable build-on-save diagnostics
