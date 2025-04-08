@@ -2,6 +2,7 @@ theme = catppuccin-mocha
 
 font-family = Hack Nerd Font
 font-size = 12
+font-feature = "-calt", "-liga", "-dlig"
 
 minimum-contrast = 0
 cursor-style = block
