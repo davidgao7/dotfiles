@@ -1,3 +1,5 @@
+local obsidian_dir = '/Users/tengjungao/Downloads/obsidian-vault'
+
 return {
     -- Obsidian.nvim plugin
     {
@@ -29,8 +31,8 @@ return {
             "ObsidianTOC"
         },
         event = {
-            "BufReadPre /Users/tengjungao/Obsidian_Vault/*.md",
-            "BufNewFile /Users/tengjungao/Obsidian_Vault/*.md",
+            string.format("BufReadPre %s/*.md", obsidian_dir),
+            string.format("BufNewFile %s/*.md", obsidian_dir),
         },
         ft = "markdown",
         dependencies = {
@@ -45,7 +47,7 @@ return {
             workspaces = {
                 {
                     name = "notes",
-                    path = "/Users/tengjungao/Obsidian_Vault",
+                    path = obsidian_dir,
                 },
                 -- Add more workspaces if needed
             },
@@ -53,7 +55,7 @@ return {
             -- `true` indicates that you don't want obsidian.nvim to manage frontmatter.
             disable_frontmatter = false,
             note_frontmatter_func = function(note)
-                local hugo_dir = "/Users/tengjungao/Obsidian_Vault/davidgao7blogs"
+                local hugo_dir = string.format("%s/davidgao7blogs", obsidian_dir)
                 local current_file = vim.fn.expand("%:p")
                 if current_file:sub(1, #hugo_dir) == hugo_dir then
                     -- If the file is in the Hugo directory, return an empty table to disable front matter
