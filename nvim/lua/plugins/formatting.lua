@@ -1,5 +1,28 @@
+local ensure_installed_fmts = {
+    "stylua",
+    "ruff",
+    "docformatter",
+    "prettierd",
+    "clang-format",
+    "cmake-format",
+    "csharpier",
+    "rubocop",
+    "shfmt",
+    "gofumpt",
+    "goimports",
+    "golines",
+    "google-java-format",
+    "yamlfmt",
+    "markdownlint-cli2",
+    "markdown-toc",
+}
+
 return {
     'stevearc/conform.nvim',
+    dependencies = {
+        "WhoIsSethDaniel/mason-tool-installer.nvim",
+        "williamboman/mason.nvim",
+    },
     event = { 'BufWritePre' },
     cmd = { 'ConformInfo' },
     vim.keymap.set('v', '<leader>f', function()
@@ -52,6 +75,14 @@ return {
     end,
 
     config = function()
+        -- maksure install the formatters
+        require("mason-tool-installer").setup({
+            ensure_installed = ensure_installed_fmts,
+            auto_update = false,
+            run_on_start = true,
+            start_delay = 3000, -- delay so Mason UI finishes loading
+        })
+
         -- toggle format on save
         require('conform').setup {
             format_on_save = function(bufnr)

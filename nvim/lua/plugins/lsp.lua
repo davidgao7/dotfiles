@@ -803,7 +803,8 @@ return {
                     cmd = { "jdtls" },
                     settings = {
                         java = {
-                            home = os.getenv("JAVA_17_HOME") or os.getenv("JAVA_11_HOME") or os.getenv("JAVA_8_HOME"),
+                            home = os.getenv("JAVA_HOME") or os.getenv("JAVA_17_HOME") or os.getenv("JAVA_11_HOME") or
+                                os.getenv("JAVA_8_HOME"), -- java 21 default
                             project = {
                                 referencedLibraries = {
                                     "lib/**/*.jar",
