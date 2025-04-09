@@ -117,13 +117,28 @@ return {
     {
         "yetone/avante.nvim",
         event = "VeryLazy",
-        version = "v0.0.23",      -- Never set this value to "*"! Never!
+        version = "v0.0.23",                   -- Never set this value to "*"! Never!
         opts = {
-            provider = "copilot", -- Recommend using Claude
+            provider = "claude",               -- Recommend using Claude
+            cursor_applying_provider = 'groq', -- In this example, use Groq for applying, but you can also use any provider you want.
+            behaviour = {
+                auto_suggestions = true,
+                enable_cursor_planning_mode = true, -- enable cursor planning mode!
+            },
+            vendors = {
+                --- ... existing vendors
+                groq = { -- define groq provider
+                    __inherited_from = 'openai',
+                    api_key_name = 'GROQ_API_KEY',
+                    endpoint = 'https://api.groq.com/openai/v1/',
+                    model = 'llama-3.3-70b-versatile',
+                    max_tokens = 32768, -- remember to increase this value, otherwise it will stop generating halfway
+                },
+            },
             -- WARNING: Since auto-suggestions are a high-frequency operation and therefore expensive,
             -- currently designating it as `copilot` provider is dangerous because: https://github.com/yetone/avante.nvim/issues/1048
             -- Of course, you can reduce the request frequency by increasing `suggestion.debounce`.
-            auto_suggestions_provider = "copilot",
+            auto_suggestions_provider = "gemini",
             hints = { enabled = true },
             -- add any opts here
             file_selector = {
@@ -131,6 +146,13 @@ return {
                 provider = "fzf",
                 -- Options override for custom providers
                 provider_opts = {},
+            },
+            -- add claude options here
+            claude = {
+                endpoint = "https://api.anthropic.com",
+                model = "claude-3-5-sonnet-20241022",
+                temperature = 0,
+                max_tokens = 4096,
             },
             -- enable web search tool
             copilot = {
