@@ -117,12 +117,12 @@ return {
     {
         "yetone/avante.nvim",
         event = "VeryLazy",
-        version = "v0.0.23",                   -- Never set this value to "*"! Never!
+        version = "v0.0.23",                        -- Never set this value to "*"! Never!
         opts = {
-            provider = "claude",               -- Recommend using Claude
-            cursor_applying_provider = 'groq', -- In this example, use Groq for applying, but you can also use any provider you want.
+            provider = "claude",                    -- Recommend using Claude
+            cursor_applying_provider = 'groq',      -- In this example, use Groq for applying, but you can also use any provider you want.
             behaviour = {
-                auto_suggestions = true,
+                auto_suggestions = false,           -- disable the virtual text output for suggesting code as I already have copilot in blink-cmp dropdown
                 enable_cursor_planning_mode = true, -- enable cursor planning mode!
             },
             vendors = {

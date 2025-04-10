@@ -573,6 +573,7 @@ return {
                         async = true,
                         opts = {
                             max_completions = 3,
+                            ghost_text = false
                         },
                         transform_items = function(_, items)
                             local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
