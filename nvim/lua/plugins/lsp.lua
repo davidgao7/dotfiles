@@ -37,15 +37,15 @@ return {
                 event = "VeryLazy",
                 opts = {
                     enable = true,
-                    max_lines = 0, -- No limit on context lines shown
+                    max_lines = 0,        -- No limit on context lines shown
                     trim_scope = "outer", -- Discard outer context when space is limited
-                    mode = "cursor", -- Use the cursor position to determine context
+                    mode = "cursor",      -- Use the cursor position to determine context
                     line_numbers = true,
                     multiline_threshold = 20,
                     separator = nil, -- You can set this to "─" if you want a visual line
                     zindex = 20,
                 },
-            },       -- Recommended for scope_incremental keymap below
+            }, -- Recommended for scope_incremental keymap below
             -- 'windwp/nvim-ts-autotag',
         },
 
@@ -1062,6 +1062,41 @@ return {
                         end
                     },
                 },
+
+                -- customize to get full contorl of marksman lsp
+                marksman = {
+                    -- Define how to detect the root directory for this LSP
+                    root_dir = function(fname)
+                        local util = require("lspconfig.util")
+
+                        -- Step 1: Check if the current file is inside a Git repo or next to marksman.toml
+                        local found = util.root_pattern("marksman.toml", ".git")(fname)
+                        if found then
+                            return found
+                        end
+
+                        -- Step 2: Fallback to Neo-tree's current root path (if available)
+                        -- This uses Neo-tree's internal state manager to get the visible filesystem root
+                        local ok, manager = pcall(require, "neo-tree.sources.manager")
+                        if ok then
+                            local state = manager.get_state("filesystem")
+                            if state and state.path then
+                                return state.path
+                            end
+                        end
+
+                        -- Step 3: Fallback fallback — use current working directory
+                        -- This is a last resort if neither project nor Neo-tree context is available
+                        return vim.fn.getcwd()
+                    end,
+
+                    -- Future marksman-specific LSP settings can go here
+                    settings = {
+                        -- No settings are available for Marksman via LSP; customization is done through config.toml
+                        -- See: https://github.com/artempyanykh/marksman/blob/main/docs/configuration.md
+                    },
+                },
+
 
             },
 
