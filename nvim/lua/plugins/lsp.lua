@@ -32,7 +32,20 @@ return {
             'nvim-treesitter/nvim-treesitter-textobjects',
 
             -- Add other Treesitter plugins here if you use them, e.g.:
-            -- 'nvim-treesitter/nvim-treesitter-context', -- Recommended for scope_incremental keymap below
+            {
+                "nvim-treesitter/nvim-treesitter-context",
+                event = "VeryLazy",
+                opts = {
+                    enable = true,
+                    max_lines = 0, -- No limit on context lines shown
+                    trim_scope = "outer", -- Discard outer context when space is limited
+                    mode = "cursor", -- Use the cursor position to determine context
+                    line_numbers = true,
+                    multiline_threshold = 20,
+                    separator = nil, -- You can set this to "─" if you want a visual line
+                    zindex = 20,
+                },
+            },       -- Recommended for scope_incremental keymap below
             -- 'windwp/nvim-ts-autotag',
         },
 
