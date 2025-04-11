@@ -12,6 +12,16 @@ local function copilot_status()
     return ""
 end
 
+-- statusline recording indicator
+local function recording_status()
+    local reg = vim.fn.reg_recording()
+    if reg == "" then
+        return ""
+    else
+        return "@" .. reg
+    end
+end
+
 
 return {
     {
@@ -213,6 +223,10 @@ return {
 
             ins_left {
                 copilot_status, -- Add Copilot status function here
+            }
+
+            ins_left {
+                recording_status, -- Add recording status function here
             }
 
             -- Insert mid section. You can make any number of sections in neovim :)
