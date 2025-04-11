@@ -38,6 +38,14 @@ return {
     vim.keymap.set('n', '<leader>uf', function()
         require('conform').format { async = true }
     end, { desc = 'Format current buffer' }),
+
+    -- keymaps for format enable/disable toggle
+    vim.keymap.set("n", "<leader>uF", function()
+        vim.b.disable_autoformat = not vim.b.disable_autoformat
+        local status = vim.b.disable_autoformat and "disabled" or "enabled"
+        vim.notify("Autoformat-on-save " .. status .. " for this buffer", vim.log.levels.INFO, { title = "Conform.nvim" })
+    end, { desc = "Toggle format-on-save for current buffer" }),
+
     -- This will provide type hinting with LuaLS
     ---@module "conform"
     ---@type conform.setupOpts
