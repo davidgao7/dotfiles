@@ -6,7 +6,7 @@ vim.g.maplocalleader = "\\"
 vim.g.disable_autoformat = false
 
 -- setup mason python verson to use
-vim.g.python3_host_prog = ".pyenv/versions/neovim3/bin/python"
+vim.g.python3_host_prog = os.getenv("HOME") .. "/.pyenv/versions/neovim_default_python_env/bin/python"
 
 -- Options are automatically loaded before lazy.nvim startup
 -- Default options that are always set: https://github.com/LazyVim/LazyVim/blob/main/lua/lazyvim/config/options.lua
