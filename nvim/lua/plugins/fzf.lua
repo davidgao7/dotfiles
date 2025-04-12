@@ -1,3 +1,40 @@
+-- Wrap in a module-like table
+local fzf_cache = {
+    ignore_opts_cache = nil
+}
+
+-- Expose it globally for other files (like options.lua) to use
+_G.fzf_cache = fzf_cache
+
+local function get_neotree_root()
+    -- Lazily load Neo-tree if not already loaded
+    require("lazy").load({ plugins = { "neo-tree.nvim" } })
+
+    -- Safe require (avoids crashing if loading failed)
+    local ok, manager = pcall(require, "neo-tree.sources.manager")
+    if not ok then return vim.fn.getcwd() end
+
+    local state = manager.get_state("filesystem")
+    return state and state.path or vim.fn.getcwd()
+end
+
+
+local function get_existing_ignore_files()
+    local root = get_neotree_root()
+    local ignore_files = { ".ignore", ".gitignore", ".rgignore", ".fdignore" }
+    local existing = {}
+
+    for _, filename in ipairs(ignore_files) do
+        local fullpath = root .. "/" .. filename
+        if vim.fn.filereadable(fullpath) == 1 then
+            table.insert(existing, "--ignore-file")
+            table.insert(existing, fullpath)
+        end
+    end
+
+    return existing
+end
+
 local function universal_previewer(filepath)
     local ext = vim.fn.fnamemodify(filepath, ":e"):lower()
 
@@ -10,11 +47,33 @@ local function universal_previewer(filepath)
     end
 end
 
+-- Manually clear the cached ignore file list (useful if something feels off)
+vim.api.nvim_create_user_command("FzfIgnoreCacheClear", function()
+    _G.fzf_cache.ignore_opts_cache = nil
+    vim.notify("fzf-lua ignore cache manually cleared", vim.log.levels.INFO)
+end, { desc = "Clear fzf-lua ignore file cache" })
+
+-- Force a reload of all known ignore files into cache
+vim.api.nvim_create_user_command("FzfReloadIgnore", function()
+    _G.fzf_cache.ignore_opts_cache = get_existing_ignore_files()
+    vim.notify("fzf-lua ignore cache reloaded manually", vim.log.levels.INFO)
+end, { desc = "Manually reload ignore files into fzf-lua cache" })
+
+-- caching the ignore files per session for better performace
+local function get_cached_ignore_files()
+    if not fzf_cache.ignore_opts_cache then
+        fzf_cache.ignore_opts_cache = get_existing_ignore_files()
+    end
+    return fzf_cache.ignore_opts_cache
+end
+
 return {
     {
         "ibhagwan/fzf-lua",
         -- optional for icon support
-        dependencies = { "nvim-tree/nvim-web-devicons" },
+        dependencies = { "nvim-tree/nvim-web-devicons",
+            "nvim-neo-tree/neo-tree.nvim", -- optional: enforce load order
+        },
         config = function()
             -- calling `setup` is optional for customization
             require("fzf-lua").setup({
@@ -53,6 +112,56 @@ return {
                                 end
                             end,
                         },
+                    },
+                },
+                grep = {
+                    rg_cmd = "rg", -- ✅ ensure it uses system rg, not relative path
+                    rg_opts = function()
+                        local base_opts = {
+                            "--hidden",
+                            "--column",
+                            "--line-number", -- Needed or fzf-lua warns
+                            "--no-heading",
+                            "--color=always",
+                            "--smart-case",
+                            "--glob", "!.git/",
+                            "--glob", "!*.lock",
+                        }
+
+                        local ignore_opts = get_cached_ignore_files()
+                        return table.concat(vim.iter({ base_opts, ignore_opts }):flatten():totable(), " ")
+                    end,
+                    cwd = get_neotree_root,
+                    prompt = "Rg Live Grep> ",
+                    input_prompt = "Grep for >",
+                    silent = true,
+                    actions = {
+                        ["default"] = require("fzf-lua.actions").file_edit,
+                    },
+                },
+                live_grep = {
+                    rg_cmd = "rg", -- ✅ ensure it uses system rg, not relative path
+                    rg_opts = function()
+                        local base_opts = {
+                            "--hidden",
+                            "--column",
+                            "--line-number", -- Needed or fzf-lua warns
+                            "--no-heading",
+                            "--color=always",
+                            "--smart-case",
+                            "--glob", "!.git/",
+                            "--glob", "!*.lock",
+                        }
+
+                        local ignore_opts = get_cached_ignore_files()
+                        return table.concat(vim.iter({ base_opts, ignore_opts }):flatten():totable(), " ")
+                    end,
+                    cwd = get_neotree_root,
+                    prompt = "Live Grep > ",
+                    input_prompt = "Grep for >",
+                    silent = true,
+                    actions = {
+                        ["default"] = require("fzf-lua.actions").file_edit,
                     },
                 },
                 keymap = {
@@ -110,7 +219,30 @@ return {
                 end, { desc = "Project content search (regex)" }
             )
             vim.keymap.set("n", "<leader>fv", "<cmd>FzfLua help_tags<cr>", { desc = "Find help tags" })
-            vim.keymap.set("n", "<leader>fp", "<cmd>FzfLua live_grep<cr>", { desc = "Live grep content" })
+            local function project_live_grep()
+                require("fzf-lua").live_grep({
+                    cmd = "rg",
+                    rg_opts = {
+                        "--hidden",
+                        "--column",
+                        "--line-number",
+                        "--no-heading",
+                        "--color=always",
+                        "--smart-case",
+                        "--glob=!.git/",
+                        "--glob=!*.lock",
+                    },
+                    cwd = get_neotree_root(),
+                    prompt = "Live Grep > ",
+                    input_prompt = "Grep for > ",
+                    silent = true,
+                    actions = {
+                        ["default"] = require("fzf-lua.actions").file_edit,
+                    },
+                })
+            end
+            vim.keymap.set("n", "<leader>fp", project_live_grep, { desc = "Live grep content" })
+
             vim.keymap.set("n", "<leader>f$", "<cmd>FzfLua registers<cr>", { desc = "Search Vim registers" })
             vim.keymap.set("n", "<leader>fz", "<cmd>FzfLua grep_curbuf<cr>", { desc = "Search current buffer" })
             vim.keymap.set("n", "<leader>fc", function()

@@ -87,16 +87,16 @@ vim.filetype.add({
 -- use lsp built-in highlighting
 vim.o.updatetime = 200 -- optimize delay for CursorHold
 
-local function should_render_cursor_hl()
-    local excluded_filetypes = {
-        -- list all file type which you don't want cursor hl
-        "markdown",
-        "oil",
-        "html"
-    }
-    local res = not vim.tbl_contains(excluded_filetypes, vim.bo.filetype)
-    return res
-end
+-- local function should_render_cursor_hl()
+--     local excluded_filetypes = {
+--         -- list all file type which you don't want cursor hl
+--         "markdown",
+--         "oil",
+--         "html"
+--     }
+--     local res = not vim.tbl_contains(excluded_filetypes, vim.bo.filetype)
+--     return res
+-- end
 
 -- highlight variables under cursor
 --[[
@@ -130,5 +130,36 @@ vim.api.nvim_create_autocmd('CursorMoved', {
     pattern = '*',
     callback = function()
         vim.lsp.buf.clear_references()
+    end,
+})
+
+-- Auto-refresh fzf-lua ignore file cache when known ignore files are saved
+vim.api.nvim_create_autocmd("BufWritePost", {
+    -- Trigger this autocmd when any of these ignore-related files are written
+    pattern = { ".ignore", ".gitignore", ".rgignore", ".fdignore" },
+    callback = function(args)
+        -- Extract just the filename from the full file path
+        local changed_file = vim.fn.fnamemodify(args.file, ":t")
+
+        -- Defer execution slightly to ensure file system is updated
+        vim.defer_fn(function()
+            -- Only proceed if fzf-lua is loaded and the cache table exists
+            if package.loaded["fzf-lua"] and _G.fzf_cache then
+                -- Attempt to require your fzf-lua config module to access its functions
+                -- ⚠️ Adjust the module path below based on where your `fzf.lua` lives in your setup
+                local ok, fzf_lua_mod = pcall(require, "plugins.fzf")
+
+                -- If the module loaded and it exposes get_existing_ignore_files, reload the cache
+                if ok and fzf_lua_mod and type(fzf_lua_mod.get_existing_ignore_files) == "function" then
+                    _G.fzf_cache.ignore_opts_cache = fzf_lua_mod.get_existing_ignore_files()
+                else
+                    -- If something fails, fall back to clearing the cache
+                    _G.fzf_cache.ignore_opts_cache = nil
+                end
+
+                -- Notify the user that the cache has been refreshed
+                vim.notify("fzf-lua ignore cache reloaded due to: " .. changed_file, vim.log.levels.INFO)
+            end
+        end, 100) -- Delay slightly (100ms) to avoid race conditions
     end,
 })

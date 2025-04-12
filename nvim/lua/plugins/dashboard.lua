@@ -296,7 +296,48 @@ return {
                 center = {
                     { action = function() require("fzf-lua").files() end, desc = " Find File", icon = " ", key = "f" },
                     { action = function() require("fzf-lua").oldfiles() end, desc = " Recent Files", icon = " ", key = "r" },
-                    { action = function() require("fzf-lua").live_grep() end, desc = " Find Text", icon = " ", key = "g" },
+                    {
+                        action = function()
+                            local ok, fzf = pcall(require, "fzf-lua")
+                            if not ok then return end
+
+                            -- Try to get Neo-tree root, fall back to cwd
+                            local root
+                            local ok_root, manager = pcall(require, "neo-tree.sources.manager")
+                            if ok_root then
+                                local state = manager.get_state("filesystem")
+                                root = state and state.path or vim.fn.getcwd()
+                            else
+                                root = vim.fn.getcwd()
+                            end
+
+                            local rg_opts = table.concat({
+                                "--hidden",
+                                "--column",
+                                "--line-number",
+                                "--no-heading",
+                                "--color=always",
+                                "--smart-case",
+                                "--glob", "!.git/",
+                                "--glob", "!*.lock",
+                            }, " ")
+
+                            local ignore_opts = (_G.fzf_cache and _G.fzf_cache.ignore_opts_cache)
+                                or {} -- fallback if cache doesn't exist
+
+                            fzf.live_grep({
+                                cwd = root,
+                                prompt = "Live Grep > ",
+                                rg_opts = table.concat(vim.tbl_flatten({ rg_opts, ignore_opts }), " "),
+                                silent = true,
+                            })
+                        end,
+                        desc = " Find Text",
+                        icon = " ",
+                        key = "g"
+                    },
+
+
                     {
                         action = function()
                             require("fzf-lua").files({
