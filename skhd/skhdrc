@@ -13,5 +13,5 @@ alt - r : yabai -m space --rotate 90 2>/dev/null
 alt - y : yabai -m space --mirror y-axis 2>/dev/null
 
 # toggle window fullscreen zoom
-alt - f : yabai -m window --focus mouse 2>/dev/null && \
+alt - m : yabai -m window --focus mouse 2>/dev/null && \
           yabai -m window --toggle zoom-fullscreen 2>/dev/null
