@@ -33,36 +33,10 @@ require("lazy").setup({
     checker = { enabled = true },
 })
 
--- Function to fetch keymaps and display them in fzf-lua
-local function keymap_fzf()
-    local keymaps = {}
-    local modes = { "n", "i", "v", "x", "s", "o", "t", "c" }
-
-    for _, mode in ipairs(modes) do
-        for _, map in ipairs(vim.api.nvim_get_keymap(mode)) do
-            local lhs = map.lhs
-            local rhs = map.rhs or "[N/A]"
-            local desc = map.desc or ""
-            local plugin = map.plugin or "NA" -- Get the plugin name or "NA" if it's a user-defined mapping
-
-            -- Format the line to include mode, keymap, description, and plugin
-            local line = string.format("[%s] %s -> %s (%s) [%s]", mode, lhs, rhs, desc, plugin)
-            table.insert(keymaps, line)
-        end
-    end
-
-    require("plugins.fzf") -- Ensure fzf-lua is loaded
-
-    require("fzf-lua").fzf_exec(keymaps, {
-        prompt = "Keymaps> ",
-        previewer = function(item)
-            return vim.fn.systemlist(string.format("echo '%s'", item))
-        end,
-    })
-end
-
 -- Set a keymap to trigger the function
-vim.keymap.set("n", "<leader>sk", keymap_fzf, { desc = "Search Keymaps with fzf-lua" })
+vim.keymap.set("n", "<leader>sk", function()
+    require("config.keymap_fzf").run()
+end, { desc = "Search Keymaps with fzf-lua" })
 
 -- If you still want fallback behavior (e.g., for non-LSP buffers),
 -- but don’t want to see "No information available," suppress the message using a custom handler.
