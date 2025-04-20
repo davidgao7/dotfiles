@@ -1232,6 +1232,9 @@ return {
             })
 
             require('mason-lspconfig').setup_handlers({
+                -- Disable Mason's auto setup for rust-analyzer
+                -- in favor of rustaceanvim
+                ["rust_analyzer"] = function() end,
                 function(server_name)
                     local server_opts = opts.servers[server_name] or {}
                     require("lspconfig")[server_name].setup(server_opts)
