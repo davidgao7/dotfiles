@@ -197,6 +197,9 @@ return {
                 opts = function(_, opts)
                     local snippets = require("mini.snippets")
                     local config_path = vim.fn.stdpath("config")
+
+                    -- NOTE: here is a great source of snippets:
+                    -- https://github.com/microsoft/vscode/tree/main/extensions
                     local custom_snip_dir = config_path .. "/snippets"
 
                     -- Optional: override select popup to prevent virtual text artifacts
