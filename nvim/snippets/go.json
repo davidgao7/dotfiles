@@ -1,0 +1,88 @@
+{
+  "go-main": {
+    "prefix": "main",
+    "body": [
+      "package main",
+      "",
+      "import (",
+      "    \"fmt\"",
+      ")",
+      "",
+      "func main() {",
+      "    $0",
+      "}"
+    ],
+    "description": "Go main function"
+  },
+  "go-func": {
+    "prefix": "func",
+    "body": [
+      "func ${1:FuncName}(${2:params}) ${3:returnType} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Function definition"
+  },
+  "go-if": {
+    "prefix": "if",
+    "body": [
+      "if ${1:condition} {",
+      "    $0",
+      "}"
+    ],
+    "description": "If statement"
+  },
+  "go-else": {
+    "prefix": "else",
+    "body": [
+      "else {",
+      "    $0",
+      "}"
+    ],
+    "description": "Else statement"
+  },
+  "go-for": {
+    "prefix": "for",
+    "body": [
+      "for ${1:i} := 0; ${1} < ${2:count}; ${1}++ {",
+      "    $0",
+      "}"
+    ],
+    "description": "For loop"
+  },
+  "go-range": {
+    "prefix": "range",
+    "body": [
+      "for ${1:index}, ${2:value} := range ${3:slice} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Range loop"
+  },
+  "go-print": {
+    "prefix": "print",
+    "body": [
+      "fmt.Println(${1:\"message\"})"
+    ],
+    "description": "fmt.Println"
+  },
+  "go-error-check": {
+    "prefix": "err",
+    "body": [
+      "if err != nil {",
+      "    return ${1:nil}, err",
+      "}"
+    ],
+    "description": "Error check pattern"
+  },
+  "go-struct": {
+    "prefix": "struct",
+    "body": [
+      "type ${1:StructName} struct {",
+      "    $0",
+      "}"
+    ],
+    "description": "Struct definition"
+  }
+}
+

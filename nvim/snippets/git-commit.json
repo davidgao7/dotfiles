@@ -1,0 +1,14 @@
+{
+  "git-commit": {
+    "prefix": "gitc",
+    "body": [
+      "${1:Subject line (50 chars max)}",
+      "",
+      "${2:Detailed explanation (wrap at 72 chars)}",
+      "",
+      "${3:Footer (e.g., Co-authored-by: name <email>)}"
+    ],
+    "description": "Standard Git commit message format"
+  }
+}
+

@@ -1,0 +1,70 @@
+{
+  "sql-select-all": {
+    "prefix": "sel",
+    "body": [
+      "SELECT *",
+      "FROM ${1:table_name};"
+    ],
+    "description": "Select all from table"
+  },
+  "sql-select-columns": {
+    "prefix": "selcol",
+    "body": [
+      "SELECT ${1:column1}, ${2:column2}",
+      "FROM ${3:table_name};"
+    ],
+    "description": "Select specific columns"
+  },
+  "sql-insert": {
+    "prefix": "ins",
+    "body": [
+      "INSERT INTO ${1:table_name} (${2:column1}, ${3:column2})",
+      "VALUES (${4:value1}, ${5:value2});"
+    ],
+    "description": "Insert statement"
+  },
+  "sql-update": {
+    "prefix": "upd",
+    "body": [
+      "UPDATE ${1:table_name}",
+      "SET ${2:column} = ${3:value}",
+      "WHERE ${4:condition};"
+    ],
+    "description": "Update statement"
+  },
+  "sql-delete": {
+    "prefix": "del",
+    "body": [
+      "DELETE FROM ${1:table_name}",
+      "WHERE ${2:condition};"
+    ],
+    "description": "Delete statement"
+  },
+  "sql-where": {
+    "prefix": "where",
+    "body": [
+      "WHERE ${1:condition}"
+    ],
+    "description": "WHERE clause"
+  },
+  "sql-join": {
+    "prefix": "join",
+    "body": [
+      "SELECT ${1:*}",
+      "FROM ${2:table1}",
+      "JOIN ${3:table2} ON ${4:table1.id} = ${5:table2.foreign_id};"
+    ],
+    "description": "JOIN clause"
+  },
+  "sql-create-table": {
+    "prefix": "ctab",
+    "body": [
+      "CREATE TABLE ${1:table_name} (",
+      "  ${2:column1} ${3:datatype},",
+      "  ${4:column2} ${5:datatype}",
+      ");"
+    ],
+    "description": "Create table"
+  }
+}
+

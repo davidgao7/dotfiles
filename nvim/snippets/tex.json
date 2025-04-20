@@ -1,0 +1,126 @@
+{
+  "document": {
+    "prefix": "doc",
+    "body": [
+      "\\documentclass{${1:article}}",
+      "",
+      "\\usepackage[utf8]{inputenc}",
+      "",
+      "\\title{${2:Title}}",
+      "\\author{${3:Author}}",
+      "\\date{${4:\\today}}",
+      "",
+      "\\begin{document}",
+      "",
+      "\\maketitle",
+      "",
+      "$0",
+      "",
+      "\\end{document}"
+    ],
+    "description": "Basic LaTeX document structure"
+  },
+  "section": {
+    "prefix": "sec",
+    "body": [
+      "\\section{${1:Section Title}}",
+      "$0"
+    ],
+    "description": "Insert a section"
+  },
+  "subsection": {
+    "prefix": "subsec",
+    "body": [
+      "\\subsection{${1:Subsection Title}}",
+      "$0"
+    ],
+    "description": "Insert a subsection"
+  },
+  "figure": {
+    "prefix": "fig",
+    "body": [
+      "\\begin{figure}[h]",
+      "  \\centering",
+      "  \\includegraphics[width=${1:\\linewidth}]{${2:filename}}",
+      "  \\caption{${3:Caption}}",
+      "  \\label{fig:${4:label}}",
+      "\\end{figure}"
+    ],
+    "description": "Insert a figure"
+  },
+  "table": {
+    "prefix": "table",
+    "body": [
+      "\\begin{table}[h]",
+      "  \\centering",
+      "  \\begin{tabular}{${1:c|c}}",
+      "    \\hline",
+      "    ${2:Header1} & ${3:Header2} \\\\",
+      "    \\hline",
+      "    ${4:Row1Col1} & ${5:Row1Col2} \\\\",
+      "    ${6:Row2Col1} & ${7:Row2Col2} \\\\",
+      "    \\hline",
+      "  \\end{tabular}",
+      "  \\caption{${8:Caption}}",
+      "  \\label{tab:${9:label}}",
+      "\\end{table}"
+    ],
+    "description": "Insert a table"
+  },
+  "enumerate": {
+    "prefix": "enum",
+    "body": [
+      "\\begin{enumerate}",
+      "  \\item ${1:Item 1}",
+      "  \\item ${2:Item 2}",
+      "\\end{enumerate}"
+    ],
+    "description": "Enumerated list"
+  },
+  "itemize": {
+    "prefix": "item",
+    "body": [
+      "\\begin{itemize}",
+      "  \\item ${1:Item 1}",
+      "  \\item ${2:Item 2}",
+      "\\end{itemize}"
+    ],
+    "description": "Bulleted list"
+  },
+  "math-env": {
+    "prefix": "math",
+    "body": [
+      "\\[",
+      "  ${1:equation}",
+      "\\]"
+    ],
+    "description": "Display math environment"
+  },
+  "align-env": {
+    "prefix": "align",
+    "body": [
+      "\\begin{align}",
+      "  ${1:a} &= ${2:b} \\\\",
+      "  ${3:c} &= ${4:d}",
+      "\\end{align}"
+    ],
+    "description": "Align math environment"
+  },
+  "bibitem": {
+    "prefix": "bib",
+    "body": [
+      "@${1:article}{${2:key},",
+      "  author    = {${3:Author}},",
+      "  title     = {${4:Title}},",
+      "  journal   = {${5:Journal}},",
+      "  year      = {${6:Year}},",
+      "  volume    = {${7:Volume}},",
+      "  number    = {${8:Number}},",
+      "  pages     = {${9:Pages}},",
+      "  publisher = {${10:Publisher}}",
+      "}"
+    ],
+    "description": "BibTeX article entry"
+  }
+}
+

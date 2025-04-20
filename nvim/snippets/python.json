@@ -1,13 +1,45 @@
 {
-    "main": {
-        "prefix": "main",
-        "body": [
-            "def main():",
-            "    $0",
-            "",
-            "if __name__ == \"__main__\":",
-            "    main()"
-        ],
-        "description": "Python main function template"
-    }
+  "Main Function": {
+    "prefix": "main",
+    "body": [
+      "def main():",
+      "    $0",
+      "",
+      "if __name__ == \"__main__\":",
+      "    main()"
+    ],
+    "description": "Python main function template"
+  },
+  "If Name Equals Main": {
+    "prefix": "ifmain",
+    "body": [
+      "if __name__ == \"__main__\":",
+      "    $0"
+    ],
+    "description": "Python if __name__ == '__main__' check"
+  },
+  "Print Statement": {
+    "prefix": "print",
+    "body": [
+      "print(${1:\"Hello, world!\"})"
+    ],
+    "description": "Print statement"
+  },
+  "Class Definition": {
+    "prefix": "class",
+    "body": [
+      "class ${1:ClassName}:",
+      "    def __init__(self, ${2:args}):",
+      "        $0"
+    ],
+    "description": "Class definition"
+  },
+  "Function Definition": {
+    "prefix": "def",
+    "body": [
+      "def ${1:func_name}(${2:args}):",
+      "    $0"
+    ],
+    "description": "Function definition"
+  }
 }

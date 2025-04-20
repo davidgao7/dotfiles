@@ -1,0 +1,55 @@
+{
+  "yaml-key-value": {
+    "prefix": "kv",
+    "body": [
+      "${1:key}: ${2:value}"
+    ],
+    "description": "Simple key-value pair"
+  },
+  "yaml-sequence": {
+    "prefix": "seq",
+    "body": [
+      "${1:items}:",
+      "  - ${2:item1}",
+      "  - ${3:item2}"
+    ],
+    "description": "YAML sequence list"
+  },
+  "yaml-nested-map": {
+    "prefix": "map",
+    "body": [
+      "${1:parent}:",
+      "  ${2:child1}: ${3:value1}",
+      "  ${4:child2}: ${5:value2}"
+    ],
+    "description": "Nested YAML mapping"
+  },
+  "yaml-anchor-alias": {
+    "prefix": "anchor",
+    "body": [
+      "${1:name}: &${2:anchorName}",
+      "  ${3:key1}: ${4:value1}",
+      "${5:other}: *${2:anchorName}"
+    ],
+    "description": "YAML anchor and alias"
+  },
+  "yaml-multidoc": {
+    "prefix": "doc",
+    "body": [
+      "---",
+      "${1:key1}: ${2:value1}",
+      "...",
+      "---",
+      "${3:key2}: ${4:value2}"
+    ],
+    "description": "YAML multi-document format"
+  },
+  "yaml-comment": {
+    "prefix": "#",
+    "body": [
+      "# ${1:comment}"
+    ],
+    "description": "YAML comment"
+  }
+}
+

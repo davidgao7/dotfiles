@@ -1,0 +1,21 @@
+{
+  "git-config": {
+    "prefix": "gitcfg",
+    "body": [
+      "[user]",
+      "    name = ${1:Your Name}",
+      "    email = ${2:your.email@example.com}",
+      "",
+      "[core]",
+      "    editor = ${3:nvim}",
+      "",
+      "[alias]",
+      "    co = checkout",
+      "    br = branch",
+      "    ci = commit",
+      "    st = status"
+    ],
+    "description": "Basic Git configuration settings"
+  }
+}
+

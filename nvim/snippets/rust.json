@@ -1,0 +1,90 @@
+{
+  "rust-main": {
+    "prefix": "main",
+    "body": [
+      "fn main() {",
+      "    $0",
+      "}"
+    ],
+    "description": "Main function"
+  },
+  "rust-print": {
+    "prefix": "print",
+    "body": [
+      "println!(\"${1:Hello, world!}\");"
+    ],
+    "description": "Print to stdout"
+  },
+  "rust-debug": {
+    "prefix": "dbg",
+    "body": [
+      "dbg!(${1:expression});"
+    ],
+    "description": "Print debug info"
+  },
+  "rust-function": {
+    "prefix": "fn",
+    "body": [
+      "fn ${1:name}(${2:args}) -> ${3:ReturnType} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Define function"
+  },
+  "rust-struct": {
+    "prefix": "struct",
+    "body": [
+      "struct ${1:Name} {",
+      "    ${2:field}: ${3:Type},",
+      "}"
+    ],
+    "description": "Define struct"
+  },
+  "rust-impl": {
+    "prefix": "impl",
+    "body": [
+      "impl ${1:Type} {",
+      "    $0",
+      "}"
+    ],
+    "description": "Impl block"
+  },
+  "rust-match": {
+    "prefix": "match",
+    "body": [
+      "match ${1:expression} {",
+      "    ${2:pattern} => ${3:result},",
+      "    _ => ${4:default},",
+      "}"
+    ],
+    "description": "Match expression"
+  },
+  "rust-if-let": {
+    "prefix": "iflet",
+    "body": [
+      "if let ${1:pattern} = ${2:expression} {",
+      "    $0",
+      "}"
+    ],
+    "description": "if let construct"
+  },
+  "rust-for": {
+    "prefix": "for",
+    "body": [
+      "for ${1:item} in ${2:iter} {",
+      "    $0",
+      "}"
+    ],
+    "description": "For loop"
+  },
+  "rust-enum": {
+    "prefix": "enum",
+    "body": [
+      "enum ${1:Name} {",
+      "    ${2:Variant},",
+      "}"
+    ],
+    "description": "Enum declaration"
+  }
+}
+

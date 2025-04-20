@@ -1,0 +1,81 @@
+{
+  "docker-from": {
+    "prefix": "dfrom",
+    "body": [
+      "FROM ${1:ubuntu:latest}",
+      "${0}"
+    ],
+    "description": "Base image for Dockerfile"
+  },
+  "docker-maintainer": {
+    "prefix": "dmaint",
+    "body": [
+      "LABEL maintainer=\"${1:your.name@example.com}\""
+    ],
+    "description": "Maintainer label"
+  },
+  "docker-run": {
+    "prefix": "drun",
+    "body": [
+      "RUN ${1:command}"
+    ],
+    "description": "RUN command"
+  },
+  "docker-copy": {
+    "prefix": "dcopy",
+    "body": [
+      "COPY ${1:source} ${2:destination}"
+    ],
+    "description": "COPY files"
+  },
+  "docker-add": {
+    "prefix": "dadd",
+    "body": [
+      "ADD ${1:source} ${2:destination}"
+    ],
+    "description": "ADD files"
+  },
+  "docker-env": {
+    "prefix": "denv",
+    "body": [
+      "ENV ${1:KEY}=${2:value}"
+    ],
+    "description": "ENV variable"
+  },
+  "docker-workdir": {
+    "prefix": "dwork",
+    "body": [
+      "WORKDIR ${1:/app}"
+    ],
+    "description": "Set working directory"
+  },
+  "docker-cmd": {
+    "prefix": "dcmd",
+    "body": [
+      "CMD [\"${1:command}\"]"
+    ],
+    "description": "Default command"
+  },
+  "docker-entrypoint": {
+    "prefix": "dentry",
+    "body": [
+      "ENTRYPOINT [\"${1:entrypoint}\"]"
+    ],
+    "description": "Default entrypoint"
+  },
+  "docker-expose": {
+    "prefix": "dport",
+    "body": [
+      "EXPOSE ${1:80}"
+    ],
+    "description": "Expose port"
+  },
+  "docker-volume": {
+    "prefix": "dvol",
+    "body": [
+      "VOLUME [\"${1:/data}\"]"
+    ],
+    "description": "Declare volume"
+  }
+}
+

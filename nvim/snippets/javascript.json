@@ -1,0 +1,102 @@
+{
+  "js-function": {
+    "prefix": "func",
+    "body": [
+      "function ${1:name}(${2:params}) {",
+      "  ${0:// body}",
+      "}"
+    ],
+    "description": "Function declaration"
+  },
+  "js-arrow-function": {
+    "prefix": "af",
+    "body": [
+      "const ${1:name} = (${2:params}) => {",
+      "  ${0:// body}",
+      "};"
+    ],
+    "description": "Arrow function"
+  },
+  "js-console-log": {
+    "prefix": "cl",
+    "body": [
+      "console.log(${1:variable});"
+    ],
+    "description": "Console log"
+  },
+  "js-for-loop": {
+    "prefix": "for",
+    "body": [
+      "for (let ${1:i} = 0; ${1} < ${2:array}.length; ${1}++) {",
+      "  ${0:// body}",
+      "}"
+    ],
+    "description": "For loop"
+  },
+  "js-foreach": {
+    "prefix": "foreach",
+    "body": [
+      "${1:array}.forEach((${2:item}) => {",
+      "  ${0:// body}",
+      "});"
+    ],
+    "description": "Array forEach loop"
+  },
+  "js-if-else": {
+    "prefix": "if",
+    "body": [
+      "if (${1:condition}) {",
+      "  ${2:// body}",
+      "} else {",
+      "  ${0:// else body}",
+      "}"
+    ],
+    "description": "If-else statement"
+  },
+  "js-try-catch": {
+    "prefix": "try",
+    "body": [
+      "try {",
+      "  ${1:// try block}",
+      "} catch (${2:error}) {",
+      "  ${0:// catch block}",
+      "}"
+    ],
+    "description": "Try-catch block"
+  },
+  "js-fetch": {
+    "prefix": "fetch",
+    "body": [
+      "fetch('${1:url}')",
+      "  .then(response => response.json())",
+      "  .then(data => {",
+      "    ${0:// handle data}",
+      "  })",
+      "  .catch(error => {",
+      "    console.error('Error:', error);",
+      "  });"
+    ],
+    "description": "Fetch API call"
+  },
+  "js-promise": {
+    "prefix": "promise",
+    "body": [
+      "new Promise((resolve, reject) => {",
+      "  ${0:// asynchronous operation}",
+      "});"
+    ],
+    "description": "Create a new Promise"
+  },
+  "js-class": {
+    "prefix": "class",
+    "body": [
+      "class ${1:ClassName} {",
+      "  constructor(${2:params}) {",
+      "    ${0:// constructor body}",
+      "  }",
+      "}"
+    ],
+    "description": "Class declaration"
+  }
+}
+

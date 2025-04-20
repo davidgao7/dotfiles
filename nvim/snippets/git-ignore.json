@@ -1,0 +1,26 @@
+{
+  "gitignore-common": {
+    "prefix": "giti",
+    "body": [
+      "# Node modules",
+      "node_modules/",
+      "",
+      "# Logs",
+      "*.log",
+      "",
+      "# OS files",
+      ".DS_Store",
+      "Thumbs.db",
+      "",
+      "# Build directories",
+      "dist/",
+      "build/",
+      "",
+      "# IDE settings",
+      ".idea/",
+      ".vscode/"
+    ],
+    "description": "Common .gitignore patterns"
+  }
+}
+
