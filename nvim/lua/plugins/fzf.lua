@@ -96,9 +96,17 @@ return {
                         },
                     },
                 },
+                -- display git status in the preview window
                 files = {
                     previewer = "builtin",
                     cwd = get_neotree_root(),
+                    git_status = true,  -- ensure it tries to fetch git status
+                    git_icons = true,   -- Show Git status icons
+                    file_icons = true,  -- Show file type icons
+                    color_icons = true, -- Enable color for icons
+
+                    -- To match Neo-tree's Git status color display
+                    formatter = "path.filename_first", -- optional: controls layout
                 },
                 grep = {
                     rg_cmd = "rg",
@@ -172,9 +180,15 @@ return {
                 { desc = "Find symbols in current buffer" })
             vim.keymap.set("n", "<leader>fw", "<cmd>FzfLua lsp_workspace_symbols<cr>", { desc = "Workspace symbols" })
             vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol across project" })
-            vim.keymap.set("n", "<leader>ff", function()
-                require("fzf-lua").files({ prompt = "Find Files>" })
-            end, { desc = "find files" })
+            local function smart_find_files()
+                local root = get_neotree_root()
+                if vim.fn.isdirectory(root .. "/.git") == 1 then
+                    require("fzf-lua").git_files({ cwd = root, prompt = "Git Files>" })
+                else
+                    require("fzf-lua").files({ cwd = root, prompt = "Find Files>" })
+                end
+            end
+            vim.keymap.set("n", "<leader>ff", smart_find_files, { desc = "Smart Find Files" })
             vim.keymap.set("n", "<leader>fd", function()
                 require("fzf-lua").files({ cwd = vim.fn.input("dir > "), prompt = "Find Files>" })
             end, { desc = "Find files in dir" })
