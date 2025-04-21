@@ -347,7 +347,7 @@ return {
                                     end
 
                                     -- characters matched on the label by the fuzzy matcher
-                                    for _, idx in ipairs(ctx.label_matched_indices) do
+                                    for _, idx in ipairs(ctx.label_matched_indices or {}) do
                                         table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
                                     end
 
