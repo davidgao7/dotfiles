@@ -180,15 +180,26 @@ return {
                 { desc = "Find symbols in current buffer" })
             vim.keymap.set("n", "<leader>fw", "<cmd>FzfLua lsp_workspace_symbols<cr>", { desc = "Workspace symbols" })
             vim.keymap.set("n", "<leader>rn", vim.lsp.buf.rename, { desc = "Rename symbol across project" })
-            local function smart_find_files()
-                local root = get_neotree_root()
+            local function find_git_files(root)
                 if vim.fn.isdirectory(root .. "/.git") == 1 then
                     require("fzf-lua").git_files({ cwd = root, prompt = "Git Files>" })
-                else
-                    require("fzf-lua").files({ cwd = root, prompt = "Find Files>" })
                 end
             end
-            vim.keymap.set("n", "<leader>ff", smart_find_files, { desc = "Smart Find Files" })
+
+            local function find_all_files(root)
+                require("fzf-lua").files({ cwd = root, prompt = "Find Files>" })
+            end
+
+            vim.keymap.set("n", "<leader>ff", function()
+                local root = get_neotree_root()
+                find_all_files(root)
+            end, { desc = "Find all files" })
+
+            vim.keymap.set("n", "<leader>fg", function()
+                local root = get_neotree_root()
+                find_git_files(root)
+            end, { desc = "Find git files" })
+
             vim.keymap.set("n", "<leader>fd", function()
                 require("fzf-lua").files({ cwd = vim.fn.input("dir > "), prompt = "Find Files>" })
             end, { desc = "Find files in dir" })
