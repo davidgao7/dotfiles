@@ -5,13 +5,13 @@ return {
         dependencies = { "nvim-lua/plenary.nvim" },
         opts = {
             highlight = {
-                before = "",                     -- "fg" or "bg" or empty
-                keyword = "wide",                -- "fg", "bg", "wide" or empty.
-                after = "fg",                    -- "fg" or "bg" or empty
-                pattern = [[.*<(KEYWORDS)\s*:]], -- Change if needed
-                comments_only = true,            -- Only highlight inside comments
-                max_line_len = 400,              -- Limit line length for parsing
-                exclude = {},                    -- Exclude file types
+                before = "",                  -- "fg" or "bg" or empty
+                keyword = "wide",             -- "fg", "bg", "wide" or empty.
+                after = "fg",                 -- "fg" or "bg" or empty
+                pattern = [[\b(KEYWORDS)\b]], -- Change if needed
+                comments_only = true,         -- Only highlight inside comments
+                max_line_len = 400,           -- Limit line length for parsing
+                exclude = {},                 -- Exclude file types
             },
             colors = {
                 error = { "DiagnosticError", "ErrorMsg", "#DC2626" },
