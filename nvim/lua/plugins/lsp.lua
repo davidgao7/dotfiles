@@ -21,6 +21,86 @@ local clangd_ext_opts = {
     },
 }
 
+local blink_kind_icons_set_one = {
+    Text = '󰉿',
+    Method = '󰊕',
+    Function = '󰊕',
+    Constructor = '󰒓',
+
+    Field = '󰜢',
+    Variable = '󰆦',
+    Property = '󰖷',
+
+    Class = '󱡠',
+    Interface = '󱡠',
+    Struct = '󱡠',
+    Module = '󰅩',
+
+    Unit = '󰪚',
+    Value = '󰦨',
+    Enum = '󰦨',
+    EnumMember = '󰦨',
+
+    Keyword = '󰻾',
+    Constant = '󰏿',
+
+    Snippet = '󱄽',
+    Color = '󰏘',
+    File = '󰈔',
+    Reference = '󰬲',
+    Folder = '󰉋',
+    Event = '󱐋',
+    Operator = '󰪚',
+    TypeParameter = '󰬛',
+
+    Copilot = '',
+
+    openPR = '',
+    openedPR = '',
+    closedPR = '',
+    mergedPR = '',
+    draftPR = '',
+    lockedPR = '',
+    openIssue = '',
+    openedIssue = '',
+    reopenedIssue = '',
+    completedIssue = '',
+    closedIssue = '',
+    not_plannedIssue = '',
+    duplicateIssue = '',
+    lockedIssue = '',
+}
+
+local completion_menu_highlight_groups = {
+    BlinkCmpKindFunction = { fg = "#89b4fa" },       -- soft blue
+    BlinkCmpKindMethod = { fg = "#89b4fa" },         -- soft blue (shared)
+    BlinkCmpKindVariable = { fg = "#f9e2af" },       -- soft yellow
+    BlinkCmpKindClass = { fg = "#f38ba8" },          -- soft pink
+    BlinkCmpKindInterface = { fg = "#a6e3a1" },      -- soft green
+    BlinkCmpKindModule = { fg = "#94e2d5" },         -- soft teal
+    BlinkCmpKindKeyword = { fg = "#cba6f7" },        -- soft mauve
+    BlinkCmpKindField = { fg = "#fab387" },          -- soft peach
+    BlinkCmpKindProperty = { fg = "#f2cdcd" },       -- rosewater
+    BlinkCmpKindEnum = { fg = "#fab387" },           -- peach
+    BlinkCmpKindSnippet = { fg = "#f5c2e7" },        -- pink
+    BlinkCmpKindFile = { fg = "#cdd6f4" },           -- white
+    BlinkCmpKindFolder = { fg = "#b4befe" },         -- pastel blue
+    BlinkCmpKindEvent = { fg = "#f9e2af" },          -- yellow
+    BlinkCmpKindOperator = { fg = "#89b4fa" },       -- blue
+    BlinkCmpKindTypeParameter = { fg = "#f5c2e7" },  -- pink
+    BlinkCmpKindCopilot = { fg = "#94e2d5" },        -- teal (for Copilot suggestion)
+    BlinkCmpKindOpenPR = { fg = "#89dceb" },         -- cyan
+    BlinkCmpKindClosedPR = { fg = "#f38ba8" },       -- pink
+    BlinkCmpKindMergedPR = { fg = "#a6e3a1" },       -- green
+    BlinkCmpKindDraftPR = { fg = "#fab387" },        -- peach
+    BlinkCmpKindLockedPR = { fg = "#f38ba8" },       -- pink
+    BlinkCmpKindOpenIssue = { fg = "#89b4fa" },      -- blue
+    BlinkCmpKindClosedIssue = { fg = "#f38ba8" },    -- pink
+    BlinkCmpKindDuplicateIssue = { fg = "#fab387" }, -- peach
+    BlinkCmpKindLockedIssue = { fg = "#f38ba8" },    -- pink
+}
+
+
 return {
     -- Core Treesitter functionality and parser management
     {
@@ -337,21 +417,40 @@ return {
                                 width = { fill = true, max = 60 },
                                 text = function(ctx) return ctx.label .. ctx.label_detail end,
                                 highlight = function(ctx)
-                                    -- label and label details
-                                    local highlights = {
-                                        { 0, #ctx.label, group = ctx.deprecated and 'BlinkCmpLabelDeprecated' or 'BlinkCmpLabel' },
-                                    }
+                                    -- -- label and label details
+                                    -- local highlights = {
+                                    --     { 0, #ctx.label, group = ctx.deprecated and 'BlinkCmpLabelDeprecated' or 'BlinkCmpLabel' },
+                                    -- }
+                                    -- if ctx.label_detail then
+                                    --     table.insert(highlights,
+                                    --         { #ctx.label, #ctx.label + #ctx.label_detail, group = 'BlinkCmpLabelDetail' })
+                                    -- end
+                                    --
+                                    -- -- characters matched on the label by the fuzzy matcher
+                                    -- for _, idx in ipairs(ctx.label_matched_indices or {}) do
+                                    --     table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
+                                    -- end
+                                    --
+                                    -- return highlights
+
+                                    local label_highlights = {}
+
+                                    -- Main label: use BlinkCmpKind based on kind
+                                    table.insert(label_highlights,
+                                        { 0, #ctx.label, group = "BlinkCmpKind" .. (ctx.kind or "") })
+
+                                    -- Optional label detail part
                                     if ctx.label_detail then
-                                        table.insert(highlights,
+                                        table.insert(label_highlights,
                                             { #ctx.label, #ctx.label + #ctx.label_detail, group = 'BlinkCmpLabelDetail' })
                                     end
 
-                                    -- characters matched on the label by the fuzzy matcher
+                                    -- Fuzzy matched characters
                                     for _, idx in ipairs(ctx.label_matched_indices or {}) do
-                                        table.insert(highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
+                                        table.insert(label_highlights, { idx, idx + 1, group = 'BlinkCmpLabelMatch' })
                                     end
 
-                                    return highlights
+                                    return label_highlights
                                 end,
                             },
 
@@ -685,55 +784,7 @@ return {
                 -- Adjusts spacing to ensure icons are aligned
                 -- nerd_font_variant = 'mono',
 
-                kind_icons = {
-                    Text = '󰉿',
-                    Method = '󰊕',
-                    Function = '󰊕',
-                    Constructor = '󰒓',
-
-                    Field = '󰜢',
-                    Variable = '󰆦',
-                    Property = '󰖷',
-
-                    Class = '󱡠',
-                    Interface = '󱡠',
-                    Struct = '󱡠',
-                    Module = '󰅩',
-
-                    Unit = '󰪚',
-                    Value = '󰦨',
-                    Enum = '󰦨',
-                    EnumMember = '󰦨',
-
-                    Keyword = '󰻾',
-                    Constant = '󰏿',
-
-                    Snippet = '󱄽',
-                    Color = '󰏘',
-                    File = '󰈔',
-                    Reference = '󰬲',
-                    Folder = '󰉋',
-                    Event = '󱐋',
-                    Operator = '󰪚',
-                    TypeParameter = '󰬛',
-
-                    Copilot = '',
-
-                    openPR = '',
-                    openedPR = '',
-                    closedPR = '',
-                    mergedPR = '',
-                    draftPR = '',
-                    lockedPR = '',
-                    openIssue = '',
-                    openedIssue = '',
-                    reopenedIssue = '',
-                    completedIssue = '',
-                    closedIssue = '',
-                    not_plannedIssue = '',
-                    duplicateIssue = '',
-                    lockedIssue = '',
-                },
+                kind_icons = blink_kind_icons_set_one,
             },
         },
         config = function(_, opts)
@@ -778,6 +829,11 @@ return {
                     -- Unset custom prop to pass blink.cmp validation
                     provider.kind = nil
                 end
+            end
+
+            -- use customized highlight groups
+            for group, hl in pairs(completion_menu_highlight_groups) do
+                vim.api.nvim_set_hl(0, group, hl)
             end
 
             -- print(vim.inspect(opts))
