@@ -228,14 +228,6 @@ return {
                 },
                 ft = { "markdown", "Avante" },
             },
-            {
-                "folke/which-key.nvim",
-                opts = {
-                    spec = {
-                        { "<leader>cia", group = "cursor" }
-                    }
-                }
-            },
             -- patching cmp in source
             {
                 "saghen/blink.compat",
