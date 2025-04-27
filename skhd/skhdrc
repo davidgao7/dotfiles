@@ -15,3 +15,20 @@ alt - y : yabai -m space --mirror y-axis 2>/dev/null
 # toggle window fullscreen zoom
 alt - m : yabai -m window --focus mouse 2>/dev/null && \
           yabai -m window --toggle zoom-fullscreen 2>/dev/null
+
+# Smart resize left
+shift + alt - h : /bin/bash -c "$HOME/.config/yabai/resize-smart-horizontal.sh left 20"
+
+# Smart resize right
+shift + alt - l : /bin/bash -c "$HOME/.config/yabai/resize-smart-horizontal.sh right 20"
+
+# Smart resize down
+shift + alt - j : /bin/bash -c "$HOME/.config/yabai/resize-smart-vertical.sh down 20"
+
+# Smart resize up
+shift + alt - k : /bin/bash -c "$HOME/.config/yabai/resize-smart-vertical.sh up 20"
+
+
+
+
+
