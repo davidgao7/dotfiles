@@ -4,7 +4,6 @@ local ensure_installed_fmts = {
     "docformatter",
     "prettierd",
     "clang-format",
-    "cmake-format",
     "csharpier",
     "rubocop",
     "shfmt",
