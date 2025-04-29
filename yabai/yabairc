@@ -71,6 +71,8 @@ yabai -m rule --add app="^Spotify$" manage=off
 yabai -m rule --add app="^Surfshark$" manage=off
 yabai -m rule --add app="^LM Studio$" manage=off
 yabai -m rule --add app="^mpv$" manage=off
+yabai -m rule --add app="^Karabiner-Elements$" manage=off
+yabai -m rule --add app="^ChatGPT$" manage=off
 
 # In order to prevent simple-bar freezing upon yabai restart, you'll need to add
 # this line at the start of your .yabairc file
