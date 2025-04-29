@@ -45,6 +45,172 @@ on-focused-monitor-changed = ['move-mouse monitor-lazy-center']
 # Also see: https://nikitabobko.github.io/AeroSpace/goodies#disable-hide-app
 automatically-unhide-macos-hidden-apps = false
 
+# List of window float by aerospace by default
+[[on-window-detected]]
+if.app-name-regex-substring = 'System Settings'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Calculator'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Calendar'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'WeChat'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'QQ'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'WhatsApp'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Microsoft Teams'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Telegram'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Notes'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Spark'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Dash'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Microsoft Outlook'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Finder'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Messages'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = '网易有道翻译'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Discord'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = '1Password'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'zoom.us'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Weather'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Raindrop.io'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Reminders'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Slack'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Notion'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'VooV'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Postman'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Apifox'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Docker Desktop'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Things'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Photos'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Activity Monitor'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Clock'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Obsidian'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Voice Memos'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'QuickTime Player'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'FaceTime'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Spotify'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Surfshark'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'LM Studio'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'mpv'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'Karabiner-Elements'
+run = ['layout floating']
+
+[[on-window-detected]]
+if.app-name-regex-substring = 'ChatGPT'
+run = ['layout floating']
+
+
 # Possible values: (qwerty|dvorak|colemak)
 # See https://nikitabobko.github.io/AeroSpace/guide#key-mapping
 [key-mapping]
