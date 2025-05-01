@@ -21,9 +21,12 @@ volume_icon=(
   icon.align=left
   icon.color=$GREY
   icon.font="$FONT:Regular:14.0"
+  icon.shadow.drawing=off
+  label.drawing=on                # <== ensure the label is explicitly drawn
   label.width=25
   label.align=left
   label.font="$FONT:Regular:14.0"
+  label.shadow.drawing=off        # <== explicitly turn off shadow here
 )
 
 status_bracket=(
