@@ -1,6 +1,6 @@
 #!/bin/sh
 
-sketchybar --add item weather left \
+sketchybar --add item weather right \
     --set weather \
     icon=󰖐 \
     script="$PLUGIN_DIR/weather.sh" \
