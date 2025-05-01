@@ -7,6 +7,7 @@ sketchybar --add item media right \
     label.color=0xff58d1fc \
     label.max_chars=30 \
     scroll_texts=on \
+    label.shadow.drawing=off \
     scroll_duration=500 \
     update_freq=5 \
     --subscribe media media_change
