@@ -1,3 +1,4 @@
 #!/bin/bash
 
-sketchybar --set $NAME label=$(top -l 2 | grep -E "^CPU" | tail -1 | awk '{ print int($3 + $5)"%" }')
+CPU_USAGE=$(top -l 2 | grep -E "^CPU" | tail -1 | awk '{used = $3 + $5; sub("%","",used); print int(used)"%"}')
+sketchybar --set "$NAME" label="$CPU_USAGE"
