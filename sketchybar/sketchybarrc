@@ -55,7 +55,7 @@ defaults=(
     label.color=$LABEL_COLOR
     label.padding_left=$PADDINGS
     label.padding_right=$PADDINGS
-    label.shadow.drawing=on
+    label.shadow.drawing=off
     label.shadow.distance=2
     label.shadow.color=0xff000000
     padding_right=$PADDINGS
@@ -76,12 +76,12 @@ defaults=(
 sketchybar --default "${defaults[@]}"
 
 # Left
-source "$ITEM_DIR/apple.sh"
+# source "$ITEM_DIR/apple.sh"
 source "$ITEM_DIR/spaces.sh"
 source "$ITEM_DIR/front_app.sh"
 source "$ITEM_DIR/weather.sh"
-source "$ITEM_DIR/memory.sh"
 source "$ITEM_DIR/disk.sh"
+# source "$ITEM_DIR/memory.sh"
 #source "$ITEM_DIR/yabai.sh"
 
 # Center
@@ -99,7 +99,7 @@ source "$ITEM_DIR/volume.sh"
 # source "$ITEM_DIR/svim.sh"
 
 # source "$ITEM_DIR/spotify.sh"
-source "$ITEM_DIR/cpu.sh"
+# source "$ITEM_DIR/cpu.sh"
 source "$ITEM_DIR/media.sh"
 #source "$ITEM_DIR/gpu.sh"
 
