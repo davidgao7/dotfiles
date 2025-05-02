@@ -51,18 +51,21 @@ defaults=(
     icon.color=$ICON_COLOR
     icon.padding_left=$PADDINS
     icon.padding_right=$PADDINGS
+    icon.shadow.drawing=off
+    icon.shadow.color=0x00000000
+    icon.shadow.distance=0
     label.font="$FONT:Semibold:13.0"
     label.color=$LABEL_COLOR
     label.padding_left=$PADDINGS
     label.padding_right=$PADDINGS
     label.shadow.drawing=off
-    label.shadow.distance=2
-    label.shadow.color=0xff000000
+    label.shadow.distance=0
+    label.shadow.color=0x00000000
     padding_right=$PADDINGS
     padding_left=$PADDINGS
-    background.height=26
-    background.corner_radius=9
-    background.border_width=2
+    # background.height=26
+    # background.corner_radius=9
+    # background.border_width=2
     popup.background.border_width=2
     popup.background.corner_radius=9
     popup.background.border_color=$POPUP_BORDER_COLOR
@@ -83,6 +86,7 @@ source "$ITEM_DIR/disk.sh"
 source "$ITEM_DIR/memory.sh"
 source "$ITEM_DIR/cpu.sh"
 source "$ITEM_DIR/network_rates.sh"
+source "$ITEM_DIR/brew.sh"
 #source "$ITEM_DIR/yabai.sh"
 
 # Center
@@ -93,7 +97,6 @@ source "$ITEM_DIR/network_rates.sh"
 source "$ITEM_DIR/calendar.sh"
 source "$ITEM_DIR/input_source.sh"
 source "$ITEM_DIR/battery.sh"
-#source "$ITEM_DIR/brew.sh"
 #source "$ITEM_DIR/github.sh"
 source "$ITEM_DIR/wifi.sh"
 source "$ITEM_DIR/volume.sh"
