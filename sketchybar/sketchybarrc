@@ -15,10 +15,9 @@ AEROSPACE_FOCUSED_MONITOR_NO=$(aerospace list-workspaces --focused)
 AEROSPACE_LIST_OF_WINDOWS_IN_FOCUSED_MONITOR=$(aerospace list-windows --workspace $AEROSPACE_FOCUSED_MONITOR_NO | awk -F'|' '{gsub(/^ *| *$/, "", $2); print $2}')
 
 # Setting up and starting the helper process
-HELPER=git.felix.helper
 killall helper
 (cd $CONFIG_DIR/helper && make)
-$CONFIG_DIR/helper/helper $HELPER >/dev/null 2>&1 &
+$CONFIG_DIR/helper/helper >/dev/null 2>&1 &
 
 # Unload the macOS on screen indicator overlay for volume change
 launchctl unload -F /System/Library/LaunchAgents/com.apple.OSDUIHelper.plist >/dev/null 2>&1 &
@@ -87,6 +86,7 @@ source "$ITEM_DIR/memory.sh"
 source "$ITEM_DIR/cpu.sh"
 source "$ITEM_DIR/network_rates.sh"
 source "$ITEM_DIR/brew.sh"
+source "$ITEM_DIR/zen.sh"
 #source "$ITEM_DIR/yabai.sh"
 
 # Center
