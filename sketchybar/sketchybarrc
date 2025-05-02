@@ -113,4 +113,7 @@ sketchybar --hotload on
 # Forcing all item scripts to run (never do this outside of sketchybarrc)
 sketchybar --update
 
+# force‐refresh Brew count on every reload
+sketchybar --trigger brew_update
+
 echo "sketchybar configuation loaded.."

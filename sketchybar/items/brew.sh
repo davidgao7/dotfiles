@@ -1,17 +1,16 @@
 #!/usr/bin/env bash
 
-brew=(
+brew_item=(
     icon=􀐛
     label="?"
     padding_left=3
     padding_right=10
-    script="$PLUGIN_DIR/brew.sh"
 
-    # ← right here, disable the pill:
-    background.drawing=off
+    update_freq=1800
+    click_script="$PLUGIN_DIR/brew.sh"
+    script="$PLUGIN_DIR/brew.sh"
 )
 
-sketchybar --add event brew_update \
+sketchybar \
     --add item brew left \
-    --set brew "${brew[@]}" \
-    --subscribe brew brew_update
+    --set brew "${brew_item[@]}"
