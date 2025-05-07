@@ -127,6 +127,15 @@ return {
       shfmt = {
         prepend_args = { "-i", "2" },
       },
+      stylua = {
+        prepend_args = function()
+          local cfg = vim.fs.find({ ".stylua.toml", "stylua.toml" }, {
+            upward = true,
+            path = vim.api.nvim_buf_get_name(0),
+          })[1]
+          return cfg and { "--config-path", cfg } or {}
+        end,
+      },
     },
 
     format_on_save = function(bufnr)
