@@ -959,6 +959,29 @@ return {
         }
         vim.lsp.enable("luals")
 
+        vim.lsp.config("pyright", {
+          cmd = { "pyright-langserver", "--stdio" },
+          filetypes = { "python" },
+          root_dir = vim.fs.dirname(
+            vim.fs.find(
+              { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", ".git" },
+              { upward = true }
+            )[1]
+          ),
+          settings = {
+            python = {
+              analysis = {
+                autoSearchPaths = true,
+                diagnosticMode = "workspace", -- Options: 'workspace', 'openFilesOnly'
+                useLibraryCodeForTypes = true,
+                typeCheckingMode = "basic", -- Options: 'off', 'basic', 'strict'
+              },
+            },
+          },
+        })
+
+        vim.lsp.enable("pyright")
+
         -- Configure diagnostics to show virtual text
         -- Use virtual text as usual
         vim.diagnostic.config({
@@ -1017,7 +1040,7 @@ return {
     end,
   },
 
-  -- todos,notes,etc in comments highlight
+  -- todos , notes, etc in comments highlight
   {
     "folke/todo-comments.nvim",
     dependencies = {
