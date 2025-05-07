@@ -959,7 +959,9 @@ return {
         }
         vim.lsp.enable("luals")
 
-        vim.lsp.config("pyright", {
+        -- pyright
+        -- Define the Pyright configuration
+        vim.lsp.config["pyright"] = {
           cmd = { "pyright-langserver", "--stdio" },
           filetypes = { "python" },
           root_dir = vim.fs.dirname(
@@ -972,13 +974,44 @@ return {
             python = {
               analysis = {
                 autoSearchPaths = true,
-                diagnosticMode = "workspace", -- Options: 'workspace', 'openFilesOnly'
                 useLibraryCodeForTypes = true,
-                typeCheckingMode = "basic", -- Options: 'off', 'basic', 'strict'
+                diagnosticMode = "workspace",
+                typeCheckingMode = "basic",
               },
             },
           },
-        })
+          on_attach = function(client, bufnr)
+            -- Organize Imports Command
+            vim.api.nvim_buf_create_user_command(bufnr, "LspPyrightOrganizeImports", function()
+              client:request("workspace/executeCommand", {
+                command = "pyright.organizeimports",
+                arguments = { vim.uri_from_bufnr(bufnr) },
+              }, nil, bufnr)
+            end, {
+              desc = "Organize Imports",
+            })
+
+            -- Set Python Path Command
+            vim.api.nvim_buf_create_user_command(bufnr, "LspPyrightSetPythonPath", function(optss)
+              local python_path = vim.fn.expand(optss.args)
+              if python_path == "" then
+                vim.notify("Path cannot be empty", vim.log.levels.ERROR)
+                return
+              end
+
+              -- Update LSP settings
+              client.config.settings.python.pythonPath = python_path
+              client.notify("workspace/didChangeConfiguration", {
+                settings = client.config.settings,
+              })
+              vim.notify("Python path set to: " .. python_path)
+            end, {
+              desc = "Reconfigure pyright with the provided python path",
+              nargs = 1,
+              complete = "file",
+            })
+          end,
+        }
 
         vim.lsp.enable("pyright")
 
