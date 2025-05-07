@@ -882,498 +882,126 @@ return {
     end,
   },
 
-  {
-    "neovim/nvim-lspconfig",
-    dependencies = {
-      { "williamboman/mason.nvim" },
-      { "williamboman/mason-lspconfig.nvim" },
-      { "jay-babu/mason-nvim-dap.nvim" },
-      { "mfussenegger/nvim-dap" },
-      { "mfussenegger/nvim-dap-python" },
-      { "leoluz/nvim-dap-go" },
-      {
-        "folke/lazydev.nvim",
-        ft = "lua",
-        opts = {
-          library = {
-            { path = "${3rd}/luv/library", words = { "vim%.uv" } }, -- Luv support for Lua files
-          },
+  { -- nvim-lspconfig is deprecated...
+
+    {
+      "mfussenegger/nvim-dap-python",
+      dependencies = { "jay-babu/mason-nvim-dap.nvim", "mfussenegger/nvim-dap" },
+    },
+    { "leoluz/nvim-dap-go" },
+    {
+      "folke/lazydev.nvim",
+      ft = "lua",
+      opts = {
+        library = {
+          { path = "${3rd}/luv/library", words = { "vim%.uv" } }, -- Luv support for Lua files
         },
       },
     },
-    opts = {
-      -- all lsp servers specifications goes here
+    {
+      "williamboman/mason-lspconfig.nvim",
+      dependencies = {
+        {
+          "williamboman/mason.nvim",
+          init = function()
+            require("mason").setup()
+          end,
+          keys = {
+            { "<leader>cm", "<cmd>Mason<cr>", desc = "mason" },
+          },
+        },
+      },
 
-      -- server specifications
-      servers = {
+      opts = {
+        ensure_installed = {
+          "lua_ls",
+          "pyright",
+          "clangd",
+          "gopls",
+          "golangci_lint_ls",
+          "jdtls",
+          "zls",
+          "tailwindcss",
+          "harper_ls",
+          "marksman",
+        },
+        automatic_enable = true,
+      },
+      config = function(_, opts)
+        require("mason-lspconfig").setup(opts)
 
-        -- lua lsp server config
-        lua_ls = {
+        -- overwrite customized lsp
+        -- lua-ls
+        vim.lsp.config["lua_ls"] = {
+          cmd = { "lua-language-server" },
+          filetypes = { "lua" },
+          root_markers = { ".luarc.json", ".luarc.jsonc", ".git" },
           settings = {
             Lua = {
-              diagnostics = { globals = { "vim" } },
-              workspace = { library = vim.api.nvim_get_runtime_file("", true) },
+              runtime = {
+                version = "LuaJIT", -- LuaJIT is used by Neovim
+              },
+              diagnostics = {
+                -- Specifies global variables (like vim and use) to prevent false-positive warnings about undefined globals.
+                globals = { "vim", "use" }, -- 'use' for packer
+              },
+              workspace = {
+                --  Informs the server about additional directories to include in the workspace, such as Neovim's runtime files and your custom Lua configuration.
+                checkThirdParty = false,
+                library = vim.api.nvim_get_runtime_file("", true),
+              },
               completion = {
-                callSnippet = "Disable",
-                keywordSnippet = "Disable",
-              },
-              hint = {
-                enable = true, -- inlay hints
+                callSnippet = "Both",
+                keywordSnippet = "Both",
               },
             },
           },
-        },
+        }
+        vim.lsp.enable("luals")
 
-        -- python lsp server
-        pyright = {
-          settings = {
-            python = {
-              analysis = {
-                typeCheckingMode = "basic", -- "strict" is tooo strict
-                autoSearchPaths = true, -- use VenvSelect
-                useLibraryCodeForTypes = true, -- use types from libraries
-                diagnosticSeverityOverrides = {
-                  reportUnknownVariableType = "none", -- Ignore "Unknown" variable type
-                  reportUnknownMemberType = "none", -- Ignore "Unknown" member type
-                  reportMissingTypeStubs = "none", -- Suppress missing type stub errors
-                },
-              },
-              inlayHints = {
-                functionReturnTypes = true,
-                variableTypes = true,
-                parameterTypes = true,
-                parameternames = true,
-              },
-            },
+        -- Configure diagnostics to show virtual text
+        -- Use virtual text as usual
+        vim.diagnostic.config({
+          virtual_text = {
+            spacing = 2,
+            prefix = "●",
           },
-        },
-
-        -- cpp/c lsp
-        clangd = {
-          settings = {
-            clangd = {
-              inlayHints = {
-                Designators = true,
-                Enabled = true,
-                ParameterNames = true,
-                DecucedTypes = true,
-              },
-              fallbackFlags = { "-std=c++20" }, -- or your preferred C++ standard
-            },
+          float = {
+            border = "rounded",
+            source = "if_many",
+            header = "Diagnostics",
+            focusable = false,
           },
-          keys = {
-            {
-              "<leader>ch",
-              "<cmd>ClangdSwitchSourceHeader<cr>",
-              desc = "Switch Source/Header (C/C++)",
-            },
-          },
-          root_dir = function(fname)
-            return require("lspconfig.util").root_pattern(
-              "Makefile",
-              "configure.ac",
-              "configure.in",
-              "config.h.in",
-              "meson.build",
-              "meson_options.txt",
-              "build.ninja"
-            )(fname) or require("lspconfig.util").root_pattern(
-              "compile_commands.json",
-              "compile_flags.txt"
-            )(fname) or vim.fs.dirname(
-              vim.fs.find(".git", { path = fname, upward = true })[1]
-            )
-          end,
-          capabilities = {
-            offsetEncoding = { "utf-16" },
-          },
-          cmd = {
-            "clangd",
-            "--background-index",
-            "--clang-tidy",
-            "--header-insertion=iwyu",
-            "--completion-style=detailed",
-            "--function-arg-placeholders",
-            "--fallback-style=llvm",
-          },
-          init_options = {
-            usePlaceholders = true,
-            completeUnimported = true,
-            clangdFileStatus = true,
-          },
-        },
+          update_in_insert = false,
+          severity_sort = true,
+        })
 
-        -- Go LSP settings
-        gopls = {
-          settings = {
-            gopls = {
-              gofumpt = true, -- Enforce gofumpt formatting
-              codelenses = {
-                generate = true, -- Enable code lens for generating methods
-                test = true, -- Enable code lens for testing
-                tidy = true, -- Enable code lens for 'go mod tidy'
-              },
-              hints = {
-                assignVariableTypes = true, -- Show variable type hints
-                compositeLiteralFields = true, -- Show field names in composite literals
-                compositeLiteralTypes = true,
-                constantValues = true, -- Show values of constants
-                functionTypeParameters = true, -- Show type parameters for functions
-                parameterNames = true,
-                rangeVariableTypes = true, -- Show types of range variables
-              },
-              analyses = {
-                fieldalignment = true, -- Check for optimal struct field alignment
-                nilness = true, -- Check for redundant or impossible nil comparisons
-                unusedparams = true, -- Check for unused parameters in functions
-                unusedwrite = true, -- Check for unused writes
-                useany = true, -- Check for usage of 'any' type
-              },
-              usePlaceholders = true, -- Use placeholders in completion
-              completeUnimported = true, -- Complete unimported packages
-              staticcheck = true, -- Enable static analysis checks
-              directoryFilters = { "-.git", "-node_modules" }, -- Exclude directories
-              semanticTokens = true, -- Enable semantic tokens for better syntax highlighting
-            },
-          },
-        },
-
-        golangci_lint_ls = {
-          cmd = { "golangci-lint-langserver" },
-          filetypes = { "go", "gomod" },
-          root_dir = function(fname)
-            return require("lspconfig.util").root_pattern("go.mod", ".git")(fname)
-          end,
-          init_options = {
-            command = { "golangci-lint", "run", "--out-format", "json" },
-          },
-        },
-
-        -- java lsp settings
-        -- inlay hints are generally enabled by default
-        jdtls = {
-          root_dir = function(fname)
-            return require("lspconfig.util").root_pattern("build.gradle", "pom.xml", ".git")(fname)
-          end,
-          cmd = { "jdtls" },
-          settings = {
-            java = {
-              home = os.getenv("JAVA_HOME") or os.getenv("JAVA_17_HOME") or os.getenv(
-                "JAVA_11_HOME"
-              ) or os.getenv("JAVA_8_HOME"), -- java 21 default
-              project = {
-                referencedLibraries = {
-                  "lib/**/*.jar",
-                  "build/libs/**/*.jar",
-                },
-              },
-              format = {
-                enabled = true,
-                settings = {
-                  profile = "GoogleStyle",
-                },
-              },
-            },
-          },
-        },
-
-        -- rust
-        --[[
-                --no need to setup rust-analyzer manually since installed `rustaceanvim`
-                --]]
-
-        -- zig 14 dev version zls setup
-        zls = {
-          cmd = { "/Users/tengjungao/zls/zig-out/bin/zls" },
-          settings = {
-            zls = {
-              -- Whether to enable build-on-save diagnostics
-              --
-              -- Further information about build-on save:
-              -- https://zigtools.org/zls/guides/build-on-save/
-              -- enable_build_on_save = true,
-
-              -- omit the following line if `zig` is in your PATH
-              zig_exe_path = "/Users/tengjungao/.zvm/bin/zig",
-            },
-          },
-        },
-
-        tailwindcss = {
-          filetypes = {
-            "html",
-            "css",
-            "javascript",
-            "typescript",
-            "vue",
-            "svelte",
-            "php",
-            "htmldjango",
-          },
-          settings = {
-            tailwindcss = {
-              includeLanguages = {
-                elixir = "html-eex",
-                eelixir = "html-eex",
-                heex = "html-eex",
-              },
-            },
-          },
-        },
-
-        harper_ls = {
-          -- Limit `harper_ls` to work only on comments and markdown files
-          filetypes = { "markdown", "text" }, -- It will only run for these filetypes
-          settings = {
-            ["harper-ls"] = {
-              userDictPath = "",
-              fileDictPath = "",
-              linters = {
-                SpellCheck = true,
-                SpelledNumbers = false,
-                AnA = true,
-                SentenceCapitalization = true,
-                UnclosedQuotes = true,
-                WrongQuotes = false,
-                LongSentences = true,
-                RepeatedWords = true,
-                Spaces = true,
-                Matcher = true,
-                CorrectNumberSuffix = true,
-              },
-              codeActions = {
-                ForceStable = false,
-              },
-              markdown = {
-                IgnoreLinkTitle = false,
-              },
-              diagnosticSeverity = "hint",
-              isolateEnglish = false,
-            },
-          },
-          handlers = {
-            ["textDocument/publishDiagnostics"] = function(_, result, ctx, config)
-              local uri = result.uri
-              local bufnr = vim.uri_to_bufnr(uri)
-              if not bufnr then
-                return
-              end
-
-              -- Get all diagnostics and filter only those inside comments
-              local new_diagnostics = {}
-              for _, diagnostic in ipairs(result.diagnostics) do
-                local line = vim.api.nvim_buf_get_lines(
-                  bufnr,
-                  diagnostic.range.start.line,
-                  diagnostic.range.start.line + 1,
-                  false
-                )[1]
-                if line and line:match("^%s*[%/%*#]") then -- Matches comment patterns like `//`, `#`, or `/*`
-                  table.insert(new_diagnostics, diagnostic)
-                end
-              end
-
-              -- Call the original diagnostics handler but only for filtered diagnostics
-              vim.lsp.diagnostic.on_publish_diagnostics(
-                _,
-                { uri = uri, diagnostics = new_diagnostics },
-                ctx,
-                config
-              )
-            end,
-          },
-        },
-
-        -- customize to get full contorl of marksman lsp
-        marksman = {
-          -- Define how to detect the root directory for this LSP
-          root_dir = function(fname)
-            local util = require("lspconfig.util")
-
-            -- Step 1: Check if the current file is inside a Git repo or next to marksman.toml
-            local found = util.root_pattern("marksman.toml", ".git")(fname)
-            if found then
-              return found
-            end
-
-            -- Step 2: Fallback to Neo-tree's current root path (if available)
-            -- This uses Neo-tree's internal state manager to get the visible filesystem root
-            local ok, manager = pcall(require, "neo-tree.sources.manager")
-            if ok then
-              local state = manager.get_state("filesystem")
-              if state and state.path then
-                return state.path
-              end
-            end
-
-            -- Step 3: Fallback fallback — use current working directory
-            -- This is a last resort if neither project nor Neo-tree context is available
-            return vim.fn.getcwd()
-          end,
-
-          -- Future marksman-specific LSP settings can go here
-          settings = {
-            -- No settings are available for Marksman via LSP; customization is done through config.toml
-            -- See: https://github.com/artempyanykh/marksman/blob/main/docs/configuration.md
-          },
-        },
-      },
-
-      -- some particular setup steps
-      setup = {
-
-        -- clangd_extensions
-        clangd = function(_, opts)
-          require("clangd_extensions").setup(
-            vim.tbl_deep_extend("force", clangd_ext_opts or {}, { server = opts })
-          )
-          return false
-        end,
-
-        -- tailwindcss fucking my cpu when editing markdown
-        tailwindcss = function(_, opts)
-          opts.on_attach = function(client, bufnr)
-            local filetype = vim.bo[bufnr].filetype
-            if filetype == "markdown" or filetype == "mdx" then
-              client.stop()
-              return
-            end
-          end
-          opts.filetypes = vim.tbl_filter(function(ft)
-            return ft ~= "markdown" and ft ~= "mdx"
-          end, opts.filetypes or {})
-        end,
-      },
-
-      -- corresponding dap installations
-      dap = {
-        ensure_installed = {
-          "debugpy",
-          "delve",
-          "cppdbg",
-          "javadbg",
-          "codelldb",
-        },
-
-        adapters = {
-          python = {
-            type = "executable",
-            command = "python",
-            args = { "-m", "debugpy.adapter" },
-          },
-          go = {
-            type = "server",
-            port = "${port}",
-            executable = {
-              command = "dlv",
-              args = { "dap", "-l", "127.0.0.1:${port}" },
-            },
-          },
-          codelldb = {
-            type = "server",
-            port = "${port}",
-            executable = {
-              command = vim.fn.stdpath("data") .. "/mason/bin/codelldb", -- Auto-installed path
-              args = { "--port", "${port}" },
-            },
-          },
-          java = {
-            type = "executable",
-            command = "java",
-            args = { "-agentlib:jdwp=transport=dt_socket,server=y,suspend=n,address=1044" },
-          },
-        },
-
-        configurations = {
-          python = {
-            {
-              type = "python",
-              request = "launch",
-              name = "Launch file",
-              program = "${file}",
-              pythonPath = function()
-                local venv_selector = require("venv-selector")
-                local python_path = venv_selector.python()
-                if python_path then
-                  return python_path
-                else
-                  return vim.fn.exepath("python") -- Fallback to system python if no venv
-                end
+        -- Show float manually with tree-style formatting on CursorHold
+        vim.o.updatetime = 250
+        vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
+          callback = function()
+            local optss = {
+              focusable = false,
+              border = "rounded",
+              source = "if_many",
+              header = "Diagnostics",
+              format = function(diagnostic)
+                local message = diagnostic.message:gsub("\n", " ")
+                local source = diagnostic.source or "n/a"
+                local severity = vim.diagnostic.severity[diagnostic.severity] or "Unknown"
+                return string.format(
+                  "├─ %s\n│   ↪ Source: %s\n│   ↪ Severity: %s",
+                  message,
+                  source,
+                  severity
+                )
               end,
-            },
-          },
-          go = {
-            {
-              type = "go",
-              name = "Debug Package",
-              request = "launch",
-              program = "${file}",
-            },
-          },
-          cpp = {
-            {
-              name = "Launch C++ File",
-              type = "codelldb",
-              request = "launch",
-              program = function()
-                return vim.fn.input("Path to executable: ", vim.fn.getcwd() .. "/", "file")
-              end,
-              cwd = "${workspaceFolder}",
-              stopOnEntry = false,
-            },
-          },
-          java = {
-            {
-              type = "java",
-              name = "Debug Main Class",
-              request = "launch",
-              mainClass = "${file}",
-            },
-          },
-        },
-      },
+            }
+            vim.diagnostic.open_float(nil, optss)
+          end,
+        })
+      end,
     },
-
-    config = function(_, opts)
-      -- Ensure servers and DAP are initialized
-      opts.servers = opts.servers or {}
-      opts.dap = opts.dap or {}
-
-      require("mason").setup()
-
-      require("mason-lspconfig").setup({
-        ensure_installed = vim.tbl_keys(opts.servers),
-        automatic_installation = true,
-      })
-
-      require("mason-lspconfig").setup_handlers({
-        -- Disable Mason's auto setup for rust-analyzer
-        -- in favor of rustaceanvim
-        ["rust_analyzer"] = function() end,
-        function(server_name)
-          local server_opts = opts.servers[server_name] or {}
-          require("lspconfig")[server_name].setup(server_opts)
-
-          -- if a custom setup function exists, call it
-          if opts.setup and opts.setup[server_name] then
-            opts.setup[server_name](server_name, server_opts)
-          end
-        end,
-      })
-
-      -- set up mason dap
-      require("mason-nvim-dap").setup({
-        ensure_installed = opts.dap.ensure_installed, -- debug adapters to install
-        automatic_installation = true,
-      })
-
-      -- //////////// Language dap configuration /////////////////
-      local dap = require("dap")
-      dap.adapters = opts.dap.adapters
-      dap.configurations = opts.dap.configurations
-
-      vim.keymap.set("n", "<leader>cm", "<cmd>Mason<cr>", { desc = "mason" })
-    end,
   },
 
   -- autopair
@@ -1491,27 +1119,36 @@ return {
   -- rust
   {
     "mrcjkb/rustaceanvim",
-    -- version = "^5", -- recommended
-    -- [[
-    -- It is suggested to pin to tagged releases if you would like to avoid breaking changes.
-    -- ]]
-    tag = "v5.19.2",
-    lazy = false, -- this plugin is already lazy
-    config = function()
-      local bufnr = vim.api.nvim_get_current_buf()
-      -- add some keymaps
-      vim.keymap.set("n", "<leader>ra", function()
-        vim.cmd.RustLsp("codeAction") -- supports rust-analyzer's grouping
-        -- vim.lsp.buf.codeAction() if you don't want grouping
-      end, { silent = true, buffer = bufnr })
-      -- vim.keymap.set(
-      --     "n",
-      --     "K",
-      --     function()
-      --         vim.cmd.RustLsp({ "hover", "actions" })
-      --     end,
-      --     { silent = true, buffer = bufnr }
-      -- )
+    version = "^6",
+    ft = "rust",
+    init = function()
+      vim.g.rustaceanvim = {
+        tools = {
+          hover_actions = {
+            auto_focus = true,
+          },
+        },
+        server = {
+          -- rustaceanvim fallbacks to $PATH
+          -- NOTE: you have to install rust-analyzer yourself using cargo
+          -- cmd = { "rust-analyzer" }, -- Use global binary (installed via rustup)
+          on_attach = function(_, bufnr)
+            vim.keymap.set("n", "<leader>ra", function()
+              vim.cmd.RustLsp("codeAction")
+            end, { buffer = bufnr })
+          end,
+          settings = {
+            ["rust-analyzer"] = {
+              check = { command = "clippy" },
+              inlayHints = {
+                chainingHints = true,
+                parameterHints = true,
+                typeHints = true,
+              },
+            },
+          },
+        },
+      }
     end,
   },
 
