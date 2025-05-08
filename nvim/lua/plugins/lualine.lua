@@ -259,6 +259,20 @@ return {
             }
 
             -- Add components to right sections
+      ins_left({
+        function()
+          local clients = vim.lsp.get_clients({ bufnr = 0 })
+          if #clients == 0 then
+            return " No Active LSP"
+          end
+          return " LSP (" .. #clients .. ")"
+        end,
+        on_click = function()
+          local clients = vim.lsp.get_clients({ bufnr = 0 })
+          if #clients == 0 then
+            vim.notify("No active LSPs", vim.log.levels.INFO, { title = "LSP Info" })
+            return
+          end
 
             ins_right {
                 'o:encoding',       -- option component same as &encoding in viml
