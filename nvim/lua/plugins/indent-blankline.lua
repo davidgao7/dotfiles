@@ -9,7 +9,23 @@ return {
       -- refer to the configuration section below
       bigfile = { enabled = false },
       dashboard = { enabled = false },
-      indent = { enabled = false },
+      indent = {
+        enabled = true,
+        animate = {
+          duration = {
+            step = 40, -- ms per step
+            total = 100, -- maximum duration
+          },
+        },
+        scope = {
+          enabled = true, -- enable highlighting the current scope
+          priority = 200,
+          char = "│",
+          underline = true, -- underline the start of the scope
+          only_current = false, -- only show scope in the current window
+          hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
+        },
+      },
       input = { enabled = false },
       notifier = { enabled = false },
       quickfile = { enabled = false },
@@ -17,58 +33,5 @@ return {
       statuscolumn = { enabled = false },
       words = { enabled = false },
     },
-  },
-  {
-    "lukas-reineke/indent-blankline.nvim",
-    opts = function()
-      -- Define custom highlight groups for scope
-      vim.api.nvim_set_hl(0, "IndentBlanklineScopeStart", { fg = "#483D8B", bold = true }) -- Change color
-      vim.api.nvim_set_hl(0, "IndentBlanklineScopeEnd", { fg = "#483D8B", bold = true }) -- Change color
-
-      Snacks = require("snacks")
-      Snacks.toggle({
-        name = "Indention Guides",
-        get = function()
-          return require("ibl.config").get_config(0).enabled
-        end,
-        set = function(state)
-          require("ibl").setup_buffer(0, { enabled = state })
-        end,
-      }):map("<leader>ug")
-
-      return {
-        indent = {
-          char = "│",
-          tab_char = "│",
-        },
-        scope = {
-          show_start = true,
-          show_end = true,
-          highlight = {
-            "IndentBlanklineScopeStart",
-            "IndentBlanklineScopeEnd",
-          },
-        },
-        exclude = {
-          filetypes = {
-            "Trouble",
-            "alpha",
-            "dashboard",
-            "help",
-            "lazy",
-            "mason",
-            "neo-tree",
-            "notify",
-            "snacks_dashboard",
-            "snacks_notif",
-            "snacks_terminal",
-            "snacks_win",
-            "toggleterm",
-            "trouble",
-          },
-        },
-      }
-    end,
-    main = "ibl",
   },
 }
