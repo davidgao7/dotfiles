@@ -928,92 +928,104 @@ return {
         automatic_enable = true,
       },
       config = function(_, opts)
-        require("mason-lspconfig").setup(opts)
+        -- NOTE: right now I don't want a long ass opt table, somewhat modularized
+        -- but not modurlized enough, and it's not user friendly to change config, jump
+        -- back and forth tooo many times
 
-        -- overwrite customized lsp
-        -- lua-ls
-        vim.lsp.config["lua_ls"] = {
-          cmd = { "lua-language-server" },
-          filetypes = { "lua" },
-          root_markers = { ".luarc.json", ".luarc.jsonc", ".git" },
-          settings = {
-            Lua = {
-              runtime = {
-                version = "LuaJIT", -- LuaJIT is used by Neovim
-              },
-              diagnostics = {
-                -- Specifies global variables (like vim and use) to prevent false-positive warnings about undefined globals.
-                globals = { "vim", "use" }, -- 'use' for packer
-              },
-              workspace = {
-                --  Informs the server about additional directories to include in the workspace, such as Neovim's runtime files and your custom Lua configuration.
-                checkThirdParty = false,
-                library = vim.api.nvim_get_runtime_file("", true),
-              },
-              completion = {
-                callSnippet = "Both",
-                keywordSnippet = "Both",
-              },
-            },
-          },
-        }
-        vim.lsp.enable("luals")
+        -- Just install the lsp first, I'll configure them here, more readable
+        -- lsp config all in one place
 
-        -- pyright
-        -- Define the Pyright configuration
-        vim.lsp.config["pyright"] = {
-          cmd = { "pyright-langserver", "--stdio" },
-          filetypes = { "python" },
-          root_dir = vim.fs.dirname(
-            vim.fs.find(
-              { "pyproject.toml", "setup.py", "setup.cfg", "requirements.txt", ".git" },
-              { upward = true }
-            )[1]
-          ),
-          settings = {
-            python = {
-              analysis = {
-                autoSearchPaths = true,
-                useLibraryCodeForTypes = true,
-                diagnosticMode = "workspace",
-                typeCheckingMode = "basic",
-              },
-            },
-          },
-          on_attach = function(client, bufnr)
-            -- Organize Imports Command
-            vim.api.nvim_buf_create_user_command(bufnr, "LspPyrightOrganizeImports", function()
-              client:request("workspace/executeCommand", {
-                command = "pyright.organizeimports",
-                arguments = { vim.uri_from_bufnr(bufnr) },
-              }, nil, bufnr)
-            end, {
-              desc = "Organize Imports",
-            })
+        require("mason").setup()
+        require("mason-lspconfig").setup(vim.tbl_deep_extend("force", opts, {
 
-            -- Set Python Path Command
-            vim.api.nvim_buf_create_user_command(bufnr, "LspPyrightSetPythonPath", function(optss)
-              local python_path = vim.fn.expand(optss.args)
-              if python_path == "" then
-                vim.notify("Path cannot be empty", vim.log.levels.ERROR)
-                return
-              end
+          -- if I configure lsp setting here in handlers, it will apply my settings,
+          -- if not, it'll automatically applying mason-lspconfig's default config
+          automatic_enable = true,
 
-              -- Update LSP settings
-              client.config.settings.python.pythonPath = python_path
-              client.notify("workspace/didChangeConfiguration", {
-                settings = client.config.settings,
+          ensure_installed = { "lua_ls", "pyright", "ruff" },
+          handlers = {
+            function(server_name)
+              require("lspconfig")[server_name].setup({})
+            end,
+
+            -- Overwrite customized lsp
+            -- This is MUCH cleaner, no need to find lsp config else where, everything
+            -- done here
+
+            -- lua-ls
+            ["lua_ls"] = function()
+              require("lspconfig").lua_ls.setup({
+                settings = {
+                  Lua = {
+                    runtime = {
+                      version = "LuaJIT",
+                    },
+                    diagnostics = {
+                      globals = { "vim" },
+                    },
+                    workspace = {
+                      checkThirdParty = false,
+                      library = {
+                        vim.env.VIMRUNTIME,
+                        vim.fn.stdpath("config"),
+                      },
+                    },
+                  },
+                },
               })
-              vim.notify("Python path set to: " .. python_path)
-            end, {
-              desc = "Reconfigure pyright with the provided python path",
-              nargs = 1,
-              complete = "file",
-            })
-          end,
-        }
+            end,
 
-        vim.lsp.enable("pyright")
+            -- Pyright for type checking
+            ["pyright"] = function()
+              require("lspconfig").pyright.setup({
+                settings = {
+                  pyright = {
+                    disableOrganizeImports = true, -- Delegate import organization to Ruff
+                  },
+                  python = {
+                    analysis = {
+                      autoSearchPaths = true,
+                      diagnosticMode = "workspace",
+                      useLibraryCodeForTypes = true,
+                      typeCheckingMode = "basic", -- or "strict" if preferred
+                    },
+                  },
+                },
+                on_attach = function(client, bufnr)
+                  vim.api.nvim_buf_create_user_command(
+                    bufnr,
+                    "LspPyrightOrganizeImports",
+                    function()
+                      client.request("workspace/executeCommand", {
+                        command = "pyright.organizeimports",
+                        arguments = { vim.uri_from_bufnr(bufnr) },
+                      }, nil, bufnr)
+                    end,
+                    { desc = "Organize Imports (Pyright)" }
+                  )
+                end,
+              })
+            end,
+
+            -- Ruff for linting and formatting
+            ["ruff"] = function()
+              require("lspconfig").ruff.setup({
+                on_attach = function(client, bufnr)
+                  -- Disable hover to prevent conflicts with Pyright
+                  client.server_capabilities.hoverProvider = false
+                end,
+                init_options = {
+                  settings = {
+                    -- Optional: specify a custom configuration file
+                    -- configuration = "/path/to/pyproject.toml",
+                    -- Optional: set log level
+                    -- logLevel = "debug",
+                  },
+                },
+              })
+            end,
+          },
+        }))
 
         -- Configure diagnostics to show virtual text
         -- Use virtual text as usual
