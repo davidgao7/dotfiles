@@ -12,6 +12,8 @@ return {
       indent = {
         enabled = true,
         animate = {
+          enabled = true,
+          style = "out",
           duration = {
             step = 40, -- ms per step
             total = 100, -- maximum duration
@@ -22,7 +24,7 @@ return {
           priority = 200,
           char = "│",
           underline = true, -- underline the start of the scope
-          only_current = false, -- only show scope in the current window
+          only_current = true, -- only show scope in the current window
           hl = "SnacksIndentScope", ---@type string|string[] hl group for scopes
         },
       },
