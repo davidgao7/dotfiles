@@ -1231,6 +1231,11 @@ return {
       require("snacks").setup(opts)
       vim.keymap.set("n", "<leader>si", function()
         vim.lsp.inlay_hint.enable(not vim.lsp.inlay_hint.is_enabled())
+        if vim.lsp.inlay_hint.is_enabled() then
+          vim.notify("Inlay hints enabled", vim.log.levels.INFO)
+        else
+          vim.notify("Inlay hints disabled", vim.log.levels.INFO)
+        end
       end, { desc = "Toggle Inlay Hints" })
     end,
   },
