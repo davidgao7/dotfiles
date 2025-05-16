@@ -935,7 +935,7 @@ return {
         -- Just install the lsp first, I'll configure them here, more readable
         -- lsp config all in one place
 
-        require("mason").setup()
+        -- Only initialize mason once, I've already initialize mason in the init function
         require("mason-lspconfig").setup(vim.tbl_deep_extend("force", opts, {
 
           -- if I configure lsp setting here in handlers, it will apply my settings,
