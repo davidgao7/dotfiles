@@ -1,0 +1,10 @@
+profile=3
+led=0
+country=us
+status=2
+lock=off
+model=adv360
+kbd_fw_l=1.0.71
+kbd_fw_r=1.0.71
+bl=1.3
+activeLayout=layout2.txt
