@@ -1049,7 +1049,7 @@ return {
         vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
           callback = function()
             local optss = {
-              focusable = false,
+              focusable = true,
               border = "rounded",
               source = "if_many",
               header = "Diagnostics",
