@@ -200,6 +200,10 @@ return {
                 find_git_files(root)
             end, { desc = "Find git files" })
 
+            vim.keymap.set("n", "<leader>gs", function ()
+              require("fzf-lua").git_status()
+            end, {desc = "Git status"})
+
             vim.keymap.set("n", "<leader>fd", function()
                 require("fzf-lua").files({ cwd = vim.fn.input("dir > "), prompt = "Find Files>" })
             end, { desc = "Find files in dir" })
