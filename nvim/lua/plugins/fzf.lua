@@ -200,6 +200,23 @@ return {
                 find_git_files(root)
             end, { desc = "Find git files" })
 
+            vim.keymap.set("n", "<leader>gk", function()
+                local line = vim.fn.line(".")
+                local query = string.format("%4d)", line) -- space before line number (e.g., ' 209)')
+
+                require("fzf-lua").git_blame({
+                  fzf_opts = {
+                    ["--query"] = query,
+                    ["--exact"] = "",
+                    ["--no-sort"] = "",
+                  },
+                  winopts = {
+                    fullscreen = false,
+                  },
+                })
+            end, { desc = "Git blame (jump to current line)" })
+
+
             vim.keymap.set("n", "<leader>gs", function ()
               require("fzf-lua").git_status()
             end, {desc = "Git status"})
