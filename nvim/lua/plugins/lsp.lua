@@ -1043,33 +1043,30 @@ return {
           update_in_insert = false,
           severity_sort = true,
         })
-
-        -- Show float manually with tree-style formatting on CursorHold
-        vim.o.updatetime = 250
-        vim.api.nvim_create_autocmd({ "CursorHold", "CursorHoldI" }, {
-          callback = function()
-            local optss = {
-              focusable = true,
-              border = "rounded",
-              source = "if_many",
-              header = "Diagnostics",
-              format = function(diagnostic)
-                local message = diagnostic.message:gsub("\n", " ")
-                local source = diagnostic.source or "n/a"
-                local severity = vim.diagnostic.severity[diagnostic.severity] or "Unknown"
-                return string.format(
-                  "├─ %s\n│   ↪ Source: %s\n│   ↪ Severity: %s",
-                  message,
-                  source,
-                  severity
-                )
-              end,
-            }
-            vim.diagnostic.open_float(nil, optss)
-          end,
-        })
       end,
     },
+    -- Show hover docs on K
+    vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" }),
+    -- Show diagnostics manually on Q
+    vim.keymap.set("n", "Q", function()
+      vim.diagnostic.open_float(nil, {
+        focusable = true, -- allow user interaction
+        border = "rounded",
+        source = "if_many",
+        header = "Diagnostics",
+        format = function(diagnostic)
+          local message = diagnostic.message:gsub("\n", " ")
+          local source = diagnostic.source or "n/a"
+          local severity = vim.diagnostic.severity[diagnostic.severity] or "Unknown"
+          return string.format(
+            "├─ %s\n│   ↪ Source: %s\n│   ↪ Severity: %s",
+            message,
+            source,
+            severity
+          )
+        end,
+      })
+    end, { desc = "Show diagnostics at cursor" }),
     vim.keymap.set("n", "gK", function()
       local new_config = not vim.diagnostic.config().virtual_lines
       vim.diagnostic.config({ virtual_lines = new_config })
