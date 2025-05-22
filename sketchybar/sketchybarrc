@@ -86,6 +86,7 @@ source "$ITEM_DIR/memory.sh"
 source "$ITEM_DIR/cpu.sh"
 source "$ITEM_DIR/network_rates.sh"
 source "$ITEM_DIR/brew.sh"
+source "$ITEM_DIR/vpn.sh"
 source "$ITEM_DIR/zen.sh"
 #source "$ITEM_DIR/yabai.sh"
 
