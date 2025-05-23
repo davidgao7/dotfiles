@@ -21,8 +21,8 @@ vim.opt.relativenumber = true
 vim.opt.cursorline = true
 -- show the file path in the title
 vim.opt.winbar = "%=%m %f"
--- always toggle off the conceallevel and always show everything
-vim.opt.conceallevel = 0
+-- try increase the conceallevel for better markdown code blocks experience
+vim.opt.conceallevel = 2
 -- set vertical refernce line
 vim.opt.colorcolumn = "90"
 -- enable mouse mode

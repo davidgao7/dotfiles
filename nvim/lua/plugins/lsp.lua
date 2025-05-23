@@ -934,9 +934,9 @@ return {
 
         -- Just install the lsp first, I'll configure them here, more readable
         -- lsp config all in one place
-
+        --
         -- Only initialize mason once, I've already initialize mason in the init function
-        require("mason-lspconfig").setup(vim.tbl_deep_extend("force", opts, {
+        local mason_opts = vim.tbl_deep_extend("force", opts, {
 
           -- if I configure lsp setting here in handlers, it will apply my settings,
           -- if not, it'll automatically applying mason-lspconfig's default config
@@ -1025,7 +1025,34 @@ return {
               })
             end,
           },
-        }))
+        })
+
+        local default_hover = vim.lsp.handlers["textDocument/hover"]
+
+        require("lspconfig.util").default_config.handlers =
+          vim.tbl_deep_extend("force", require("lspconfig.util").default_config.handlers or {}, {
+            ["textDocument/hover"] = function(err, result, ctx, config)
+              config = config or {}
+              config.border = "rounded"
+              config.winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder"
+              config.max_width = 80
+              config.max_height = 20
+              return default_hover(err, result, ctx, config)
+            end,
+          })
+
+        require("mason-lspconfig").setup(mason_opts)
+
+        -- Override global LSP hover handler to fix float styling
+        local orig_hover = vim.lsp.handlers["textDocument/hover"]
+        vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+          config = config or {}
+          config.border = "rounded"
+          config.winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder"
+          config.max_width = 80
+          config.max_height = 20
+          return orig_hover(err, result, ctx, config)
+        end
 
         -- Configure diagnostics to show virtual text
         -- Use virtual text as usual
