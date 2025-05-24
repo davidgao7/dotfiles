@@ -8,7 +8,7 @@ return {
     config = function()
       require("catppuccin").setup({
         -- configurations
-        flavour = "auto", -- latte, frappe, macchiato, mocha
+        flavour = "auto", -- latte, frappe, macchiato, mocha, auto(mocha for dark vim.o.background, latte for light vim.o.background)
         -- background = { -- :h background
         -- 	light = "latte",
         -- 	dark = "mocha",
