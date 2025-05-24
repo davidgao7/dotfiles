@@ -19,6 +19,7 @@ HIDE_ITEMS=(
     media
     weather
     status
+    vpn
 )
 
 if [[ -f "$ZEN_FLAG" ]]; then
