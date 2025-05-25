@@ -59,10 +59,13 @@ local treesitter_opts = {
   incremental_selection = {
     enable = true,
     keymaps = {
-      init_selection = "<C-space>",
-      node_incremental = "<C-space>",
+      -- start selection and expand
+      init_selection = "<leader> ", -- <leader><Space>
+      node_incremental = "<leader> ",
+      -- shrink back
+      node_decremental = "<BS>",
+      -- you can still bind scope if you like:
       scope_incremental = false,
-      node_decremental = "<bs>",
     },
   },
   textobjects = {
@@ -98,7 +101,7 @@ return {
     opts = {
       spec = {
         { "<BS>", desc = "Decrement Selection", mode = "x" },
-        { "<c-space>", desc = "Increment Selection", mode = { "x", "n" } },
+        { "<leader><Space>", desc = "Increment Selection", mode = { "x", "n" } },
       },
     },
   },
