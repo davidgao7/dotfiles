@@ -1,13 +1,15 @@
 #!/bin/bash
 
-VPN_STATUS=$(scutil --nwi | grep -E '^utun[0-9]')
+VPN_STATUS=$(scutil --nwi | grep -qE 'utun[0-9]')
 
-ICON="􀲊" # VPN off
-HIGHLIGHT=off
-
-if [ -n "$VPN_STATUS" ]; then
-    ICON="􀙨" # VPN on
-    HIGHLIGHT=on
+if scutil --nwi | grep -qE 'utun[0-9]'; then
+    # VPN is up
+    sketchybar --set "$NAME" \
+        icon="􀙨" \
+        icon.color=0xff00ff00 # green
+else
+    # VPN is down
+    sketchybar --set "$NAME" \
+        icon="􀲊" \
+        icon.color=0xffffffff # white
 fi
-
-sketchybar --set "$NAME" icon="$ICON" icon.highlight="$HIGHLIGHT"
