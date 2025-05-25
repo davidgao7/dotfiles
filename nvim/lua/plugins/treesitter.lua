@@ -65,31 +65,87 @@ local treesitter_opts = {
       -- shrink back
       node_decremental = "<BS>",
       -- you can still bind scope if you like:
-      scope_incremental = false,
+      scope_incremental = "<leader>q",
     },
   },
   textobjects = {
+    select = {
+      enable = true,
+      lookahead = true,
+      keymaps = {
+        -- Loops
+        ["il"] = "@loop.inner",
+        ["al"] = "@loop.outer",
+        -- Functions
+        ["if"] = "@function.inner",
+        ["af"] = "@function.outer",
+        -- Classes
+        ["ic"] = "@class.inner",
+        ["ac"] = "@class.outer",
+        -- Conditionals (if/else)
+        ["ii"] = "@conditional.inner",
+        ["ai"] = "@conditional.outer",
+        -- Blocks (anonymous blocks, e.g. `{ … }`)
+        ["ib"] = "@block.inner",
+        ["ab"] = "@block.outer",
+        -- Parameters
+        ["ip"] = "@parameter.inner",
+        ["ap"] = "@parameter.outer",
+      },
+    },
+
     move = {
       enable = true,
+      set_jumps = true, -- add to jumplist
       goto_next_start = {
         ["]f"] = "@function.outer",
         ["]c"] = "@class.outer",
-        ["]a"] = "@parameter.inner",
+        ["]l"] = "@loop.outer",
+        ["]i"] = "@conditional.outer",
+        ["]b"] = "@block.outer",
+        ["]p"] = "@parameter.outer",
       },
       goto_next_end = {
         ["]F"] = "@function.outer",
         ["]C"] = "@class.outer",
-        ["]A"] = "@parameter.inner",
+        ["]L"] = "@loop.outer",
+        ["]I"] = "@conditional.outer",
+        ["]B"] = "@block.outer",
+        ["]P"] = "@parameter.outer",
       },
       goto_previous_start = {
         ["[f"] = "@function.outer",
         ["[c"] = "@class.outer",
-        ["[a"] = "@parameter.inner",
+        ["[l"] = "@loop.outer",
+        ["[i"] = "@conditional.outer",
+        ["[b"] = "@block.outer",
+        ["[p"] = "@parameter.outer",
       },
       goto_previous_end = {
         ["[F"] = "@function.outer",
         ["[C"] = "@class.outer",
-        ["[A"] = "@parameter.inner",
+        ["[L"] = "@loop.outer",
+        ["[I"] = "@conditional.outer",
+        ["[B"] = "@block.outer",
+        ["[P"] = "@parameter.outer",
+      },
+    },
+
+    swap = {
+      enable = true,
+      swap_next = {
+        ["<leader>sp"] = "@parameter.inner", -- swap with next argument
+      },
+      swap_previous = {
+        ["<leader>sP"] = "@parameter.inner", -- swap with previous
+      },
+    },
+
+    lsp_interop = {
+      enable = true,
+      peek_definition_code = {
+        ["<leader>df"] = "@function.outer", -- peek function def
+        ["<leader>dF"] = "@class.outer",
       },
     },
   },
@@ -126,9 +182,10 @@ return {
     end,
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     keys = {
-      { "<c-space>", desc = "Increment Selection" },
-      { "<bs>", desc = "Decrement Selection", mode = "x" },
+      { "<leader><Space>", desc = "Increment Selection", mode = { "n", "x" } },
+      { "<BS>", desc = "Decrement Selection", mode = "x" },
     },
+
     opts_extend = { "ensure_installed" },
     ---@type TSConfig
     ---@diagnostic disable-next-line: missing-fields
