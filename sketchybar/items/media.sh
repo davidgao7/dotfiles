@@ -5,7 +5,7 @@ sketchybar --add item media right \
     icon=􀑪 \
     icon.color=0xff58d1fc \
     label.color=0xff58d1fc \
-    label.max_chars=30 \
+    label.max_chars=25 \
     scroll_texts=on \
     label.shadow.drawing=off \
     scroll_duration=500 \
