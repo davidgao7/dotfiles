@@ -89,8 +89,8 @@ local treesitter_opts = {
         ["ib"] = "@block.inner",
         ["ab"] = "@block.outer",
         -- Parameters
-        ["ip"] = "@parameter.inner",
-        ["ap"] = "@parameter.outer",
+        ["iv"] = "@parameter.inner",
+        ["av"] = "@parameter.outer",
       },
     },
 
