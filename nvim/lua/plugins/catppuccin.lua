@@ -77,7 +77,9 @@ return {
         end,
         default_integrations = true,
         integrations = {
-          blink_cmp = true,
+          blink_cmp = {
+            style = "bordered",
+          },
           gitsigns = true,
           nvimtree = true,
           neotree = true,
