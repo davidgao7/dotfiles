@@ -903,9 +903,20 @@ return {
       dependencies = {
         {
           "williamboman/mason.nvim",
-          init = function()
-            require("mason").setup()
-          end,
+          opts = {
+            pip = {
+              ---@since 1.0.0
+              -- Whether to upgrade pip to the latest version in the virtual environment before installing packages.
+              upgrade_pip = true,
+
+              ---@since 1.0.0
+              -- These args will be added to `pip install` calls. Note that setting extra args might impact intended behavior
+              -- and is not recommended.
+              --
+              -- Example: { "--proxy", "https://proxyserver" }
+              install_args = { "--extra-index-url", "https://pypi.tuna.tsinghua.edu.cn/simple/" },
+            },
+          },
           keys = {
             { "<leader>cm", "<cmd>Mason<cr>", desc = "mason" },
           },
@@ -916,6 +927,7 @@ return {
         ensure_installed = {
           "lua_ls",
           "pyright",
+          "ruff",
           "clangd",
           "gopls",
           "golangci_lint_ls",
@@ -942,7 +954,6 @@ return {
           -- if not, it'll automatically applying mason-lspconfig's default config
           automatic_enable = true,
 
-          ensure_installed = { "lua_ls", "pyright", "ruff" },
           handlers = {
             function(server_name)
               require("lspconfig")[server_name].setup({})
