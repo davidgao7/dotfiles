@@ -136,6 +136,15 @@ return {
           return cfg and { "--config-path", cfg } or {}
         end,
       },
+      docformatter = {
+        prepend_args = {
+          "--wrap-summaries",
+          "1000",
+          "--wrap-descriptions",
+          "1000",
+          "--pre-summary-newline",
+        },
+      },
     },
 
     format_on_save = function(bufnr)
