@@ -914,7 +914,12 @@ return {
               -- and is not recommended.
               --
               -- Example: { "--proxy", "https://proxyserver" }
-              install_args = { "--extra-index-url", "https://pypi.tuna.tsinghua.edu.cn/simple/" },
+              install_args = {
+                "--extra-index-url",
+                "https://pypi.tuna.tsinghua.edu.cn/simple/",
+                "--trusted-host",
+                "https://pypi.tuna.tsinghua.edu.cn",
+              },
             },
           },
           keys = {
