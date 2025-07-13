@@ -276,7 +276,7 @@ return {
     -- In case there are breaking changes and you want to go back to the last
     -- working release
     -- https://github.com/Saghen/blink.cmp/releases
-    version = "v1.3.1", -- if anything get fucked, back to v1.1.1
+    version = "v1.5.0",
     build = "cargo build --release",
     dependencies = {
       "nvim-lua/plenary.nvim",
