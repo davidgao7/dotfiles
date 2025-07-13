@@ -285,6 +285,7 @@ return {
       "Kaiser-Yang/blink-cmp-git",
       "echasnovski/mini.icons",
       "giuxtaposition/blink-cmp-copilot",
+      "disrupted/blink-cmp-conventional-commits",
       {
         "echasnovski/mini.snippets",
         event = "InsertEnter",
@@ -645,6 +646,7 @@ return {
           "avante_files",
           "copilot",
           "git",
+          "conventional_commits",
         },
         providers = {
           lazydev = {
@@ -767,6 +769,16 @@ return {
             opts = {
               -- options for the blink-cmp-git
             },
+          },
+          conventional_commits = {
+            name = "Conventional Commits",
+            module = "blink-cmp-conventional-commits",
+            enabled = function()
+              return vim.bo.filetype == "gitcommit"
+            end,
+            ---@module 'blink-cmp-conventional-commits'
+            ---@type blink-cmp-conventional-commits.Options
+            opts = {}, -- none so far
           },
         },
 
