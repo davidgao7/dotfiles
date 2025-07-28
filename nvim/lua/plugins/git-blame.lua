@@ -2,7 +2,9 @@ return {
   {
     -- git blame plugin
     -- "f-person/git-blame.nvim",
-    dir = "~/Downloads/git-blame.nvim",
+    -- dir = "~/Downloads/git-blame.nvim",
+    "davidgao7/git-blame.nvim",
+    branch = "blame-floating-window",
     -- load the plugin at startup
     event = "VeryLazy",
     -- Because of the keys part, you will be lazy loading this plugin.
