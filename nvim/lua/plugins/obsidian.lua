@@ -96,27 +96,6 @@ return {
       -- _ "notes_subdir" - put new notes in the default notes subdirectory.
       new_notes_location = "notes_subdir",
 
-      -- Key mappings
-      mappings = {
-        ["gd"] = { -- lets always to go to definition
-          action = function()
-            return require("obsidian").util.gf_passthrough()
-          end,
-          opts = { noremap = false, expr = true, buffer = true },
-        },
-        ["<leader>ch"] = {
-          action = function()
-            return require("obsidian").util.toggle_checkbox()
-          end,
-          opts = { buffer = true },
-        },
-        ["<cr>"] = {
-          action = function()
-            return require("obsidian").util.smart_action()
-          end,
-          opts = { buffer = true, expr = true },
-        },
-      },
       -- Function to generate note IDs
       note_id_func = function(title)
         -- local suffix = ""
@@ -158,5 +137,28 @@ return {
         customizations = {},
       },
     },
+
+    -- create new key mappings
+    -- [[
+    -- mappings = {
+    --   ["gd"] = { -- lets always to go to definition
+    --     action = function()
+    --       return require("obsidian").util.gf_passthrough()
+    --     end,
+    --     opts = { noremap = false, expr = true, buffer = true },
+    --   },
+    --   ["<leader>ch"] = {
+    --     action = function()
+    --       return require("obsidian").util.toggle_checkbox()
+    --     end,
+    --     opts = { buffer = true },
+    --   },
+    --   ["<cr>"] = {
+    --     action = function()
+    --       return require("obsidian").util.smart_action()
+    --     end,
+    --     opts = { buffer = true, expr = true },
+    --   },
+    -- },]]
   },
 }
