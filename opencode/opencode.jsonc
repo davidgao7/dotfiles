@@ -38,7 +38,7 @@
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
       "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
-      "prompt": "You are a code reviewer. Focus on security, performance, and maintainability.",
+      "prompt": "{file:./prompts/review.txt}",
       "tools": {
         // Disable file modification tools for review-only agent
         "write": false,
