@@ -48,11 +48,13 @@
     },
   },
   "hyprland/workspaces": {
+    "format": "{id}{icon}",
     "on-click": "activate",
-    "format": "{icon}",
-    "all-outputs": true,
-    "disable-scroll": false,
-    "active-only": true,
+    "format-icons": {
+      "active": "",
+      "default": ""
+    },
+    "sort-by-number": true
   },
   "hyprland/window": {
     "format": "{title}",
