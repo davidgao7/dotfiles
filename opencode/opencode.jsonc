@@ -44,6 +44,25 @@
         "write": false,
         "edit": false
       }
+    },
+    "code-explorer": {
+      "description": "Explores unfamiliar codebases to understand structure and functionality",
+      "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      "prompt": "{file:./prompts/explore.txt}",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "webfetch": true,
+        "grep": true,
+        "glob": true,
+        "list": true
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": "allow",
+        "webfetch": "ask"
+      }
     }
   }
 }
