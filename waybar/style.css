@@ -11,8 +11,18 @@ window#waybar {
   transition-duration: 0.5s;
   /* background-color: #1e1e2e; */
   /* background-color: #181825; */
-  background-color: #11111b;
+  background-color: rgba(43, 48, 59, 0.9);
+  border-radius: 0;
+  color: #ffffff;
   /* background-color: rgba(24, 24, 37, 0.6); */
+}
+
+window#waybar.empty #window {
+    background: rgba(12, 12, 12, 0.0);
+}
+
+window#waybar.hidden {
+    opacity: 0.9
 }
 
 #workspaces button {
