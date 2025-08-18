@@ -31,9 +31,6 @@ vim.opt.mouse = "a"
 -- indent blankline configuration
 vim.opt.list = true
 
--- enable mouse mode
-vim.opt.mouse = "a"
-
 -- smart indent
 vim.opt.smartindent = true
 

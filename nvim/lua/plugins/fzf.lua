@@ -37,14 +37,24 @@ local function universal_previewer(filepath)
     return { "ls", "-la", filepath }
   end
   local image_exts = { png = true, jpg = true, jpeg = true, gif = true, bmp = true, webp = true }
+  local homebrew_prefix = os.getenv("HOMEBREW_PREFIX") or "/opt/homebrew"
+  local chafa_path = homebrew_prefix .. "/bin/chafa"
+  local pdftotext_path = homebrew_prefix .. "/bin/pdftotext"
+  local bat_path = homebrew_prefix .. "/bin/bat"
   if image_exts[ext] then
-    return { "/opt/homebrew/bin/chafa", "--fill=block", "--symbols=block", "--size=80x40", filepath }
+    return {
+      chafa_path,
+      "--fill=block",
+      "--symbols=block",
+      "--size=80x40",
+      filepath,
+    }
   end
   if ext == "pdf" then
-    return { "/opt/homebrew/bin/pdftotext", filepath, "-" }
+    return { pdftotext_path, filepath, "-" }
   end
   return {
-    "/opt/homebrew/bin/bat",
+    bat_path,
     "--style=numbers",
     "--color=always",
     "--wrap=character",

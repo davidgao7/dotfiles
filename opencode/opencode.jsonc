@@ -1,0 +1,68 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+  "mode": {
+    "build": {
+      "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      "prompt": "{file:./prompts/build.txt}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true
+      },
+      "permission": {
+        "edit": "ask",
+        "bash": "allow",
+        "webfetch": "deny"
+      }
+    },
+    "plan": {
+      "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      "prompt": "{file:./prompts/plan.txt}",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "webfetch": true,
+        "grep": true,
+        "glob": true,
+        "list": true
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": "allow",
+        "webfetch": "ask"
+      }
+    }
+  },
+  "agent": {
+    "code-reviewer": {
+      "description": "Reviews code for best practices and potential issues",
+      "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      "prompt": "{file:./prompts/review.txt}",
+      "tools": {
+        // Disable file modification tools for review-only agent
+        "write": false,
+        "edit": false
+      }
+    },
+    "code-explorer": {
+      "description": "Explores unfamiliar codebases to understand structure and functionality",
+      "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      "prompt": "{file:./prompts/explore.txt}",
+      "tools": {
+        "write": false,
+        "edit": false,
+        "bash": false,
+        "webfetch": true,
+        "grep": true,
+        "glob": true,
+        "list": true
+      },
+      "permission": {
+        "edit": "deny",
+        "bash": "allow",
+        "webfetch": "ask"
+      }
+    }
+  }
+}
