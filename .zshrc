@@ -39,6 +39,8 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 
 # Uncomment one of the following lines to change the auto-update behavior
 typeset -g POWERLEVEL9K_INSTANT_PROMPT=on # no warning update
+
+source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 # zstyle ':omz:update' mode disabled  # disable automatic updates
 # zstyle ':omz:update' mode auto      # update automatically without asking
   zstyle ':omz:update' mode reminder  # just remind me to update when it's time
@@ -85,6 +87,7 @@ typeset -g POWERLEVEL9K_INSTANT_PROMPT=on # no warning update
 source ~/.zsh/catppuccin_mocha-zsh-syntax-highlighting.zsh
 
 # now load zsh-syntax-highlighting plugin
+plugins=(zsh-syntax-highlighting zsh-autosuggestions)
 
 # fzf shell integration
 source <(fzf --zsh)
@@ -92,3 +95,5 @@ source <(fzf --zsh)
 # zoxide config
 eval "$(zoxide init zsh)"
 
+# To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
+[[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
