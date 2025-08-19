@@ -38,7 +38,7 @@ ZSH_THEME="powerlevel10k/powerlevel10k"
 # HYPHEN_INSENSITIVE="true"
 
 # Uncomment one of the following lines to change the auto-update behavior
-typeset -g POWERLEVEL9K_INSTANT_PROMPT=on # no warning update
+typeset -g POWERLEVEL9K_INSTANT_PROMPT=off # no warning update
 
 source /usr/share/zsh-theme-powerlevel10k/powerlevel10k.zsh-theme
 # zstyle ':omz:update' mode disabled  # disable automatic updates
