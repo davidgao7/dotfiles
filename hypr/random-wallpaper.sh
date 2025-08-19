@@ -16,7 +16,7 @@ fi
 RANDOM_WALLPAPER="${WALLPAPERS[$RANDOM % ${#WALLPAPERS[@]}]}"
 
 # Define the available transition types
-TRANSITIONS=("simple" "left" "right" "top" "bottom" "center" "outer" "any" "random")
+TRANSITIONS=("simple" "fade" "left" "right" "top" "bottom" "wipe" "wave" "grow" "center" "outer" "any" "random")
 
 # Select a random transition type
 RANDOM_TRANSITION="${TRANSITIONS[$RANDOM % ${#TRANSITIONS[@]}]}"

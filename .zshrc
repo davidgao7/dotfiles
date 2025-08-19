@@ -98,4 +98,7 @@ eval "$(zoxide init zsh)"
 # To customize prompt, run `p10k configure` or edit ~/.p10k.zsh.
 [[ ! -f ~/.p10k.zsh ]] || source ~/.p10k.zsh
 
+# add execution permission to the wallpaper change script
+chmod +x ~/.config/hypr/random-wallpaper.sh
+
 fastfetch
