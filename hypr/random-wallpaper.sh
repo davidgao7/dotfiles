@@ -22,6 +22,6 @@ TRANSITIONS=("simple" "left" "right" "top" "bottom" "center" "outer" "any" "rand
 RANDOM_TRANSITION="${TRANSITIONS[$RANDOM % ${#TRANSITIONS[@]}]}"
 
 # Set the wallpaper with a random transition type using swww
-swww img "$RANDOM_WALLPAPER" --transition-type "$RANDOM_TRANSITION"
+swww img "$RANDOM_WALLPAPER" --resize="fit" --transition-type "$RANDOM_TRANSITION"
 
 echo "Changed wallpaper to $RANDOM_WALLPAPER with transition type: $RANDOM_TRANSITION"
