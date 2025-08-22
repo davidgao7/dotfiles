@@ -74,7 +74,5 @@ parse_bindings() {
     }'
 }
 
-dynamic_bindings |
-    sort -u |
-    parse_bindings |
-    walker --dmenu --theme keybindings -p 'Keybindings'
+dynamic_bindings | sort -u | parse_bindings | rofi -sep '\n' -dmenu -font "Hack Nerd Font Mono 10" \
+    -width 800 -lines 15 -columns 1
