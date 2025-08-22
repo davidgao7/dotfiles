@@ -12,10 +12,9 @@
 # - Output comma-separated values that the parser can understand
 dynamic_bindings() {
     hyprctl -j binds |
-        jq -r '.[] | {modmask, key, keycode, description, dispatcher, arg} | "\(.modmask),\(.key)@\(.keycode),\(.description),\(.dispatcher),\(.arg)"' |
+        jq -r '.[] | {modmask, key, keycode, description, dispatcher, arg} | "\(.modmask),\(.key)@\(.keycode),\(submap): \(.description),\(.dispatcher),\(.arg)"' |
         sed -r \
             -e 's/null//' \
-            -e 's,~/.local/share/omarchy/bin/,,' \
             -e 's,uwsm app -- ,,' \
             -e 's/@0//' \
             -e 's/,@/,code:/' \
