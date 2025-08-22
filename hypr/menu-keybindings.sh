@@ -12,7 +12,7 @@
 # - Output comma-separated values that the parser can understand
 dynamic_bindings() {
     hyprctl -j binds |
-        jq -r '.[] | {modmask, key, keycode, description, dispatcher, arg} | "\(.modmask),\(.key)@\(.keycode),\(.description),\(.dispatcher),\(.arg)"' |
+        jq -r '.[] | {modmask, submap, key, keycode, description, dispatcher, arg} | "\(.modmask),\(.submap),\(.key)@\(.keycode),\(.description),\(.dispatcher),\(.arg)"' |
         sed -r \
             -e 's/null//' \
             -e 's,~/.local/share/omarchy/bin/,,' \
@@ -31,7 +31,9 @@ dynamic_bindings() {
             -e 's/^65,/SUPER SHIFT,/' \
             -e 's/^68,/SUPER CTRL,/' \
             -e 's/^69,/SUPER SHIFT CTRL,/' \
-            -e 's/^72,/SUPER ALT,/'
+            -e 's/^72,/SUPER ALT,/' \
+            -e 's/,,/,GLOBAL,/' \
+            -e 's/,resize,/,SUBMAP resize,/'
 }
 
 # Parse and format keybindings
@@ -42,42 +44,35 @@ dynamic_bindings() {
 # - Joins the command that the key executes.
 # - Prints everything in a nicely aligned format.
 parse_bindings() {
-    awk -F, '
-{
-    # Combine the modifier and key (first two fields)
-    key_combo = $1 " + " $2;
+    awk -F, '{
+        mods   = $1;
+        submap = $2;
+        key    = $3;
+        desc   = $4;
+        disp   = $5;
+        arg    = $6;
 
-    # Clean up: strip leading "+" if present, trim spaces
-    gsub(/^[ \t]*\+?[ \t]*/, "", key_combo);
-    gsub(/[ \t]+$/, "", key_combo);
+        # Build key combo string
+        key_combo = mods " + " key;
+        gsub(/^[ \t]*\+?[ \t]*/, "", key_combo);
+        gsub(/[ \t]+$/, "", key_combo);
 
-    # Use description, if set
-    action = $3;
-
-    if (action == "") {
-        # Reconstruct the command from the remaining fields
-        for (i = 4; i <= NF; i++) {
-            action = action $i (i < NF ? "," : "");
+        # Add submap tag if not global
+        if (submap != "") {
+            key_combo = "[" submap "] " key_combo;
         }
 
-        # Clean up trailing commas, remove leading "exec, ", and trim
-        sub(/,$/, "", action);
-        gsub(/(^|,)[[:space:]]*exec[[:space:]]*,?/, "", action);
-        gsub(/^[ \t]+|[ \t]+$/, "", action);
-        gsub(/[ \t]+/, " ", key_combo);  # Collapse multiple spaces to one
+        action = desc;
+        if (action == "" && disp == "submap") {
+            action = "Switch to submap: " arg;
+        } else if (action == "") {
+            action = disp " " arg;
+        }
 
-        # Escape XML entities
-        gsub(/&/, "\\&amp;", action);
-        gsub(/</, "\\&lt;", action);
-        gsub(/>/, "\\&gt;", action);
-        gsub(/"/, "\\&quot;", action);
-        gsub(/'"'"'/, "\\&apos;", action);
-    }
-
-    if (action != "") {
-        printf "%-35s → %s\n", key_combo, action;
-    }
-}'
+        if (action != "") {
+            printf "%-40s → %s\n", key_combo, action;
+        }
+    }'
 }
 
 dynamic_bindings |
