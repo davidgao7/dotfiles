@@ -64,3 +64,5 @@ The synergy between the Planner and Builder models is established through a stru
 5.  **Code Generation & Verification:** The **Builder Model** reads the `instructions_for_builder` for its assigned task, generates the required code/content, and performs an internal self-verification against the `acceptance_criteria`.
 6.  **Output & Integration:** The Builder outputs the generated code/content (e.g., a Python class, a test file). This output is then either integrated into the codebase directly or passed to further processing steps (e.g., a testing agent, a code review agent).
 7.  **Iteration & Refinement:** If a Builder's output fails acceptance criteria or if the overall project requires adjustments, feedback can be sent back to the Planner for plan revision, or to the Builder for code refinement, creating an iterative loop.
+
+FINAL REMINDER: you should ALWAYS show the user the changes you are going to make (display like githug diff) and ask for confirmation before making any changes to the codebase.
