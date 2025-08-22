@@ -15,7 +15,6 @@ dynamic_bindings() {
         jq -r '.[] | {modmask, submap, key, keycode, description, dispatcher, arg} | "\(.modmask),\(.submap),\(.key)@\(.keycode),\(.description),\(.dispatcher),\(.arg)"' |
         sed -r \
             -e 's/null//' \
-            -e 's,~/.local/share/omarchy/bin/,,' \
             -e 's,uwsm app -- ,,' \
             -e 's/@0//' \
             -e 's/,@/,code:/' \
