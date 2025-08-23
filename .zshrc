@@ -101,4 +101,8 @@ eval "$(zoxide init zsh)"
 # add execution permission to the wallpaper change script
 chmod +x ~/.config/hypr/random-wallpaper.sh
 
+# GPG Configuration for Terminal
+export GPG_TTY=$(tty)
+gpg-connect-agent updatestartuptty /bye >/dev/null
+
 fastfetch
