@@ -7,12 +7,13 @@
       "tools": {
         "write": true,
         "edit": true,
-        "bash": true
+        "bash": true,
+        "webfetch": true
       },
       "permission": {
         "edit": "ask",
         "bash": "allow",
-        "webfetch": "deny"
+        "webfetch": "ask"
       }
     },
     "plan": {
@@ -42,7 +43,11 @@
       "tools": {
         // Disable file modification tools for review-only agent
         "write": false,
-        "edit": false
+        "edit": false,
+        "webfetch": true
+      },
+      "permission": {
+        "webfetch": "ask"
       }
     },
     "code-explorer": {
