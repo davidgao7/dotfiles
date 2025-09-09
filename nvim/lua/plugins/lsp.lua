@@ -1184,7 +1184,6 @@ return {
   {
     -- python venv selector
     "linux-cultist/venv-selector.nvim",
-    branch = "regexp",
     dependencies = {
       "neovim/nvim-lspconfig",
       "nvim-telescope/telescope.nvim",
@@ -1200,6 +1199,7 @@ return {
     config = function()
       require("venv-selector").setup({
         debug = true, -- enables you to run the VenvSelectLog command to view debug logs
+        picker = "fzf-lua",
       })
     end,
     keys = {
