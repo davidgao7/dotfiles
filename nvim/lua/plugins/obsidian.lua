@@ -29,22 +29,24 @@ return {
       -- Optional, boolean or a function that takes a filename and returns a boolean.
       -- `true` indicates that you don't want obsidian.nvim to manage frontmatter.
       disable_frontmatter = false,
-      note_frontmatter_func = function(note)
-        local hugo_dir = string.format("%s/davidgao7blogs", obsidian_dir)
-        local current_file = vim.fn.expand("%:p")
-        if current_file:sub(1, #hugo_dir) == hugo_dir then
-          -- If the file is in the Hugo directory, return an empty table to disable front matter
-          return {}
-        else
-          -- Default front matter for other files
-          return {
-            id = note.id,
-            aliases = note.aliases,
-            tags = note.tags,
-            -- Add other default front matter fields as needed
-          }
-        end
-      end,
+      frontmatter = {
+        func = function(note)
+          local hugo_dir = string.format("%s/davidgao7blogs", obsidian_dir)
+          local current_file = vim.fn.expand("%:p")
+          if current_file:sub(1, #hugo_dir) == hugo_dir then
+            -- If the file is in the Hugo directory, return an empty table to disable front matter
+            return {}
+          else
+            -- Default front matter for other files
+            return {
+              id = note.id,
+              aliases = note.aliases,
+              tags = note.tags,
+              -- Add other default front matter fields as needed
+            }
+          end
+        end,
+      },
       -- Set the log level for obsidian.nvim
       log_level = vim.log.levels.INFO,
       -- Configuration for daily notes
