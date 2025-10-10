@@ -224,8 +224,8 @@ return {
           -- Make sure these keys are available and not mapped elsewhere extensively
           -- `<CR>` (Enter) is often used for node increment/init
           -- `<BS>` (Backspace) is often used for node decrement
-          init_selection = "<CR>", -- Start incremental selection easily
-          node_incremental = "<CR>", -- Expand selection to larger node using the same key
+          init_selection = "<C-Space>", -- Start incremental selection easily
+          node_incremental = "<C-Space>", -- Expand selection to larger node using the same key
           -- For scope expansion, you generally need nvim-treesitter/nvim-treesitter-context installed
           -- scope_incremental = '<TAB>', -- Example: Use Tab for scope expansion (requires context plugin)
           node_decremental = "<BS>", -- Shrink selection to smaller node
@@ -913,6 +913,7 @@ return {
     {
       "williamboman/mason-lspconfig.nvim",
       dependencies = {
+        { "b0o/schemastore.nvim" },
         {
           "williamboman/mason.nvim",
           opts = {
@@ -1054,6 +1055,44 @@ return {
                 },
               })
             end,
+
+            -- TypeScript/JavaScript Language Server
+            ["typescript-language-server"] = function()
+              require("lspconfig").tsserver.setup({
+                -- Use tsserver setup for broader filetype coverage
+                filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
+                settings = {
+                  javascript = {
+                    inlayHints = {
+                      -- Enable useful hints for J/TS
+                      parameterNames = "all",
+                      parameterTypes = true,
+                      variableTypes = true,
+                    },
+                  },
+                  typescript = {
+                    inlayHints = {
+                      parameterNames = "all",
+                      parameterTypes = true,
+                      variableTypes = true,
+                    },
+                  },
+                },
+              })
+            end,
+            -- JSON Language Server
+            ["jsonls"] = function()
+              require("lspconfig").jsonls.setup({
+                settings = {
+                  json = {
+                    schemas = require("schemastore").get_schemas(), -- Requires 'b0o/schemastore.nvim'
+                    validate = { enable = true },
+                  },
+                },
+                -- Ensure it covers .jsonl files if you manually added that filetype
+                filetypes = { "json", "jsonc", "jsonl" },
+              })
+            end,
           },
         })
 
@@ -1072,17 +1111,6 @@ return {
           })
 
         require("mason-lspconfig").setup(mason_opts)
-
-        -- Override global LSP hover handler to fix float styling
-        local orig_hover = vim.lsp.handlers["textDocument/hover"]
-        vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
-          config = config or {}
-          config.border = "rounded"
-          config.winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder"
-          config.max_width = 80
-          config.max_height = 20
-          return orig_hover(err, result, ctx, config)
-        end
 
         -- Configure diagnostics to show virtual text
         -- Use virtual text as usual
