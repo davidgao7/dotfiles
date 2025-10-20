@@ -1,31 +1,31 @@
 return {
   {
-    'folke/noice.nvim',
-    event = 'VeryLazy',
+    "folke/noice.nvim",
+    event = "VeryLazy",
     opts = {},
     dependencies = {
-      'MunifTanjim/nui.nvim',
-      'rcarriga/nvim-notify',
+      "MunifTanjim/nui.nvim",
+      "rcarriga/nvim-notify",
     },
     config = function()
-      require('notify').setup {
-        background_colour = '#000000',
-      }
+      require("notify").setup({
+        background_colour = "Normal",
+      })
 
-      require('noice').setup {
+      require("noice").setup({
         routes = {
           {
             filter = {
-              event = 'notify',
-              find = 'No information available',
+              event = "notify",
+              find = "No information available",
             },
             opts = { skip = true },
           },
         },
         lsp = {
           override = {
-            ['vim.lsp.util.convert_input_to_markdown_lines'] = true,
-            ['vim.lsp.util.stylize_markdown'] = true,
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
+            ["vim.lsp.util.stylize_markdown"] = true,
           },
         },
         presets = {
@@ -37,13 +37,17 @@ return {
         },
         views = {
           history = {
-            backend = 'fzf_lua',
+            backend = "fzf_lua",
           },
         },
-      }
+      })
 
-      -- currently <>Noice<> and <>Noice history<> don't work, not sure why...
-      vim.keymap.set('n', '<leader>sh', '<cmd>Noice history<cr>', { desc = 'Show notification history' })
+      vim.keymap.set(
+        "n",
+        "<leader>sh",
+        "<cmd>Noice history<cr>",
+        { desc = "Show notification history" }
+      )
     end,
   },
 }
