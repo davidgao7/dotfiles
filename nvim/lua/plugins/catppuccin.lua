@@ -4,6 +4,9 @@ return {
     lazy = false,
     name = "catppuccin",
     priority = 1000,
+    dependencies = {
+      "rcarriga/nvim-notify",
+    },
     -- you can do it like this with a config function
     config = function()
       require("catppuccin").setup({

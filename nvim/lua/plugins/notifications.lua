@@ -8,10 +8,6 @@ return {
       "rcarriga/nvim-notify",
     },
     config = function()
-      require("notify").setup({
-        background_colour = "Normal",
-      })
-
       require("noice").setup({
         routes = {
           {
