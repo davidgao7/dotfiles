@@ -20,16 +20,16 @@
       "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
       "prompt": "{file:./prompts/plan.txt}",
       "tools": {
-        "write": false,
-        "edit": false,
-        "bash": false,
+        "write": true,
+        "edit": true,
+        "bash": true,
         "webfetch": true,
         "grep": true,
         "glob": true,
         "list": true
       },
       "permission": {
-        "edit": "deny",
+        "edit": "ask",
         "bash": "allow",
         "webfetch": "ask"
       }
