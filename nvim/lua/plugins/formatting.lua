@@ -1,4 +1,5 @@
 local ensure_installed_fmts = {
+  "pyproject-fmt",
   "stylua",
   "ruff",
   "docformatter",
@@ -80,6 +81,7 @@ return {
     log_level = vim.log.levels.WARN,
     -- Define your formatters
     formatters_by_ft = {
+      toml = { "pyproject-fmt" },
       lua = { "stylua" },
       python = { "ruff", "docformatter" },
       javascript = {
@@ -152,7 +154,7 @@ return {
       if vim.g.disable_autoformat or vim.b[bufnr].disable_autoformat then
         return
       end
-      return { timeout_ms = 1000, lsp_format = "fallback" }
+      return { timeout_ms = 3000, lsp_format = "fallback" }
     end,
   },
 
