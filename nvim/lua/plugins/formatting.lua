@@ -45,7 +45,7 @@ return {
           end
         end)
       end,
-      { desc = "Format selected code" },
+      desc = "Format selected code",
     },
 
     {
@@ -83,7 +83,7 @@ return {
     formatters_by_ft = {
       toml = { "pyproject-fmt" },
       lua = { "stylua" },
-      python = { "ruff", "docformatter" },
+      python = { "ruff_format", "docformatter" },
       javascript = {
         "prettierd",
         stop_after_first = true,
@@ -146,6 +146,15 @@ return {
           "1000",
           "--pre-summary-newline",
         },
+      },
+      ruff = {
+        prepend_args = function()
+          -- check the global variable set by the user command
+          if vim.g.ruff_config_path and vim.g.ruff_config_path ~= "" then
+            return { "--config", vim.g.ruff_config_path }
+          end
+          return {} -- use default behavior if no path is set
+        end,
       },
     },
 
@@ -217,5 +226,15 @@ return {
     end, {
       desc = "Re-enable autoformat-on-save",
     })
+
+    -- setup command to set the ruff config path
+    vim.api.nvim_create_user_command("SetRuffConfig", function(opts)
+      vim.g.ruff_config_path = opts.fargs[1]
+      vim.notify(
+        "Set ruff config path to: " .. vim.g.ruff_config_path,
+        vim.log.levels.INFO,
+        { title = "Conform.nvim" }
+      )
+    end, { nargs = 1, desc = "Set Ruff config path for conform.nvim" })
   end,
 }

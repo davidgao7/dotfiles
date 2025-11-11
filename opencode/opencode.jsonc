@@ -17,7 +17,7 @@
   },
   "mode": {
     "build": {
-      "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      // TODO: switch to opencode zen provider after spend all openrouter credits
       "prompt": "{file:./prompts/build.txt}",
       "tools": {
         "write": true,
@@ -27,12 +27,12 @@
       },
       "permission": {
         "edit": "ask",
-        "bash": "allow",
+        "bash": "ask",
         "webfetch": "ask"
       }
     },
     "plan": {
-      "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      // TODO: switch to opencode zen provider after spend all openrouter credits
       "prompt": "{file:./prompts/plan.txt}",
       "tools": {
         "write": true,
@@ -45,7 +45,7 @@
       },
       "permission": {
         "edit": "ask",
-        "bash": "allow",
+        "bash": "ask",
         "webfetch": "ask"
       }
     }
@@ -53,7 +53,7 @@
   "agent": {
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
-      "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
+      // TODO: switch to opencode zen provider after spend all openrouter credits
       "prompt": "{file:./prompts/review.txt}",
       "tools": {
         // Disable file modification tools for review-only agent
@@ -67,7 +67,6 @@
     },
     "code-explorer": {
       "description": "Explores unfamiliar codebases to understand structure and functionality",
-      "model": "OpenRouter/Qwen/Qwen3-Coder-480B-A35B-Instruct",
       "prompt": "{file:./prompts/explore.txt}",
       "tools": {
         "write": false,
@@ -80,7 +79,7 @@
       },
       "permission": {
         "edit": "deny",
-        "bash": "allow",
+        "bash": "ask",
         "webfetch": "ask"
       }
     }
