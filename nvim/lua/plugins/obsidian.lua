@@ -28,8 +28,9 @@ return {
       },
       -- Optional, boolean or a function that takes a filename and returns a boolean.
       -- `true` indicates that you don't want obsidian.nvim to manage frontmatter.
-      disable_frontmatter = false,
+      --disable_frontmatter = false,
       frontmatter = {
+        enabled = true,
         func = function(note)
           local hugo_dir = string.format("%s/davidgao7blogs", obsidian_dir)
           local current_file = vim.fn.expand("%:p")
