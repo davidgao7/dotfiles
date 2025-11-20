@@ -956,6 +956,7 @@ return {
           "tailwindcss",
           "harper_ls",
           "marksman",
+          "neocmake",
         },
         automatic_enable = true,
       },
@@ -1091,6 +1092,21 @@ return {
                 },
                 -- Ensure it covers .jsonl files if you manually added that filetype
                 filetypes = { "json", "jsonc", "jsonl" },
+              })
+            end,
+
+            -- clangd with fixed boolean arguments
+            ["clangd"] = function()
+              require("lspconfig").clangd.setup({
+                cmd = {
+                  "clangd",
+                  "--background-index",
+                  "--clang-tidy",
+                  "--header-insertion=iwyu",
+                  "--completion-style=detailed",
+                  "--function-arg-placeholders=true",
+                  "--fallback-style=llvm",
+                },
               })
             end,
           },

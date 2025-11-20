@@ -5,6 +5,7 @@ local ensure_installed_fmts = {
   "docformatter",
   "prettierd",
   "clang-format",
+  "cmake-format",
   "csharpier",
   "rubocop",
   "shfmt",
@@ -118,6 +119,7 @@ return {
       -- Other languages just one formatter, no need stop_after_first
       c = { "clang-format" },
       cpp = { "clang-format" },
+      cmake = { "cmake-format" },
       cs = { "csharpier" },
       rb = { "rubocop" },
       sh = { "shfmt" },

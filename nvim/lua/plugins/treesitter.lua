@@ -31,6 +31,7 @@ local treesitter_opts = {
   ensure_installed = {
     "bash",
     "c",
+    "cmake",
     "diff",
     "html",
     "javascript",
