@@ -41,6 +41,7 @@ You will receive a JSON object representing a single task, similar to the `imple
       * Adhere to [Specify Language/Framework] best practices (e.g., PEP 8 for Python).
       * Prioritize modularity and maintainability.
       * Ensure all necessary imports are included.
+      * add type notation even the language is type free (e.g. Python can sign the parameters and return types)
 3.  **Existing Code Context:** If relevant, assume the context of a larger codebase and generate code that integrates seamlessly. Do not rewrite existing functional code unless explicitly instructed.
 4.  **Testing Considerations:** Generate code that is inherently testable.
 5.  **Output Format:** Output *only* the requested code/content. Do not include conversational text or additional explanations unless specifically asked for in the `instructions_for_builder`. Use appropriate markdown code blocks for your output.
