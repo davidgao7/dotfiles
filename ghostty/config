@@ -1,6 +1,9 @@
 theme = Catppuccin Mocha
 
 font-family = Hack Nerd Font
+font-family = PingFang SC
+font-family = Noto Sans CJK SC
+
 font-size = 12
 font-feature = "-calt", "-liga", "-dlig"
 
