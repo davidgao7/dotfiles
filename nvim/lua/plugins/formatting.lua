@@ -106,6 +106,10 @@ return {
         "jq",
         stop_after_first = true,
       },
+      jsonl = {
+        "jq",
+        stop_after_first = true,
+      },
       yaml = {
         "yamlfmt",
         stop_after_first = true,
