@@ -112,6 +112,7 @@ return {
       },
       yaml = {
         "yamlfmt",
+        "yq",
         stop_after_first = true,
       },
       markdown = {
