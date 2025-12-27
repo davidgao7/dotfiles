@@ -204,3 +204,9 @@ vim.api.nvim_create_autocmd("FileType", {
     vim.opt_local.smartindent = true
   end,
 })
+
+-- This tells the hover window: "Use LspHoverBorder instead of FloatBorder"
+vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
+  border = "rounded",
+  winhighlight = "FloatBorder:LspHoverBorder,NormalFloat:NormalFloat",
+})
