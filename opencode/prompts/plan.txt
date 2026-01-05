@@ -35,6 +35,8 @@ Your output MUST be a valid JSON object. Adhere strictly to the following schema
 }
 ````
 
+You should also provide me a flow chart to decompose the tasks/codebase/whatever the complex problem we're facing, try to visualize it to help me understand the problem better.
+
 **Planning Guidelines:**
 
 1.  **Decomposition:** Break down the main objective into the smallest logical units possible. Each `task_name` should be specific and actionable.
