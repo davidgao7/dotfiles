@@ -205,8 +205,27 @@ vim.api.nvim_create_autocmd("FileType", {
   end,
 })
 
--- This tells the hover window: "Use LspHoverBorder instead of FloatBorder"
-vim.lsp.handlers["textDocument/hover"] = vim.lsp.with(vim.lsp.handlers.hover, {
-  border = "rounded",
-  winhighlight = "FloatBorder:LspHoverBorder,NormalFloat:NormalFloat",
-})
+-- Try to use the system's default handler first
+if vim.fn.has("mac") == 1 then
+  -- macOS specific handler
+  vim.ui.open = function(url)
+    vim.fn.jobstart({ "open", url }, { detach = true })
+  end
+elseif vim.fn.has("unix") == 1 then
+  -- Linux specific handler
+  vim.ui.open = function(url)
+    vim.fn.jobstart({ "xdg-open", url }, { detach = true })
+  end
+else
+  -- Windows/Other fallback
+  -- (Neovim 0.10+ handles this well usually, but just in case)
+  vim.g.netrw_browsex_viewer = "cmd.exe /c start"
+end
+
+vim.keymap.set("n", "K", function()
+  vim.lsp.buf.hover({ border = "rounded" })
+end, { desc = "LSP Hover" })
+
+vim.keymap.set("i", "<C-k>", function()
+  vim.lsp.buf.signature_help({ border = "rounded" })
+end, { desc = "LSP Signature Help" })

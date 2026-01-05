@@ -55,7 +55,14 @@ return {
             NormalFloat = { fg = colors.text, bg = "#1e1e2e" },
             FloatBorder = { fg = colors.surface2, bg = "#1e1e2e" },
             -- LspInfoBorder = { fg = colors.blue, bg = "#1e1e2e" },
-            LspHoverBorder = { fg = colors.peach, bold = true },
+
+            -- to include the background color
+            LspHoverBorder = { fg = colors.peach, bg = "#1e1e2e", bold = true },
+
+            -- Ensure Noice's specific popup groups are also solid
+            NoicePopup = { bg = "#1e1e2e" },
+            NoicePopupBorder = { fg = colors.surface2, bg = "#1e1e2e" },
+
             LspInfoTitle = { fg = colors.pink, bg = "#1e1e2e", bold = true },
             LspFloatWinNormal = { fg = colors.text, bg = "#1e1e2e" },
 

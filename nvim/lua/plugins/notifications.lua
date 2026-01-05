@@ -38,15 +38,46 @@ return {
             ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
             ["vim.lsp.util.stylize_markdown"] = true,
           },
+          documentation = {
+            -- 💡 FORCE this to use your hover view
+            view = "hover",
+            opts = {
+              border = {
+                style = "rounded",
+              },
+              win_options = {
+                winblend = 0,
+                winhighlight = {
+                  Normal = "NormalFloat",
+                  FloatBorder = "LspHoverBorder",
+                },
+              },
+            },
+          },
         },
         presets = {
           bottom_search = true,
           command_palette = true,
           long_message_to_split = true,
           inc_rename = true,
-          lsp_doc_border = false,
+          lsp_doc_border = true,
         },
         views = {
+          hover = {
+            border = {
+              style = "rounded", -- Options: "single", "double", "rounded", "solid"
+            },
+            position = { row = 2, col = 2 },
+            win_options = {
+              winblend = 0, -- Ensure transparency is disabled
+              winhighlight = {
+                -- This links the internal FloatBorder group to your custom Peach color
+                FloatBorder = "LspHoverBorder",
+                -- Optional: Link Normal background to your solid background group
+                Normal = "NormalFloat",
+              },
+            },
+          },
           history = {
             backend = "fzf_lua",
           },

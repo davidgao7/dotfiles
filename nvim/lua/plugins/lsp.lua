@@ -1112,20 +1112,6 @@ return {
           },
         })
 
-        local default_hover = vim.lsp.handlers["textDocument/hover"]
-
-        require("lspconfig.util").default_config.handlers =
-          vim.tbl_deep_extend("force", require("lspconfig.util").default_config.handlers or {}, {
-            ["textDocument/hover"] = function(err, result, ctx, config)
-              config = config or {}
-              config.border = "rounded"
-              config.winhighlight = "Normal:NormalFloat,FloatBorder:FloatBorder"
-              config.max_width = 80
-              config.max_height = 20
-              return default_hover(err, result, ctx, config)
-            end,
-          })
-
         require("mason-lspconfig").setup(mason_opts)
 
         -- Configure diagnostics to show virtual text
@@ -1146,8 +1132,6 @@ return {
         })
       end,
     },
-    -- Show hover docs on K
-    vim.keymap.set("n", "K", vim.lsp.buf.hover, { desc = "LSP Hover" }),
     -- Show diagnostics manually on Q
     vim.keymap.set("n", "Q", function()
       vim.diagnostic.open_float(nil, {
