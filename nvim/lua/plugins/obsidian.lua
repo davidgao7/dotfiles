@@ -119,12 +119,13 @@ return {
       end,
       -- Optional, by default when you use `:ObsidianFollowLink` on a link to an external
       -- URL it will be ignored but you can customize this behavior here.
-      ---@param url string
-      follow_url_func = function(url)
-        -- Open the URL in the default web browser.
-        vim.fn.jobstart({ "open", url }) -- Mac OS
-        -- vim.fn.jobstart({"xdg-open", url})  -- linux
-      end,
+      -- deprecated, use `vim.ui.open` instead
+      ---param url string
+      -- follow_url_func = function(url)
+      --   -- Open the URL in the default web browser.
+      --   vim.fn.jobstart({ "open", url }) -- Mac OS
+      --   -- vim.fn.jobstart({"xdg-open", url})  -- linux
+      -- end,
       -- Template settings
       templates = {
         folder = "templates",
@@ -142,26 +143,25 @@ return {
     },
 
     -- create new key mappings
-    -- [[
-    -- mappings = {
-    --   ["gd"] = { -- lets always to go to definition
-    --     action = function()
-    --       return require("obsidian").util.gf_passthrough()
-    --     end,
-    --     opts = { noremap = false, expr = true, buffer = true },
-    --   },
-    --   ["<leader>ch"] = {
-    --     action = function()
-    --       return require("obsidian").util.toggle_checkbox()
-    --     end,
-    --     opts = { buffer = true },
-    --   },
-    --   ["<cr>"] = {
-    --     action = function()
-    --       return require("obsidian").util.smart_action()
-    --     end,
-    --     opts = { buffer = true, expr = true },
-    --   },
-    -- },]]
+    mappings = {
+      ["gd"] = { -- lets always to go to definition
+        action = function()
+          return require("obsidian").util.gf_passthrough()
+        end,
+        opts = { noremap = false, expr = true, buffer = true },
+      },
+      ["<leader>ch"] = {
+        action = function()
+          return require("obsidian").util.toggle_checkbox()
+        end,
+        opts = { buffer = true },
+      },
+      ["<cr>"] = {
+        action = function()
+          return require("obsidian").util.smart_action()
+        end,
+        opts = { buffer = true, expr = true },
+      },
+    },
   },
 }
