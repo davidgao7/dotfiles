@@ -53,6 +53,11 @@ return {
         "<cmd>GitBlameCopyFileURL<cr>",
         desc = "copy file url to clipboard",
       },
+      {
+        "<leader>gbt",
+        "<cmd>GitBlameToggleCommitMesgWindow<cr>",
+        desc = "show git blame in floating window",
+      },
     },
   },
   {
