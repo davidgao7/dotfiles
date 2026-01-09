@@ -1,4 +1,6 @@
 <base>
+[hk2]>[home]
+[home]>[lwin]
 
 <keypad>
 
