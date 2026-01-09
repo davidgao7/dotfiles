@@ -1020,7 +1020,11 @@ return {
                       diagnosticMode = "workspace",
                       useLibraryCodeForTypes = true,
                       typeCheckingMode = "basic", -- or "strict" if preferred
+                      extraPaths = { "./" },
                     },
+                    -- Tells Pyright to look for a .venv or venv folder in the project root
+                    venvPath = ".",
+                    venv = ".venv",
                   },
                 },
                 on_attach = function(client, bufnr)
