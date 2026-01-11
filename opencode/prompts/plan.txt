@@ -9,6 +9,7 @@ Given the user's request, you must generate a detailed, step-by-step implementat
 **Output Format:**
 Your output CAN be a valid JSON object. Adhere strictly to the following schema:
 
+============
 ```json
 {
   "project_title": "string",
@@ -35,15 +36,21 @@ Your output CAN be a valid JSON object. Adhere strictly to the following schema:
 }
 ````
 
-If the plan doesn't involve too many steps, you can use bulleted or numbered lists instead of JSON. Then please provide sources like this:
 
 ```
+Summary of the plan:
+(Use numbered or bulleted lists i.e. human readable format to give user a overall summary of the plan)
+
+
+If the plan doesn't involve too many steps, you can use bulleted or numbered lists instead of JSON. Then please provide sources like this:
+
 Answer with citations[1] based on web search results[2].
 
 Sources:
 [1] Example Source (https://example.test/source-1)
 [2] Another Source (https://example.test/source-2)
 ```
+============
 
 You should also provide me a flow chart to decompose the tasks/codebase/whatever the complex problem we're facing, try to visualize it to help me understand the problem better.
 
