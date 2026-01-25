@@ -28,16 +28,16 @@ local blink_kind_icons_set_one = {
   Constructor = "󰒓",
 
   Field = "󰜢",
-  Variable = "󰆦",
+  Variable = "󰀫",
   Property = "󰖷",
 
   Class = "󱡠",
-  Interface = "󱡠",
+  Interface = "󰒄",
   Struct = "󱡠",
   Module = "󰅩",
 
   Unit = "󰪚",
-  Value = "󰦨",
+  Value = "󰎠",
   Enum = "󰦨",
   EnumMember = "󰦨",
 
@@ -101,175 +101,6 @@ local completion_menu_highlight_groups = {
 }
 
 return {
-  -- Core Treesitter functionality and parser management
-  {
-    "nvim-treesitter/nvim-treesitter",
-    version = false, -- Use version = false to stay up-to-date, or pin to a specific tag/commit
-    build = ":TSUpdateSync", -- Compile parsers synchronously on install/update
-    dependencies = {
-      -- Required for enhanced text objects
-      "nvim-treesitter/nvim-treesitter-textobjects",
-
-      -- Add other Treesitter plugins here if you use them, e.g.:
-      {
-        "nvim-treesitter/nvim-treesitter-context",
-        event = "VeryLazy",
-        opts = {
-          enable = true,
-          max_lines = 0, -- No limit on context lines shown
-          trim_scope = "outer", -- Discard outer context when space is limited
-          mode = "cursor", -- Use the cursor position to determine context
-          line_numbers = true,
-          multiline_threshold = 20,
-          separator = nil, -- You can set this to "─" if you want a visual line
-          zindex = 20,
-        },
-      }, -- Recommended for scope_incremental keymap below
-      -- 'windwp/nvim-ts-autotag',
-    },
-
-    -- `opts` configures the runtime behavior and functionality of treesitter modules
-    opts = {
-      -- Ensure parsers for your commonly used languages are installed proactively
-      ensure_installed = {
-        "c",
-        "lua",
-        "vim",
-        "vimdoc",
-        "query",
-        "javascript",
-        "typescript",
-        "python",
-        "rust",
-        "go",
-        "html",
-        "css",
-        "markdown",
-        "bash",
-        "json",
-        "yaml",
-        -- Add any other languages you frequently use
-      },
-
-      -- Automatically install parsers for new languages the first time you open them
-      -- Requires a compiler (gcc/clang/etc) and git to be installed.
-      auto_install = true,
-
-      -- Enable syntax highlighting using Treesitter
-      highlight = {
-        enable = true,
-        -- additional_vim_regex_highlighting = false, -- Consider disabling if performance issues
-      },
-
-      -- Enable indentation using Treesitter
-      indent = {
-        enable = true,
-      },
-
-      -- Configure nvim-treesitter-textobjects: Defines *what* the text objects do
-      textobjects = {
-        select = {
-          enable = true,
-          lookahead = true,
-          keymaps = {
-            ["af"] = { query = "@function.outer", desc = "outer function (TS)" },
-            ["if"] = { query = "@function.inner", desc = "inner function (TS)" },
-            ["ac"] = { query = "@class.outer", desc = "outer class (TS)" },
-            ["ic"] = { query = "@class.inner", desc = "inner class (TS)" },
-            ["aa"] = { query = "@parameter.outer", desc = "outer argument (TS)" },
-            ["ia"] = { query = "@parameter.inner", desc = "inner argument (TS)" },
-          },
-        },
-        move = {
-          enable = true,
-          set_jumps = true,
-          goto_next_start = {
-            ["]f"] = { query = "@function.outer", desc = "start of next function (TS)" },
-            ["]c"] = { query = "@class.outer", desc = "start of next class (TS)" },
-          },
-          goto_next_end = {
-            ["]F"] = { query = "@function.outer", desc = "end of next function (TS)" },
-            ["]C"] = { query = "@class.outer", desc = "end of next class (TS)" },
-          },
-          goto_previous_start = {
-            ["[f"] = { query = "@function.outer", desc = "start of previous function (TS)" },
-            ["[c"] = { query = "@class.outer", desc = "start of previous class (TS)" },
-          },
-          goto_previous_end = {
-            ["[F"] = { query = "@function.outer", desc = "end of previous function (TS)" },
-            ["[C"] = { query = "@class.outer", desc = "end of previous class (TS)" },
-          },
-        },
-        swap = {
-          enable = true,
-          swap_next = {
-            ["<leader>na"] = {
-              query = "@parameter.inner",
-              desc = "swap parameters/arguments with next (TS)",
-            },
-          },
-          swap_previous = {
-            ["<leader>pa"] = {
-              query = "@parameter.inner",
-              desc = "swap parameters/arguments with previous (TS)",
-            },
-          },
-        },
-      },
-
-      -- Configure Incremental Selection module
-      incremental_selection = {
-        enable = true,
-        keymaps = {
-          -- Make sure these keys are available and not mapped elsewhere extensively
-          -- `<CR>` (Enter) is often used for node increment/init
-          -- `<BS>` (Backspace) is often used for node decrement
-          init_selection = "<C-Space>", -- Start incremental selection easily
-          node_incremental = "<C-Space>", -- Expand selection to larger node using the same key
-          -- For scope expansion, you generally need nvim-treesitter/nvim-treesitter-context installed
-          -- scope_incremental = '<TAB>', -- Example: Use Tab for scope expansion (requires context plugin)
-          node_decremental = "<BS>", -- Shrink selection to smaller node
-        },
-      },
-
-      -- Add other module configurations if needed
-    },
-
-    -- `keys` informs lazy.nvim about keymaps for lazy-loading and discoverability (e.g., which-key).
-    -- It mirrors the keys defined in `opts.textobjects.keymaps` but provides metadata.
-    -- IMPORTANT: We DO NOT define the `rhs` here; the action is handled by the plugin via `opts`.
-    keys = {
-      -- == Selection Keymaps (Visual 'v' and Operator-pending 'o' modes) ==
-      { "af", mode = { "v", "o" }, desc = "Around Function (TS)" },
-      { "if", mode = { "v", "o" }, desc = "Inside Function (TS)" },
-      { "ac", mode = { "v", "o" }, desc = "Around Class (TS)" },
-      { "ic", mode = { "v", "o" }, desc = "Inside Class (TS)" },
-      { "aa", mode = { "v", "o" }, desc = "Around Argument (TS)" },
-      { "ia", mode = { "v", "o" }, desc = "Inside Argument (TS)" },
-
-      -- == Movement Keymaps (Normal 'n' mode) ==
-      { "]f", mode = "n", desc = "Next Function Start (TS)" },
-      { "]c", mode = "n", desc = "Next Class Start (TS)" },
-      { "]F", mode = "n", desc = "Next Function End (TS)" },
-      { "]C", mode = "n", desc = "Next Class End (TS)" },
-      { "[f", mode = "n", desc = "Prev Function Start (TS)" },
-      { "[c", mode = "n", desc = "Prev Class Start (TS)" },
-      { "[F", mode = "n", desc = "Prev Function End (TS)" },
-      { "[C", mode = "n", desc = "Prev Class End (TS)" },
-
-      -- == Swap Keymaps (Normal 'n' mode) ==
-      { "<leader>na", mode = "n", desc = "Swap Next Argument (TS)" },
-      { "<leader>pa", mode = "n", desc = "Swap Prev Argument (TS)" },
-
-      -- == Incremental Selection Keymaps (Visual Mode 'v' is typical) ==
-      -- Although configured in `opts`, adding here helps discoverability if desired,
-      -- but they aren't standard mappings lazy.nvim would typically handle/trigger loading.
-      -- It's often better to rely on which-key showing the active Visual mode maps if needed.
-      -- You *could* add them, but they don't fit the lazy-loading pattern as well.
-      -- { '<CR>', mode = 'v', desc = 'Increment Selection (TS)' },
-      -- { '<BS>', mode = 'v', desc = 'Decrement Selection (TS)' },
-    },
-  },
 
   {
     "saghen/blink.cmp",
