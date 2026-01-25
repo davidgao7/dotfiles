@@ -3,7 +3,6 @@ return {
     -- Make sure to set this up properly if you have lazy=true
     "MeanderingProgrammer/render-markdown.nvim",
     opts = {
-      filetypes = { "markdown", "Avante" },
       -- in-process lsp completion
       completions = {
         blink = {
@@ -16,8 +15,8 @@ return {
         highlight = "RenderMarkdownCode",
         left_pad = 1,
         right_pad = 1,
-        border = "rounded",
-        -- Determines how code blocks & inline code are rendered.
+        border = "thick", -- Options are "none", "thick", "thin", or "hide"
+        highlight_border = "RenderMarkdownCodeBorder", -- Determines how code blocks & inline code are rendered.
         -- | none     | disables all rendering                                                    |
         -- | normal   | highlight group to code blocks & inline code, adds padding to code blocks |
         -- | language | language icon to sign column if enabled and icon + name above code blocks |
@@ -43,6 +42,7 @@ return {
         },
       },
     },
-    ft = { "markdown", "Avante" },
+    file_types = { "markdown", "vimwiki" },
+    latex = { enabled = true }, -- Keep this enabled for snacks.nvim math
   },
 }
