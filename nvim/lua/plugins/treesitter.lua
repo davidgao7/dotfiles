@@ -118,6 +118,9 @@ return {
     -- 1. FORCE STABLE BRANCH
     branch = "master",
     build = ":TSUpdate",
+    dependencies = {
+      "nvim-treesitter/nvim-treesitter-textobjects",
+    },
     -- 2. DISABLE LAZY LOADING to prevent race conditions during startup
     lazy = false,
     init = function(plugin)
@@ -128,19 +131,11 @@ return {
     cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
     opts = treesitter_opts,
     config = function(_, opts)
+      -- 💡 FORCE LOAD the extension before calling setup
+      pcall(require, "nvim-treesitter-textobjects")
       -- 3. STANDARD SETUP (Restores configs module)
       require("nvim-treesitter.configs").setup(opts)
     end,
-  },
-
-  {
-    "nvim-treesitter/nvim-treesitter-textobjects",
-    branch = "main",
-    -- 4. SIMPLIFIED CONFIG
-    -- We don't need manual config here because we passed the 'textobjects' table
-    -- to the main treesitter setup above. That is the robust standard way.
-    lazy = true,
-    event = "VeryLazy",
   },
 
   {
@@ -148,5 +143,20 @@ return {
     -- 5. FIX EVENT ERROR
     event = { "BufReadPre", "BufNewFile" },
     opts = {},
+  },
+
+  {
+    "nvim-treesitter/nvim-treesitter-context",
+    event = "BufReadPost",
+    opts = {
+      enable = true,
+      max_lines = 5, -- Limits the context to 3 lines (good for small screens)
+      trim_scope = "outer", -- Discards outer context if lines > max_lines
+      min_window_height = 0,
+      line_numbers = true,
+      multiline_threshold = 20,
+      mode = "cursor",
+      zindex = 20, -- Ensures it sits above other elements
+    },
   },
 }
