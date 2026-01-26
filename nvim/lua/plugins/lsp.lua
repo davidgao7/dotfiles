@@ -118,6 +118,17 @@ return {
       "giuxtaposition/blink-cmp-copilot",
       "disrupted/blink-cmp-conventional-commits",
       {
+        "brenoprata10/nvim-highlight-colors",
+        opts = {
+          render = "virtual", -- This automatically colors the virtual symbol
+          virtual_symbol = "■",
+          virtual_symbol_position = "inline", -- places it right next to the color code
+          virtual_symbol_prefix = "",
+          virtual_symbol_suffix = " ",
+          enable_tailwind = true, -- if you want tailwind colors too
+        },
+      },
+      {
         "echasnovski/mini.snippets",
         event = "InsertEnter",
         dependencies = {
@@ -247,9 +258,32 @@ return {
                   if ctx.kind == "Copilot" then
                     return ""
                   end
+
+                  -- if LSP source, check for color derived from documentation
+                  if ctx.item.source_name == "LSP" then
+                    local color_item = require("nvim-highlight-colors").format(
+                      ctx.item.documentation,
+                      { kind = ctx.kind }
+                    )
+                    -- This sets the icon to the virtual symbol if a color is found
+                    if color_item and color_item.abbr ~= "" then
+                      kind_icon = color_item.abbr
+                    end
+                  end
+
                   return kind_icon
                 end,
                 highlight = function(ctx)
+                  if ctx.item.source_name == "LSP" then
+                    local color_item = require("nvim-highlight-colors").format(
+                      ctx.item.documentation,
+                      { kind = ctx.kind }
+                    )
+                    -- This grabs the dynamic highlight group created by the plugin
+                    if color_item and color_item.abbr_hl_group then
+                      return color_item.abbr_hl_group
+                    end
+                  end
                   local _, hl, _ = require("mini.icons").get("lsp", ctx.kind)
                   return hl
                 end,
