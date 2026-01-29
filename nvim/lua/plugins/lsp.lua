@@ -986,6 +986,7 @@ return {
         -- Configure diagnostics to show virtual text
         -- Use virtual text as usual
         vim.diagnostic.config({
+          signs = false, -- Turn off gutter icons for LSP so they don't cover Git signs
           virtual_text = {
             spacing = 2,
             prefix = "●",
