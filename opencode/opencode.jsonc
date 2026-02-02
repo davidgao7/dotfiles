@@ -13,6 +13,18 @@
           "name": "qwen3-coder:lastest"
         }
       }
+    },
+    "lmstudio": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "LM Studio (local)",
+      "options": {
+        "baseURL": "http://127.0.0.1:1234/v1"
+      },
+      "models": {
+        "mlx-community/GLM-4.7-Flash-4bit": {
+          "name": "GLM-4.7-Flash-4bit"
+        }
+      }
     }
   },
   "mode": {
