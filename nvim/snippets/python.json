@@ -12,17 +12,12 @@
   },
   "If Name Equals Main": {
     "prefix": "ifmain",
-    "body": [
-      "if __name__ == \"__main__\":",
-      "    $0"
-    ],
+    "body": ["if __name__ == \"__main__\":", "    $0"],
     "description": "Python if __name__ == '__main__' check"
   },
   "Print Statement": {
     "prefix": "print",
-    "body": [
-      "print(${1:\"Hello, world!\"})"
-    ],
+    "body": ["print(${1:\"Hello, world!\"})"],
     "description": "Print statement"
   },
   "Class Definition": {
@@ -36,10 +31,97 @@
   },
   "Function Definition": {
     "prefix": "def",
-    "body": [
-      "def ${1:func_name}(${2:args}):",
-      "    $0"
-    ],
+    "body": ["def ${1:func_name}(${2:args}):", "    $0"],
     "description": "Function definition"
+  },
+  "PyTorch Module": {
+    "prefix": "nnmod",
+    "body": [
+      "import torch",
+      "import torch.nn as nn",
+      "",
+      "class ${1:ModelName}(nn.Module):",
+      "    def __init__(self, ${2:args}):",
+      "        super().__init__()",
+      "        $0",
+      "",
+      "    def forward(self, x):",
+      "        return x"
+    ],
+    "description": "PyTorch nn.Module boilerplate"
+  },
+  "PyTorch Training Loop": {
+    "prefix": "trainloop",
+    "body": [
+      "for epoch in range(${1:num_epochs}):",
+      "    model.train()",
+      "    for batch_idx, (data, targets) in enumerate(${2:dataloader}):",
+      "        data = data.to(device)",
+      "        targets = targets.to(device)",
+      "",
+      "        # Forward pass",
+      "        outputs = model(data)",
+      "        loss = criterion(outputs, targets)",
+      "",
+      "        # Backward and optimize",
+      "        optimizer.zero_grad()",
+      "        loss.backward()",
+      "        optimizer.step()",
+      "",
+      "        $0"
+    ],
+    "description": "Standard PyTorch training loop"
+  },
+  "PyTorch Device Selection": {
+    "prefix": "device",
+    "body": [
+      "device = torch.device('cuda' if torch.cuda.is_available() else 'cpu')",
+      "print(f'Using device: {device}')",
+      "model = model.to(device)",
+      "$0"
+    ],
+    "description": "Check for CUDA availability and assign device"
+  },
+  "Data Science Imports": {
+    "prefix": "pyds",
+    "body": [
+      "import numpy as np",
+      "import pandas as pd",
+      "import matplotlib.pyplot as plt",
+      "$0"
+    ],
+    "description": "Standard NumPy, Pandas, and Matplotlib imports"
+  },
+  "Argparse Setup": {
+    "prefix": "argp",
+    "body": [
+      "import argparse",
+      "",
+      "parser = argparse.ArgumentParser(description=\"${1:Script description}\")",
+      "parser.add_argument(\"--${2:batch_size}\", type=${3:int}, default=${4:32}, help=\"${5:Batch size for training}\")",
+      "args = parser.parse_args()",
+      "$0"
+    ],
+    "description": "Standard argparse configuration for ML scripts"
+  },
+  "Basic Logging": {
+    "prefix": "logsetup",
+    "body": [
+      "import logging",
+      "",
+      "logging.basicConfig(",
+      "    level=logging.INFO,",
+      "    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'",
+      ")",
+      "logger = logging.getLogger(__name__)",
+      "$0"
+    ],
+    "description": "Configure basic Python logging"
+  },
+  "Read CSV to Pandas": {
+    "prefix": "pdread",
+    "body": ["df = pd.read_csv('${1:filepath.csv}')", "print(df.head())", "$0"],
+    "description": "Read a CSV file into a Pandas DataFrame"
   }
 }
+
