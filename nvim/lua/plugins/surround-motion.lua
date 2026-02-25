@@ -18,35 +18,60 @@ return {
   },
   {
     "kylechui/nvim-surround",
-    version = "*", -- Use for stability; omit to use `main` branch for the latest features
+    version = "*",
     event = "VeryLazy",
     config = function()
-      --[[
-        -- nvim-surround operations:
-        -- add - ys
-        -- change - cs
-        -- delete - ds
-        --]]
+      -- 1. Disable all default v4 mappings so they don't conflict with yours
+      vim.g.nvim_surround_no_insert_mappings = true
+      vim.g.nvim_surround_no_normal_mappings = true
+      vim.g.nvim_surround_no_visual_mappings = true
+
+      -- 2. Setup with your non-keymap options
       require("nvim-surround").setup({
-        keymaps = {
-          insert = "<C-g>s", -- insert char between text
-          insert_line = "<C-g>S", -- insert char above/below
-          normal = "ys", -- add surrounding pair with motion
-          normal_cur = "yss", -- add surrounding pair with motion, on this line
-          normal_line = "yT", -- add surrounding pair with motion, on new line
-          normal_cur_line = "ySS", -- add surrounding pair with motion, on this line
-          visual = "S", -- surround visual selection
-          visual_line = "gS", -- surround visual line
-          delete = "ds", -- delete surrounding pair
-          change = "cs", -- change surrounding pair with motion
-          change_line = "cS", -- change surrounding pair with motion, on this line
-        },
-        -- aliases could mess up bracket pair map
         highlight = {
-          duration = 0,
+          duration = 0, -- Matching your existing config
         },
-        move_cursor = "begin",
       })
+
+      -- 3. Define the exact mappings from your previous config
+      local set = vim.keymap.set
+
+      -- Normal Mode
+      set("n", "ys", "<Plug>(nvim-surround-normal)", { desc = "Add surrounding pair" })
+      set("n", "yss", "<Plug>(nvim-surround-normal-cur)", { desc = "Add surrounding pair (line)" })
+      set(
+        "n",
+        "yT",
+        "<Plug>(nvim-surround-normal-line)",
+        { desc = "Add surrounding pair (new line)" }
+      )
+      set(
+        "n",
+        "ySS",
+        "<Plug>(nvim-surround-normal-cur-line)",
+        { desc = "Add surrounding pair (cur line new line)" }
+      )
+      set("n", "ds", "<Plug>(nvim-surround-delete)", { desc = "Delete surrounding pair" })
+      set("n", "cs", "<Plug>(nvim-surround-change)", { desc = "Change surrounding pair" })
+      set(
+        "n",
+        "cS",
+        "<Plug>(nvim-surround-change-line)",
+        { desc = "Change surrounding pair (line)" }
+      )
+
+      -- Visual Mode (using 'x' for visual mode)
+      set("x", "S", "<Plug>(nvim-surround-visual)", { desc = "Surround selection" })
+      set("x", "gS", "<Plug>(nvim-surround-visual-line)", { desc = "Surround selection (line)" })
+
+      -- Insert Mode
+      set("i", "<C-g>s", "<Plug>(nvim-surround-insert)", { desc = "Insert surrounding pair" })
+      set(
+        "i",
+        "<C-g>S",
+        "<Plug>(nvim-surround-insert-line)",
+        { desc = "Insert surrounding pair (line)" }
+      )
     end,
   },
 }
