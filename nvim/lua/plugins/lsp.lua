@@ -983,6 +983,23 @@ return {
 
         require("mason-lspconfig").setup(mason_opts)
 
+        -- ============================================================
+        -- FORCE NAVIC ATTACH TO ALL LSPs
+        -- This ensures nvim-navic gets notified even if the LSP attaches
+        -- before navic is fully initialized
+        -- ============================================================
+        vim.api.nvim_create_autocmd("LspAttach", {
+          callback = function(args)
+            local client = vim.lsp.get_client_by_id(args.data.client_id)
+            if client and client.server_capabilities.documentSymbolProvider then
+              local navic_ok, navic = pcall(require, "nvim-navic")
+              if navic_ok then
+                navic.attach(client, args.buf)
+              end
+            end
+          end,
+        })
+
         -- Configure diagnostics to show virtual text
         -- Use virtual text as usual
         vim.diagnostic.config({

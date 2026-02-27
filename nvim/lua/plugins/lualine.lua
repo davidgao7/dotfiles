@@ -25,7 +25,20 @@ end
 return {
   {
     "nvim-lualine/lualine.nvim",
-    dependencies = { "nvim-tree/nvim-web-devicons" },
+    dependencies = {
+      "nvim-tree/nvim-web-devicons",
+      {
+        "SmiteshP/nvim-navic",
+        { "neovim/nvim-lspconfig" },
+        opts = {
+          lsp = {
+            auto_attach = true, -- Automatically attach to every LSP for the current buffer
+          },
+          highlight = true, -- Enable colors for the icons and text
+          separator = " > ", -- Consistent with standard breadcrumb styles
+        },
+      },
+    },
     config = function()
       -- Eviline config for lualine
       -- Author: shadmansaleh
@@ -59,6 +72,10 @@ return {
           local filepath = vim.fn.expand("%:p:h")
           local gitdir = vim.fn.finddir(".git", filepath .. ";")
           return gitdir and #gitdir > 0 and #gitdir < #filepath
+        end,
+        navic_available = function()
+          local ok, navic = pcall(require, "nvim-navic")
+          return ok and navic.is_available()
         end,
       }
 
@@ -262,6 +279,23 @@ return {
         color = { fg = "#ffffff", gui = "bold" },
       })
       -- Add components to right sections
+
+      -- ============================================================
+      -- NAVIC BREADCRUMBS (right side with truncation)
+      -- ============================================================
+      ins_right({
+        "navic",
+        color_correction = "dynamic",
+        -- Truncate long paths to prevent statusline overflow
+        fmt = function(res)
+          if res and #res > 40 then
+            return "…" .. string.sub(res, -37)
+          end
+          return res
+        end,
+        cond = conditions.navic_available,
+        color = { fg = colors.violet, gui = "bold" },
+      })
 
       ins_right({
         "o:encoding", -- option component same as &encoding in viml
