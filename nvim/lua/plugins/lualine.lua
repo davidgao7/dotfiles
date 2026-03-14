@@ -288,7 +288,7 @@ return {
         color_correction = "dynamic",
         -- Truncate long paths to prevent statusline overflow
         fmt = function(res)
-          if res and #res > 40 then
+          if res and #res > 80 then
             return "…" .. string.sub(res, -37)
           end
           return res
