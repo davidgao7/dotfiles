@@ -87,6 +87,7 @@ return {
           }
         end,
         default_integrations = true,
+        auto_integrations = true, -- in lazy.nvim, now catppuccin can auto detect installed plugins and enable their respective integrations
         integrations = {
           blink_cmp = {
             style = "bordered",
