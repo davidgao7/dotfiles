@@ -66,11 +66,18 @@ vim.api.nvim_create_autocmd("TextYankPost", {
   end,
 })
 
--- add react filetype
 vim.filetype.add({
+  -- add react filetype
   extension = {
     jsx = "javascriptreact",
     tsx = "typescriptreact",
+  },
+  -- add various docker compose filetype
+  filename = {
+    ["docker-compose.yaml"] = "yaml.docker-compose",
+    ["docker-compose.yml"] = "yaml.docker-compose",
+    ["compose.yaml"] = "yaml.docker-compose",
+    ["compose.yml"] = "yaml.docker-compose",
   },
 })
 
