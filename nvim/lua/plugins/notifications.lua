@@ -34,25 +34,15 @@ return {
           },
         },
         lsp = {
+          -- Completely disable Noice for hover and signature to let Neko UI win
+          hover = { enabled = false },
+          signature = { enabled = false },
+          -- Also disable the documentation view just in case
+          documentation = { enabled = false },
+          -- Use default Neovim markdown formatting
           override = {
-            ["vim.lsp.util.convert_input_to_markdown_lines"] = true,
-            ["vim.lsp.util.stylize_markdown"] = true,
-          },
-          documentation = {
-            -- 💡 FORCE this to use your hover view
-            view = "hover",
-            opts = {
-              border = {
-                style = "rounded",
-              },
-              win_options = {
-                winblend = 0,
-                winhighlight = {
-                  Normal = "NormalFloat",
-                  FloatBorder = "LspHoverBorder",
-                },
-              },
-            },
+            ["vim.lsp.util.convert_input_to_markdown_lines"] = false,
+            ["vim.lsp.util.stylize_markdown"] = false,
           },
         },
         presets = {
@@ -60,24 +50,23 @@ return {
           command_palette = true,
           long_message_to_split = true,
           inc_rename = true,
-          lsp_doc_border = true,
+          -- lsp_doc_border = true, -- DISABLED: This was hijacking the border!
         },
         views = {
-          hover = {
-            border = {
-              style = "rounded", -- Options: "single", "double", "rounded", "solid"
-            },
-            position = { row = 2, col = 2 },
-            win_options = {
-              winblend = 0, -- Ensure transparency is disabled
-              winhighlight = {
-                -- This links the internal FloatBorder group to your custom Peach color
-                FloatBorder = "LspHoverBorder",
-                -- Optional: Link Normal background to your solid background group
-                Normal = "NormalFloat",
-              },
-            },
-          },
+          -- DISABLED: Let global vim.lsp.handlers take control
+          -- hover = {
+          --   border = {
+          --     style = "rounded",
+          --   },
+          --   position = { row = 2, col = 2 },
+          --   win_options = {
+          --     winblend = 0,
+          --     winhighlight = {
+          --       FloatBorder = "LspHoverBorder",
+          --       Normal = "NormalFloat",
+          --     },
+          --   },
+          -- },
           history = {
             backend = "fzf_lua",
           },

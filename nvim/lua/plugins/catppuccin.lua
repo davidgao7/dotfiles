@@ -52,12 +52,12 @@ return {
         custom_highlights = function(colors)
           return {
             -- Float windows
-            NormalFloat = { fg = colors.text, bg = "#1e1e2e" },
-            FloatBorder = { fg = colors.surface2, bg = "#1e1e2e" },
+            NormalFloat = { fg = colors.text, bg = "#1e1e2e", blend = 0 },
+            FloatBorder = { fg = colors.surface2, bg = "#1e1e2e", blend = 0 },
             -- LspInfoBorder = { fg = colors.blue, bg = "#1e1e2e" },
 
             -- to include the background color
-            LspHoverBorder = { fg = colors.peach, bg = "#1e1e2e", bold = true },
+            LspHoverBorder = { fg = colors.peach, bg = "#1e1e2e", bold = true, blend = 0 },
 
             -- Ensure Noice's specific popup groups are also solid
             NoicePopup = { bg = "#1e1e2e" },
@@ -73,9 +73,12 @@ return {
             markdownItalic = { fg = colors.pink, italic = true },
             markdownH1 = { fg = colors.red, bold = true },
             markdownH2 = { fg = colors.green, bold = true },
+            markdownH3 = { fg = colors.blue, bold = true },
+            markdownH4 = { fg = colors.mauve, bold = true },
             markdownLinkText = { fg = colors.blue, underline = true },
+            markdownUrl = { fg = colors.teal, underline = true },
 
-            -- Treesitter markdown
+            -- Treesitter markdown (more comprehensive)
             ["@markup.raw.block"] = { fg = colors.teal, bg = "#1e1e2e" },
             ["@markup.raw.inline"] = { fg = colors.teal, bg = "#1e1e2e" },
             ["@markup.raw.block.markdown"] = { fg = colors.teal, bg = "#1e1e2e" },
@@ -84,6 +87,14 @@ return {
             ["@markup.italic"] = { fg = colors.pink, italic = true },
             ["@markup.link.label"] = { fg = colors.blue, underline = true },
             ["@markup.link.url"] = { fg = colors.teal, underline = true },
+            ["@markup.heading.1.markdown"] = { fg = colors.red, bold = true },
+            ["@markup.heading.2.markdown"] = { fg = colors.green, bold = true },
+            ["@markup.heading.3.markdown"] = { fg = colors.blue, bold = true },
+            ["@markup.heading.4.markdown"] = { fg = colors.mauve, bold = true },
+            ["@markup.heading.5.markdown"] = { fg = colors.peach, bold = true },
+            ["@markup.heading.6.markdown"] = { fg = colors.subtext0, bold = true },
+            ["@markup.list.markdown"] = { fg = colors.text },
+            ["@markup.quote.markdown"] = { fg = colors.subtext1, italic = true },
           }
         end,
         default_integrations = true,

@@ -1,3 +1,70 @@
+-- 1. Define the Neko UI first
+local neko_ui = {
+  border = {
+    { "╭", "LspHoverBorder" },
+    { "─", "LspHoverBorder" },
+    { "╮", "LspHoverBorder" },
+    { "│", "LspHoverBorder" },
+    { "╯", "LspHoverBorder" },
+    { "─", "LspHoverBorder" },
+    { "╰", "LspHoverBorder" },
+    { "│", "LspHoverBorder" },
+  },
+  title = " ฅ^•ﻌ•^ฅ ",
+  title_pos = "center",
+  -- Ensure proper window highlighting for borders and content
+  winhighlight = "FloatBorder:LspHoverBorder,Normal:NormalFloat,EndOfBuffer:NormalFloat",
+}
+
+-- REGISTER GLOBAL HANDLERS: Apply neko_ui to all LSP hover/signature calls
+-- Replacement for deprecated vim.lsp.with
+vim.lsp.handlers["textDocument/hover"] = function(err, result, ctx, config)
+  config = vim.tbl_deep_extend("force", config or {}, neko_ui)
+  return vim.lsp.handlers.hover(err, result, ctx, config)
+end
+
+vim.lsp.handlers["textDocument/signatureHelp"] = function(err, result, ctx, config)
+  config = vim.tbl_deep_extend("force", config or {}, neko_ui)
+  return vim.lsp.handlers.signature_help(err, result, ctx, config)
+end
+
+-- 2. Define a basic on_attach if it's not imported
+local on_attach = function(client, bufnr)
+  -- FORCE NEKO UI FOR HOVER
+  vim.keymap.set("n", "K", function()
+    vim.lsp.buf.hover(neko_ui)
+  end, { buffer = bufnr, desc = "LSP Neko Hover" })
+
+  -- FORCE NEKO UI FOR SIGNATURE HELP
+  vim.keymap.set("i", "<C-k>", function()
+    vim.lsp.buf.signature_help(neko_ui)
+  end, { buffer = bufnr, desc = "LSP Neko Signature Help" })
+
+  -- This ensures your breadcrumbs attach
+  local navic_ok, navic = pcall(require, "nvim-navic")
+  if navic_ok and client.server_capabilities.documentSymbolProvider then
+    navic.attach(client, bufnr)
+  end
+end
+
+-- 3. Capability function with UTF-16 fix
+local function get_caps()
+  local capabilities = vim.lsp.protocol.make_client_capabilities()
+  local ok, blink = pcall(require, "blink.cmp")
+  if ok then
+    capabilities = vim.tbl_deep_extend("force", capabilities, blink.get_lsp_capabilities())
+  end
+
+  -- Force UTF-16 for all servers to resolve the Position Encodings warning
+  -- Use tbl_deep_extend to avoid the 'inject-field' warning
+  return vim.tbl_deep_extend("force", capabilities, {
+    offsetEncoding = { "utf-16" },
+    general = {
+      positionEncodings = { "utf-16" },
+    },
+  })
+end
+
 local clangd_ext_opts = {
   ast = {
     --These require codicons (https://github.com/microsoft/vscode-codicons)
@@ -99,6 +166,9 @@ local completion_menu_highlight_groups = {
   BlinkCmpKindDuplicateIssue = { fg = "#fab387" }, -- peach
   BlinkCmpKindLockedIssue = { fg = "#f38ba8" }, -- pink
 }
+
+-- DEPRECATED: Using neko_ui as the single source of truth
+-- local hover_ui = ...
 
 return {
 
@@ -811,7 +881,8 @@ return {
       opts = {
         ensure_installed = {
           "lua_ls",
-          "pyright",
+          --"pyright",
+          "basedpyright",
           "ruff",
           "clangd",
           "gopls",
@@ -834,6 +905,7 @@ return {
         -- lsp config all in one place
         --
         -- Only initialize mason once, I've already initialize mason in the init function
+
         local mason_opts = vim.tbl_deep_extend("force", opts, {
 
           -- if I configure lsp setting here in handlers, it will apply my settings,
@@ -842,9 +914,11 @@ return {
 
           handlers = {
             function(server_name)
-              require("lspconfig")[server_name].setup({})
+              require("lspconfig")[server_name].setup({
+                capabilities = get_caps(), -- Use the function here
+                on_attach = on_attach,
+              })
             end,
-
             -- Overwrite customized lsp
             -- This is MUCH cleaner, no need to find lsp config else where, everything
             -- done here
@@ -852,6 +926,8 @@ return {
             -- lua-ls
             ["lua_ls"] = function()
               require("lspconfig").lua_ls.setup({
+                capabilities = get_caps(),
+                on_attach = on_attach,
                 settings = {
                   Lua = {
                     runtime = {
@@ -873,11 +949,22 @@ return {
             end,
 
             -- Pyright for type checking
-            ["pyright"] = function()
-              require("lspconfig").pyright.setup({
+            ["basedpyright"] = function()
+              require("lspconfig").basedpyright.setup({
+                capabilities = get_caps(),
                 settings = {
-                  pyright = {
+                  basedpyright = {
                     disableOrganizeImports = true, -- Delegate import organization to Ruff
+                    analysis = {
+                      -- This specifically helps with the "useless Any" hovers
+                      typeCheckingMode = "standard",
+                      diagnosticMode = "openFilesOnly",
+                      useLibraryCodeForTypes = true,
+                      -- Enable these for better hover info on MLX/Apple Silicon logic
+                      diagnosticSeverityOverrides = {
+                        reportAny = false, -- Standard pyright is too noisy here
+                      },
+                    },
                   },
                   python = {
                     analysis = {
@@ -904,6 +991,7 @@ return {
                     end,
                     { desc = "Organize Imports (Pyright)" }
                   )
+                  on_attach(client, bufnr)
                 end,
               })
             end,
@@ -914,7 +1002,10 @@ return {
                 on_attach = function(client, bufnr)
                   -- Disable hover to prevent conflicts with Pyright
                   client.server_capabilities.hoverProvider = false
+                  on_attach(client, bufnr)
                 end,
+                capabilities = get_caps(),
+                offsetEncoding = "utf-16",
                 init_options = {
                   settings = {
                     -- Optional: specify a custom configuration file
@@ -927,8 +1018,10 @@ return {
             end,
 
             -- TypeScript/JavaScript Language Server
-            ["typescript-language-server"] = function()
+            ["tsserver"] = function()
               require("lspconfig").tsserver.setup({
+                capabilities = get_caps(),
+                on_attach = on_attach,
                 -- Use tsserver setup for broader filetype coverage
                 filetypes = { "javascript", "javascriptreact", "typescript", "typescriptreact" },
                 settings = {
@@ -953,6 +1046,8 @@ return {
             -- JSON Language Server
             ["jsonls"] = function()
               require("lspconfig").jsonls.setup({
+                capabilities = get_caps(),
+                on_attach = on_attach,
                 settings = {
                   json = {
                     schemas = require("schemastore").get_schemas(), -- Requires 'b0o/schemastore.nvim'
@@ -967,6 +1062,8 @@ return {
             -- clangd with fixed boolean arguments
             ["clangd"] = function()
               require("lspconfig").clangd.setup({
+                capabilities = get_caps(),
+                on_attach = on_attach,
                 cmd = {
                   "clangd",
                   "--background-index",
@@ -975,6 +1072,24 @@ return {
                   "--completion-style=detailed",
                   "--function-arg-placeholders=true",
                   "--fallback-style=llvm",
+                },
+              })
+            end,
+
+            -- synk large log file fix
+            ["snyk_ls"] = function()
+              require("lspconfig").snyk_ls.setup({
+                capabilities = get_caps(),
+                on_attach = on_attach,
+                root_dir = require("lspconfig").util.root_pattern(".git", ".snyk"),
+                init_options = {
+                  -- Disable Snyk Code if you only need Open Source/IAC scans to save memory
+                  activateSnykCode = "false",
+                  integrationName = "Neovim",
+                },
+                -- Prevent Snyk from attaching to every single buffer automatically
+                flags = {
+                  debounce_text_changes = 500,
                 },
               })
             end,
@@ -1008,12 +1123,13 @@ return {
             spacing = 2,
             prefix = "●",
           },
-          float = {
-            border = "rounded",
-            source = "if_many",
-            header = "Diagnostics",
-            focusable = false,
-          },
+        float = {
+          border = neko_ui.border,
+          source = "if_many",
+          header = "Diagnostics",
+          focusable = false,
+          winhighlight = "FloatBorder:LspHoverBorder,Normal:NormalFloat,EndOfBuffer:NormalFloat",
+        },
           update_in_insert = false,
           severity_sort = true,
         })
@@ -1021,9 +1137,8 @@ return {
     },
     -- Show diagnostics manually on Q
     vim.keymap.set("n", "Q", function()
-      vim.diagnostic.open_float(nil, {
+      vim.diagnostic.open_float(nil, vim.tbl_deep_extend("force", {
         focusable = true, -- allow user interaction
-        border = "rounded",
         source = "if_many",
         header = "Diagnostics",
         format = function(diagnostic)
@@ -1037,7 +1152,7 @@ return {
             severity
           )
         end,
-      })
+      }, neko_ui))
     end, { desc = "Show diagnostics at cursor" }),
     vim.keymap.set("n", "gK", function()
       local new_config = not vim.diagnostic.config().virtual_lines

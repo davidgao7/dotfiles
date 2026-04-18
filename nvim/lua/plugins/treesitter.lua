@@ -1,162 +1,95 @@
-local treesitter_opts = {
-  highlight = {
-    enable = true,
-    additional_vim_regex_highlighting = false,
-  },
-  indent = { enable = true },
-  ensure_installed = {
-    "bash",
-    "c",
-    "cmake",
-    "diff",
-    "html",
-    "javascript",
-    "jsdoc",
-    "json",
-    "jsonc",
-    "lua",
-    "luadoc",
-    "luap",
-    "markdown",
-    "markdown_inline",
-    "printf",
-    "python",
-    "query",
-    "regex",
-    "toml",
-    "tsx",
-    "typescript",
-    "vim",
-    "vimdoc",
-    "xml",
-    "yaml",
-    "rust",
-    "ron",
-  },
-  incremental_selection = {
-    enable = true,
-    keymaps = {
-      init_selection = "<leader> ",
-      node_incremental = "<leader> ",
-      scope_incremental = "<leader>q",
-      node_decremental = "<BS>",
-    },
-  },
-  textobjects = {
-    select = {
-      enable = true,
-      lookahead = true,
-      keymaps = {
-        ["il"] = "@loop.inner",
-        ["al"] = "@loop.outer",
-        ["if"] = "@function.inner",
-        ["af"] = "@function.outer",
-        ["ic"] = "@class.inner",
-        ["ac"] = "@class.outer",
-        ["ii"] = "@conditional.inner",
-        ["ai"] = "@conditional.outer",
-        ["ib"] = "@block.inner",
-        ["ab"] = "@block.outer",
-        ["iv"] = "@parameter.inner",
-        ["av"] = "@parameter.outer",
-      },
-    },
-    move = {
-      enable = true,
-      set_jumps = true,
-      goto_next_start = {
-        ["]f"] = "@function.outer",
-        ["]c"] = "@class.outer",
-        ["]l"] = "@loop.outer",
-        ["]i"] = "@conditional.outer",
-        ["]b"] = "@block.outer",
-        ["]p"] = "@parameter.outer",
-      },
-      goto_next_end = {
-        ["]F"] = "@function.outer",
-        ["]C"] = "@class.outer",
-        ["]L"] = "@loop.outer",
-        ["]I"] = "@conditional.outer",
-        ["]B"] = "@block.outer",
-        ["]P"] = "@parameter.outer",
-      },
-      goto_previous_start = {
-        ["[f"] = "@function.outer",
-        ["[c"] = "@class.outer",
-        ["[l"] = "@loop.outer",
-        ["[i"] = "@conditional.outer",
-        ["[b"] = "@block.outer",
-        ["[p"] = "@parameter.outer",
-      },
-      goto_previous_end = {
-        ["[F"] = "@function.outer",
-        ["[C"] = "@class.outer",
-        ["[L"] = "@loop.outer",
-        ["[I"] = "@conditional.outer",
-        ["[B"] = "@block.outer",
-        ["[P"] = "@parameter.outer",
-      },
-    },
-    swap = {
-      enable = true,
-      swap_next = { ["<leader>sp"] = "@parameter.inner" },
-      swap_previous = { ["<leader>sP"] = "@parameter.inner" },
-    },
-    lsp_interop = {
-      enable = true,
-      peek_definition_code = {
-        ["<leader>df"] = "@function.outer",
-        ["<leader>dF"] = "@class.outer",
-      },
-    },
-  },
+local ensure_installed = {
+  "bash",
+  "c",
+  "cmake",
+  "diff",
+  "html",
+  "javascript",
+  "jsdoc",
+  "json",
+  "lua",
+  "luadoc",
+  "luap",
+  "markdown",
+  "markdown_inline",
+  "printf",
+  "python",
+  "query",
+  "regex",
+  "toml",
+  "tsx",
+  "typescript",
+  "vim",
+  "vimdoc",
+  "xml",
+  "yaml",
+  "rust",
+  "ron",
 }
 
 return {
   {
     "nvim-treesitter/nvim-treesitter",
-    -- 1. FORCE STABLE BRANCH
-    branch = "master",
+    branch = "main",
     build = ":TSUpdate",
-    dependencies = {
-      "nvim-treesitter/nvim-treesitter-textobjects",
-    },
-    -- 2. DISABLE LAZY LOADING to prevent race conditions during startup
     lazy = false,
-    init = function(plugin)
-      -- This ensures queries are available even if other plugins load weirdly
-      require("lazy.core.loader").add_to_rtp(plugin)
-      require("nvim-treesitter.query_predicates")
-    end,
-    cmd = { "TSUpdateSync", "TSUpdate", "TSInstall" },
-    opts = treesitter_opts,
-    config = function(_, opts)
-      -- 💡 FORCE LOAD the extension before calling setup
-      pcall(require, "nvim-treesitter-textobjects")
-      -- 3. STANDARD SETUP (Restores configs module)
-      require("nvim-treesitter.configs").setup(opts)
-    end,
-  },
-
-  {
-    "windwp/nvim-ts-autotag",
-    -- 5. FIX EVENT ERROR
-    event = { "BufReadPre", "BufNewFile" },
-    opts = {},
-  },
-
-  {
-    "nvim-treesitter/nvim-treesitter-context",
-    event = "BufReadPost",
+    -- The new plugin exports setup() from the top-level module
+    main = "nvim-treesitter",
     opts = {
-      enable = true,
-      max_lines = 5, -- Limits the context to 3 lines (good for small screens)
-      trim_scope = "outer", -- Discards outer context if lines > max_lines
-      min_window_height = 0,
-      line_numbers = true,
-      multiline_threshold = 20,
-      mode = "cursor",
-      zindex = 20, -- Ensures it sits above other elements
+      highlight = { enable = true },
+      indent = { enable = true },
+      -- Directory to install parsers (0.12 pattern)
+      install_dir = vim.fn.stdpath("data") .. "/site",
     },
+    init = function()
+      -- Enable highlighting and indentation via autocmd (Neovim 0.12 pattern)
+      vim.api.nvim_create_autocmd("FileType", {
+        callback = function()
+          pcall(vim.treesitter.start)
+          -- Enable treesitter-based indentation
+          local ok, ts = pcall(require, "nvim-treesitter")
+          if ok and ts.indentexpr then
+            vim.bo.indentexpr = "v:lua.require'nvim-treesitter'.indentexpr()"
+          end
+        end,
+      })
+    end,
+    config = function(_, opts)
+      local ts = require("nvim-treesitter")
+      
+      -- Manual installation of missing parsers
+      local ts_config = require("nvim-treesitter.config")
+      local already_installed = ts_config.get_installed and ts_config.get_installed() or {}
+      local to_install = {}
+      for _, p in ipairs(ensure_installed) do
+        if not vim.tbl_contains(already_installed, p) then
+          table.insert(to_install, p)
+        end
+      end
+      
+      if #to_install > 0 then
+        ts.install(to_install)
+      end
+
+      ts.setup(opts)
+    end,
   },
+
+  -- Temporarily disabled due to incompatibility with Treesitter main branch rewrite
+  -- {
+  --   "windwp/nvim-ts-autotag",
+  --   event = { "BufReadPre", "BufNewFile" },
+  --   opts = {},
+  -- },
+
+  -- Temporarily disabled due to incompatibility with Treesitter main branch rewrite
+  -- {
+  --   "nvim-treesitter/nvim-treesitter-context",
+  --   event = "BufReadPost",
+  --   opts = {
+  --     enable = true,
+  --     max_lines = 5,
+  --     zindex = 20,
+  --   },
+  -- },
 }

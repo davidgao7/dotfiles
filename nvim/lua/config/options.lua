@@ -229,10 +229,6 @@ else
   vim.g.netrw_browsex_viewer = "cmd.exe /c start"
 end
 
-vim.keymap.set("n", "K", function()
-  vim.lsp.buf.hover({ border = "rounded" })
-end, { desc = "LSP Hover" })
-
-vim.keymap.set("i", "<C-k>", function()
-  vim.lsp.buf.signature_help({ border = "rounded" })
-end, { desc = "LSP Signature Help" })
+-- REMOVED: Let buffer-local keymap in lsp.lua on_attach take precedence
+-- This allows the neko_ui to be passed properly via the on_attach function
+-- vim.keymap.set("i", "<C-k>", vim.lsp.buf.signature_help, { desc = "LSP Signature Help" })
