@@ -5,7 +5,9 @@ font-family = PingFang SC
 font-family = Noto Sans CJK SC
 
 font-size = 12
-font-feature = "-calt", "-liga", "-dlig"
+font-feature = "-calt"
+font-feature = "-liga"
+font-feature = "-dlig"
 
 minimum-contrast = 0
 cursor-style = block
@@ -13,22 +15,21 @@ cursor-opacity = 0.5
 cursor-style-blink = false
 mouse-hide-while-typing = true
 
-background-opacity = 0.95
-background-blur-radius = 20
+background-opacity = 0.8
 confirm-close-surface = false
 auto-update = check
 auto-update-channel = stable
 
-shell-integration = none
+shell-integration = zsh
 shell-integration-features = cursor,sudo,title
 
 confirm-close-surface = false
 
 clipboard-trim-trailing-spaces = false
 
-window-theme = dark
+image-storage-limit = 1073741824
 
-macos-option-as-alt = right
+window-theme = dark
 
 background = #1e1e2e
 foreground = #cdd6f4

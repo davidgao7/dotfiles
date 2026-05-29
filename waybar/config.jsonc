@@ -1,7 +1,7 @@
 {
   "layer": "bottom",
   "position": "top",
-  "height": 40,
+  "height": 41,
   "spacing": 2,
   "exclusive": true,
   "gtk-layer-shell": true,
@@ -9,18 +9,17 @@
   "fixed-center": true,
   "modules-left": [
     "hyprland/workspaces",
-    "hyprland/window"
   ],
   "modules-center": [
     "mpris"
   ],
   "modules-right": [
     "cpu",
+    "custom/gpu",
     "memory",
     "pulseaudio",
     "clock",
     "clock#simpleclock",
-    "tray",
     "custom/notification",
     "custom/power",
   ],
@@ -48,7 +47,7 @@
     },
   },
   "hyprland/workspaces": {
-    "format": "{id}{icon}",
+    "format": "{id} {icon}",
     "on-click": "activate",
     "all-outputs": true,
     "format-icons": {
@@ -62,10 +61,6 @@
   },
   "hyprland/window": {
     "format": "{title}",
-  },
-  "tray": {
-    "show-passive-items": true,
-    "spacing": 10,
   },
   "clock#simpleclock": {
     "tooltip": false,
@@ -91,6 +86,14 @@
     "format": " {usage}%",
     "tooltip": true,
     "interval": 1,
+  },
+"custom/gpu": {
+    "format": "󰾲 GPU: {}%",
+    "exec": "/home/davidgao/.config/waybar/gpu_status.sh",
+    "return-type": "json",
+    "interval": 2,
+    "on-click": "ghostty -e nvtop",
+    "tooltip": true,
   },
   "memory": {
     "format": " {used:0.1f}Gi",

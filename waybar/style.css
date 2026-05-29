@@ -56,6 +56,7 @@ window#waybar.hidden {
 #custom-spotify,
 #custom-notification,
 #cpu,
+#custom-gpu,
 #tray,
 #memory,
 #window,
@@ -86,6 +87,10 @@ window#waybar.empty #window {
 
 #cpu {
   color: #94e2d5;
+}
+
+#custom-gpu {
+  color: #cdd6f4;
 }
 
 #memory {

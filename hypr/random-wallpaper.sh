@@ -21,6 +21,6 @@ TRANSITIONS=("simple" "left" "right" "top" "bottom" "center" "outer" "any" "rand
 RANDOM_TRANSITION="${TRANSITIONS[$RANDOM % ${#TRANSITIONS[@]}]}"
 echo "Selected transition: $RANDOM_TRANSITION" >>"$LOG_FILE"
 
-/usr/bin/swww img "$RANDOM_WALLPAPER" --transition-type "$RANDOM_TRANSITION"
+/usr/bin/awww img "$RANDOM_WALLPAPER" --transition-type "$RANDOM_TRANSITION"
 
 echo "Finished script." >>"$LOG_FILE"
