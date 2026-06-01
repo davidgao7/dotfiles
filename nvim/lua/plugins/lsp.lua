@@ -139,32 +139,32 @@ local blink_kind_icons_set_one = {
 }
 
 local completion_menu_highlight_groups = {
-  BlinkCmpKindFunction = { fg = "#89b4fa" }, -- soft blue
-  BlinkCmpKindMethod = { fg = "#89b4fa" }, -- soft blue (shared)
-  BlinkCmpKindVariable = { fg = "#f9e2af" }, -- soft yellow
-  BlinkCmpKindClass = { fg = "#f38ba8" }, -- soft pink
-  BlinkCmpKindInterface = { fg = "#a6e3a1" }, -- soft green
-  BlinkCmpKindModule = { fg = "#94e2d5" }, -- soft teal
-  BlinkCmpKindKeyword = { fg = "#cba6f7" }, -- soft mauve
-  BlinkCmpKindField = { fg = "#fab387" }, -- soft peach
-  BlinkCmpKindProperty = { fg = "#f2cdcd" }, -- rosewater
-  BlinkCmpKindEnum = { fg = "#fab387" }, -- peach
-  BlinkCmpKindSnippet = { fg = "#f5c2e7" }, -- pink
-  BlinkCmpKindFile = { fg = "#cdd6f4" }, -- white
-  BlinkCmpKindFolder = { fg = "#b4befe" }, -- pastel blue
-  BlinkCmpKindEvent = { fg = "#f9e2af" }, -- yellow
-  BlinkCmpKindOperator = { fg = "#89b4fa" }, -- blue
-  BlinkCmpKindTypeParameter = { fg = "#f5c2e7" }, -- pink
-  BlinkCmpKindCopilot = { fg = "#94e2d5" }, -- teal (for Copilot suggestion)
-  BlinkCmpKindOpenPR = { fg = "#89dceb" }, -- cyan
-  BlinkCmpKindClosedPR = { fg = "#f38ba8" }, -- pink
-  BlinkCmpKindMergedPR = { fg = "#a6e3a1" }, -- green
-  BlinkCmpKindDraftPR = { fg = "#fab387" }, -- peach
-  BlinkCmpKindLockedPR = { fg = "#f38ba8" }, -- pink
-  BlinkCmpKindOpenIssue = { fg = "#89b4fa" }, -- blue
-  BlinkCmpKindClosedIssue = { fg = "#f38ba8" }, -- pink
+  BlinkCmpKindFunction = { fg = "#89b4fa" },       -- soft blue
+  BlinkCmpKindMethod = { fg = "#89b4fa" },         -- soft blue (shared)
+  BlinkCmpKindVariable = { fg = "#f9e2af" },       -- soft yellow
+  BlinkCmpKindClass = { fg = "#f38ba8" },          -- soft pink
+  BlinkCmpKindInterface = { fg = "#a6e3a1" },      -- soft green
+  BlinkCmpKindModule = { fg = "#94e2d5" },         -- soft teal
+  BlinkCmpKindKeyword = { fg = "#cba6f7" },        -- soft mauve
+  BlinkCmpKindField = { fg = "#fab387" },          -- soft peach
+  BlinkCmpKindProperty = { fg = "#f2cdcd" },       -- rosewater
+  BlinkCmpKindEnum = { fg = "#fab387" },           -- peach
+  BlinkCmpKindSnippet = { fg = "#f5c2e7" },        -- pink
+  BlinkCmpKindFile = { fg = "#cdd6f4" },           -- white
+  BlinkCmpKindFolder = { fg = "#b4befe" },         -- pastel blue
+  BlinkCmpKindEvent = { fg = "#f9e2af" },          -- yellow
+  BlinkCmpKindOperator = { fg = "#89b4fa" },       -- blue
+  BlinkCmpKindTypeParameter = { fg = "#f5c2e7" },  -- pink
+  BlinkCmpKindCopilot = { fg = "#94e2d5" },        -- teal (for Copilot suggestion)
+  BlinkCmpKindOpenPR = { fg = "#89dceb" },         -- cyan
+  BlinkCmpKindClosedPR = { fg = "#f38ba8" },       -- pink
+  BlinkCmpKindMergedPR = { fg = "#a6e3a1" },       -- green
+  BlinkCmpKindDraftPR = { fg = "#fab387" },        -- peach
+  BlinkCmpKindLockedPR = { fg = "#f38ba8" },       -- pink
+  BlinkCmpKindOpenIssue = { fg = "#89b4fa" },      -- blue
+  BlinkCmpKindClosedIssue = { fg = "#f38ba8" },    -- pink
   BlinkCmpKindDuplicateIssue = { fg = "#fab387" }, -- peach
-  BlinkCmpKindLockedIssue = { fg = "#f38ba8" }, -- pink
+  BlinkCmpKindLockedIssue = { fg = "#f38ba8" },    -- pink
 }
 
 -- DEPRECATED: Using neko_ui as the single source of truth
@@ -185,12 +185,12 @@ return {
       "moyiz/blink-emoji.nvim",
       "Kaiser-Yang/blink-cmp-git",
       "echasnovski/mini.icons",
-      "giuxtaposition/blink-cmp-copilot",
+      -- "giuxtaposition/blink-cmp-copilot",
       "disrupted/blink-cmp-conventional-commits",
       {
         "brenoprata10/nvim-highlight-colors",
         opts = {
-          render = "virtual", -- This automatically colors the virtual symbol
+          render = "virtual",                 -- This automatically colors the virtual symbol
           virtual_symbol = "■",
           virtual_symbol_position = "inline", -- places it right next to the color code
           virtual_symbol_prefix = "",
@@ -284,7 +284,8 @@ return {
           max_height = 10,
           border = "none",
           winblend = 0,
-          winhighlight = "Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
+          winhighlight =
+          "Normal:BlinkCmpMenu,FloatBorder:BlinkCmpMenuBorder,CursorLine:BlinkCmpMenuSelection,Search:None",
           -- Keep the cursor X lines away from the top/bottom of the window
           scrolloff = 2,
           -- Note that the gutter will be disabled when border ~= 'none'
@@ -314,9 +315,9 @@ return {
             -- Use treesitter to highlight the label text for the given list of sources
             treesitter = { "lsp" },
             columns = {
-              { "kind_icon" }, -- Displays the icon representing the kind of completion
-              { "label", "label_description", gap = 1 }, -- Shows the completion text and its description
-              { "source_name" }, -- Adds the source name to the menu
+              { "kind_icon" },                                -- Displays the icon representing the kind of completion
+              { "label",      "label_description", gap = 1 }, -- Shows the completion text and its description
+              { "source_name" },                              -- Adds the source name to the menu
             },
             components = {
               kind_icon = {
@@ -367,7 +368,7 @@ return {
                 end,
                 highlight = function(ctx)
                   return require("blink.cmp.completion.windows.render.tailwind").get_hl(ctx)
-                    or "PmenuKind" .. ctx.kind
+                      or "PmenuKind" .. ctx.kind
                 end,
               },
 
@@ -576,10 +577,10 @@ return {
           "path",
           "buffer",
           "emoji",
-          "avante_commands",
-          "avante_mentions",
-          "avante_files",
-          "copilot",
+          -- "avante_commands",
+          -- "avante_mentions",
+          -- "avante_files",
+          -- "copilot",
           "git",
           "conventional_commits",
         },
@@ -632,14 +633,14 @@ return {
               -- default to all visible buffers
               get_bufnrs = function()
                 return vim
-                  .iter(vim.api.nvim_list_wins())
-                  :map(function(win)
-                    return vim.api.nvim_win_get_buf(win)
-                  end)
-                  :filter(function(buf)
-                    return vim.bo[buf].buftype ~= "nofile"
-                  end)
-                  :totable()
+                    .iter(vim.api.nvim_list_wins())
+                    :map(function(win)
+                      return vim.api.nvim_win_get_buf(win)
+                    end)
+                    :filter(function(buf)
+                      return vim.bo[buf].buftype ~= "nofile"
+                    end)
+                    :totable()
               end,
             },
           },
@@ -655,49 +656,34 @@ return {
             opts = { insert = true }, -- Insert emoji (default) or complete its name
           },
           -- ai completion lowest priority
-          copilot = {
-            name = "copilot",
-            module = "blink-cmp-copilot",
-            score_offset = -100,
-            async = true,
-            opts = {
-              max_completions = 3,
-              ghost_text = false,
-            },
-            transform_items = function(_, items)
-              local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
-              local kind_idx = CompletionItemKind.Copilot or (#CompletionItemKind + 1)
-
-              -- If not assigned, manually set it
-              if not CompletionItemKind.Copilot then
-                CompletionItemKind[kind_idx] = "Copilot"
-                CompletionItemKind["Copilot"] = kind_idx
-              end
-
-              for _, item in ipairs(items) do
-                item.kind = kind_idx -- Assign the Copilot kind ID
-                item.kind_icon = "" -- Explicitly set the Copilot icon
-              end
-
-              return items
-            end,
-          },
+          -- copilot = {
+          --   name = "copilot",
+          --   module = "blink-cmp-copilot",
+          --   score_offset = -100,
+          --   async = true,
+          --   opts = {
+          --     max_completions = 3,
+          --     ghost_text = false,
+          --   },
+          --   transform_items = function(_, items)
+          --     local CompletionItemKind = require("blink.cmp.types").CompletionItemKind
+          --     local kind_idx = CompletionItemKind.Copilot or (#CompletionItemKind + 1)
+          --
+          --     -- If not assigned, manually set it
+          --     if not CompletionItemKind.Copilot then
+          --       CompletionItemKind[kind_idx] = "Copilot"
+          --       CompletionItemKind["Copilot"] = kind_idx
+          --     end
+          --
+          --     for _, item in ipairs(items) do
+          --       item.kind = kind_idx -- Assign the Copilot kind ID
+          --       item.kind_icon = "" -- Explicitly set the Copilot icon
+          --     end
+          --
+          --     return items
+          --   end,
+          -- },
           -- cursor like ai
-          avante_commands = {
-            name = "avante_commands",
-            module = "blink.compat.source",
-            opts = {},
-          },
-          avante_files = {
-            name = "avante_commands",
-            module = "blink.compat.source",
-            opts = {},
-          },
-          avante_mentions = {
-            name = "avante_mentions",
-            module = "blink.compat.source",
-            opts = {},
-          },
           git = {
             module = "blink-cmp-git",
             name = "Git",
@@ -780,7 +766,6 @@ return {
       for _, source in ipairs(opts.sources.compat or {}) do
         opts.sources.providers[source] = vim.tbl_deep_extend(
           "force",
-          { name = source, module = "blink.compat.source" },
           opts.sources.providers[source] or {}
         )
         if type(enabled) == "table" and not vim.tbl_contains(enabled, source) then
@@ -1123,13 +1108,13 @@ return {
             spacing = 2,
             prefix = "●",
           },
-        float = {
-          border = neko_ui.border,
-          source = "if_many",
-          header = "Diagnostics",
-          focusable = false,
-          winhighlight = "FloatBorder:LspHoverBorder,Normal:NormalFloat,EndOfBuffer:NormalFloat",
-        },
+          float = {
+            border = neko_ui.border,
+            source = "if_many",
+            header = "Diagnostics",
+            focusable = false,
+            winhighlight = "FloatBorder:LspHoverBorder,Normal:NormalFloat,EndOfBuffer:NormalFloat",
+          },
           update_in_insert = false,
           severity_sort = true,
         })
@@ -1188,7 +1173,7 @@ return {
       options = {
         custom_commentstring = function()
           return require("ts_context_commentstring.internal").calculate_commentstring()
-            or vim.bo.commentstring
+              or vim.bo.commentstring
         end,
       },
     },
@@ -1313,12 +1298,12 @@ return {
     "folke/snacks.nvim",
     opts = {
       inlay_hints = {
-        enabled = true, -- Enable inlay hints globally
-        debounce = 200, -- Debounce updates for performance
+        enabled = true,                   -- Enable inlay hints globally
+        debounce = 200,                   -- Debounce updates for performance
         display = {
-          highlight = "Comment", -- Color customization
-          virtual_text = true, -- Show as virtual text
-          priority = 100, -- Set hint priority
+          highlight = "Comment",          -- Color customization
+          virtual_text = true,            -- Show as virtual text
+          priority = 100,                 -- Set hint priority
         },
         exclude = { "markdown", "text" }, -- Exclude unwanted filetypes
       },

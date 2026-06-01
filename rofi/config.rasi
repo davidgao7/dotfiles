@@ -1,16 +1,35 @@
-configuration{
-    modi: "run,window,combi";
-    icon-theme: "Oranchelo";
-    show-icons: true;
-    terminal: "ghostty";
-    drun-display-format: "{icon} {name}";
-    location: 0;
-    disable-history: false;
-    hide-scrollbar: true;
-    display-combi: " 🖥️  All ";
-    display-run: " 🏃  Run ";
-    display-window: " 🪟  Window";
-    sidebar-mode: true;
+/*
+Theme: Cutie Colorful Rofi
+Original Author: iluvgirlswithglasses
+Source: https://github.com/iluvgirlswithglasses/cutie-colorful-rofi
+*/
+
+configuration {
+    modi:                       "drun,run,window";
+    show-icons:                 true;
+    display-drun:               "";
+    display-run:                "";
+    display-window:             "";
+    drun-display-format:        "{name}";
+    window-format:              "{w} · {c} · {t}";
 }
 
-@theme "catppuccin-mocha"
+@theme "ib"
+
+// color pallete
+* {
+    font:                        "SpaceMono Nerd Font 12";
+    background:                  #13121C;
+    background-alt:              #19182180;
+    foreground:                  #E7E2FF;
+    selected:                    #9DA7FF;
+    active:                      #FFA9E2;
+    urgent:                      #FF6E84;
+}
+
+// theme image (image height is set via y-padding)
+inputbar {
+    background-image:            url("images/flowers.jpg", width);
+    padding:                     75px 60px;
+}
+
