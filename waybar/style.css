@@ -55,6 +55,7 @@ window#waybar.hidden {
 #custom-power,
 #custom-spotify,
 #custom-notification,
+#custom-fcitx5,
 #cpu,
 #custom-gpu,
 #tray,
@@ -123,6 +124,22 @@ window#waybar.empty #window {
 
 #custom-power {
   color: #f38ba8;
+}
+
+#custom-fcitx5 {
+    font-weight: bold;
+}
+
+#custom-fcitx5.english {
+    color: #89b4fa;
+}
+
+#custom-fcitx5.rime {
+    color: #f38ba8;
+}
+
+#custom-fcitx5.unknown {
+    color: #f9e2af;
 }
 
 tooltip {
