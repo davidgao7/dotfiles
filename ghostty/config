@@ -21,7 +21,7 @@ auto-update = check
 auto-update-channel = stable
 
 shell-integration = zsh
-shell-integration-features = cursor,sudo,title
+shell-integration-features = sudo,title
 
 confirm-close-surface = false
 
