@@ -1,5 +1,6 @@
 {
   "$schema": "https://opencode.ai/config.json",
+  "lsp":true,
   "provider": {
     "ollama": {
       "npm": "@ai-sdk/openai-compatible",
@@ -23,6 +24,26 @@
       "models": {
         "mlx-community/GLM-4.7-Flash-4bit": {
           "name": "GLM-4.7-Flash-4bit"
+        }
+      }
+    },
+    "llamacpp": {
+      "npm": "@ai-sdk/openai-compatible",
+      "name": "llama.cpp (Qwen 35B-A3B Uncensored)",
+      "options": {
+        "baseURL": "http://localhost:8081/v1",
+        "apiKey": "not-needed"
+      },
+      "models": {
+        "qwen3.6-35b-a3b-uncensored": {
+          "name": "Qwen3.6-35B-A3B Uncensored (Q6_K_P, 29GB)",
+          "attachment": false,
+          "reasoning": false,
+          "tool_call": true,
+          "limit": {
+            "context": 8192,
+            "output": 4096
+          }
         }
       }
     }
@@ -63,6 +84,25 @@
     }
   },
   "agent": {
+
+    "security":{
+      // TODO: switch to opencode zen provider after spend all openrouter credits
+      "prompt": "{file:./prompts/security.txt}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "webfetch": true,
+        "grep": true,
+        "glob": true,
+        "list": true
+      },
+      "permission": {
+        "edit": "ask",
+        "bash": "ask",
+        "webfetch": "ask"
+      }
+    },
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
       // TODO: switch to opencode zen provider after spend all openrouter credits
@@ -94,6 +134,13 @@
         "bash": "ask",
         "webfetch": "ask"
       }
+    }
+  },
+  "mcp":{
+    "exa": {
+      "type": "remote",
+      "url":"https://mcp.exa.ai/mcp",
+      "enabled":true
     }
   }
 }
