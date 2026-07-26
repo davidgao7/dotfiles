@@ -41,10 +41,19 @@ local on_attach = function(client, bufnr)
   end, { buffer = bufnr, desc = "LSP Neko Signature Help" })
 
   -- This ensures your breadcrumbs attach
-  local navic_ok, navic = pcall(require, "nvim-navic")
-  if navic_ok and client.server_capabilities.documentSymbolProvider then
-    navic.attach(client, bufnr)
+  local function try_attach_navic(client, bufnr)
+    -- Skip navic for marksman inside the Obsidian vault (obsidian-ls handles it)
+    local obsidian_dir = "/home/davidgao/Downloads/personal-projects/obsidian-vault-main"
+    local buf_path = vim.api.nvim_buf_get_name(bufnr)
+    if client.name == "marksman" and buf_path:sub(1, #obsidian_dir) == obsidian_dir then
+      return
+    end
+    local navic_ok, navic = pcall(require, "nvim-navic")
+    if navic_ok and client.server_capabilities.documentSymbolProvider then
+      navic.attach(client, bufnr)
+    end
   end
+  try_attach_navic(client, bufnr)
 end
 
 -- 3. Capability function with UTF-16 fix
@@ -1078,6 +1087,20 @@ return {
                 },
               })
             end,
+
+            -- marksman: skip attachment inside the Obsidian vault (obsidian-ls handles it)
+            ["marksman"] = function()
+              local obsidian_dir = "/home/davidgao/Downloads/personal-projects/obsidian-vault-main"
+              local buf_path = vim.api.nvim_buf_get_name(0)
+              if buf_path:sub(1, #obsidian_dir) == obsidian_dir then
+                -- File is inside the Obsidian vault — don't start marksman
+                return
+              end
+              require("lspconfig").marksman.setup({
+                capabilities = get_caps(),
+                on_attach = on_attach,
+              })
+            end,
           },
         })
 
@@ -1092,6 +1115,12 @@ return {
           callback = function(args)
             local client = vim.lsp.get_client_by_id(args.data.client_id)
             if client and client.server_capabilities.documentSymbolProvider then
+              -- Skip navic for marksman inside the Obsidian vault
+              local obsidian_dir = "/home/davidgao/Downloads/personal-projects/obsidian-vault-main"
+              local buf_path = vim.api.nvim_buf_get_name(args.buf)
+              if client.name == "marksman" and buf_path:sub(1, #obsidian_dir) == obsidian_dir then
+                return
+              end
               local navic_ok, navic = pcall(require, "nvim-navic")
               if navic_ok then
                 navic.attach(client, args.buf)
