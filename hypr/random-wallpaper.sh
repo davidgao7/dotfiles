@@ -23,4 +23,7 @@ echo "Selected transition: $RANDOM_TRANSITION" >>"$LOG_FILE"
 
 /usr/bin/awww img "$RANDOM_WALLPAPER" --transition-type "$RANDOM_TRANSITION"
 
+# Regenerate swaync Material You colors from the new wallpaper
+/usr/bin/python3 /home/davidgao/.config/swaync/generate-style.py "$RANDOM_WALLPAPER" >> "$LOG_FILE" 2>&1 &
+
 echo "Finished script." >>"$LOG_FILE"
