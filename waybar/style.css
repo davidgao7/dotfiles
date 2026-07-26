@@ -1,7 +1,11 @@
+/* ─── Waybar style — layout + semantic color references ─── */
+/* Colors are auto-generated in colors.css by swaync/generate-style.py */
+@import url("colors.css");
+
 * {
   min-height: 0;
   min-width: 0;
-  font-family:  "JetBrainsMono Nerd Font", sans-serif;
+  font-family: "JetBrainsMono Nerd Font", sans-serif;
   font-size: 16px;
   font-weight: 600;
 }
@@ -9,46 +13,44 @@
 window#waybar {
   transition-property: background-color;
   transition-duration: 0.5s;
-  /* background-color: #1e1e2e; */
-  /* background-color: #181825; */
-  background-color: rgba(43, 48, 59, 0.9);
+  background-color: alpha(@surface, 0.9);
   border-radius: 0;
-  color: #ffffff;
-  /* background-color: rgba(24, 24, 37, 0.6); */
+  color: @onSurface;
 }
 
 window#waybar.empty #window {
-    background: rgba(12, 12, 12, 0.0);
+  background: rgba(12, 12, 12, 0.0);
 }
 
 window#waybar.hidden {
-    opacity: 0.9
+  opacity: 0.9;
 }
 
+/* ─── Workspaces ─── */
 #workspaces button {
   padding: 0.3rem 0.6rem;
   margin: 0.4rem 0.25rem;
   border-radius: 6px;
-  /* background-color: #181825; */
-  background-color: #1e1e2e;
-  color: #cdd6f4;
+  background-color: @surfaceContainer;
+  color: @onSurfaceVariant;
 }
 
 #workspaces button:hover {
-  color: #1e1e2e;
-  background-color: #cdd6f4;
+  color: @onPrimaryContainer;
+  background-color: @primaryContainer;
 }
 
 #workspaces button.active {
-  background-color: #1e1e2e;
-  color: #89b4fa;
+  background-color: @primaryContainer;
+  color: @onPrimaryContainer;
 }
 
 #workspaces button.urgent {
-  background-color: #1e1e2e;
-  color: #f38ba8;
+  background-color: @surfaceContainer;
+  color: @error;
 }
 
+/* ─── Shared Module Style ─── */
 #clock,
 #pulseaudio,
 #custom-logo,
@@ -65,84 +67,43 @@ window#waybar.hidden {
   padding: 0.3rem 0.6rem;
   margin: 0.4rem 0.25rem;
   border-radius: 6px;
-  /* background-color: #181825; */
-  background-color: #1e1e2e;
+  background-color: @surfaceContainer;
 }
 
-#mpris.playing {
-  color: #a6e3a1;
-}
+/* ─── Module Accent Colors ─── */
+#cpu               { color: @primary; }
+#custom-gpu         { color: @onSurface; }
+#memory            { color: @tertiary; }
+#clock             { color: @secondary; }
+#clock.simpleclock { color: @primary; }
+#window            { color: @onSurface; }
+#pulseaudio        { color: @primary; }
+#pulseaudio.muted  { color: @onSurfaceVariant; }
+#custom-logo       { color: @primary; }
+#custom-power      { color: @error; }
 
-#mpris.paused {
-  color: #9399b2;
-}
+/* ─── MPRIS ─── */
+#mpris.playing { color: @secondary; }
+#mpris.paused  { color: @onSurfaceVariant; }
 
+/* ─── Fcitx5 Input Method Colors ─── */
+#custom-fcitx5           { font-weight: bold; }
+#custom-fcitx5.english   { color: @primary; }
+#custom-fcitx5.rime      { color: @error; }
+#custom-fcitx5.unknown   { color: @tertiary; }
+
+/* ─── Separator ─── */
 #custom-sep {
   padding: 0px;
-  color: #585b70;
+  color: @onSurfaceVariant;
 }
 
 window#waybar.empty #window {
   background-color: transparent;
 }
 
-#cpu {
-  color: #94e2d5;
-}
-
-#custom-gpu {
-  color: #cdd6f4;
-}
-
-#memory {
-  color: #cba6f7;
-}
-
-#clock {
-  color: #74c7ec;
-}
-
-#clock.simpleclock {
-  color: #89b4fa;
-}
-
-#window {
-  color: #cdd6f4;
-}
-
-#pulseaudio {
-  color: #b4befe;
-}
-
-#pulseaudio.muted {
-  color: #a6adc8;
-}
-
-#custom-logo {
-  color: #89b4fa;
-}
-
-#custom-power {
-  color: #f38ba8;
-}
-
-#custom-fcitx5 {
-    font-weight: bold;
-}
-
-#custom-fcitx5.english {
-    color: #89b4fa;
-}
-
-#custom-fcitx5.rime {
-    color: #f38ba8;
-}
-
-#custom-fcitx5.unknown {
-    color: #f9e2af;
-}
-
+/* ─── Tooltip ─── */
 tooltip {
-  background-color: #181825;
-  border: 2px solid #89b4fa;
+  background-color: @surfaceContainerHighest;
+  border: 2px solid @primary;
 }
