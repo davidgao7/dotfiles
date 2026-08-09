@@ -1,6 +1,10 @@
 {
   "plugin": ["oh-my-openagent@latest"],
   "$schema": "https://opencode.ai/config.json",
+  "permission": {
+    "edit": "ask",
+    "bash": "ask"
+  },
   "lsp":true,
   "provider": {
     "ollama": {
@@ -52,7 +56,7 @@
   "mode": {
     "build": {
       // TODO: switch to opencode zen provider after spend all openrouter credits
-      "prompt": "{file:./prompts/build.txt}",
+      "prompt": "{file:./prompts/build.txt}\n\n{file:./prompts/persona.txt}",
       "tools": {
         "write": true,
         "edit": true,
@@ -67,7 +71,7 @@
     },
     "plan": {
       // TODO: switch to opencode zen provider after spend all openrouter credits
-      "prompt": "{file:./prompts/plan.txt}",
+      "prompt": "{file:./prompts/plan.txt}\n\n{file:./prompts/persona.txt}",
       "tools": {
         "write": true,
         "edit": true,
@@ -88,7 +92,7 @@
 
     "security":{
       // TODO: switch to opencode zen provider after spend all openrouter credits
-      "prompt": "{file:./prompts/security.txt}",
+      "prompt": "{file:./prompts/security.txt}\n\n{file:./prompts/persona.txt}",
       "tools": {
         "write": true,
         "edit": true,
@@ -107,7 +111,7 @@
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
       // TODO: switch to opencode zen provider after spend all openrouter credits
-      "prompt": "{file:./prompts/review.txt}",
+      "prompt": "{file:./prompts/review.txt}\n\n{file:./prompts/persona.txt}",
       "tools": {
         // Disable file modification tools for review-only agent
         "write": false,
@@ -120,7 +124,7 @@
     },
     "code-explorer": {
       "description": "Explores unfamiliar codebases to understand structure and functionality",
-      "prompt": "{file:./prompts/explore.txt}",
+      "prompt": "{file:./prompts/explore.txt}\n\n{file:./prompts/persona.txt}",
       "tools": {
         "write": false,
         "edit": false,
