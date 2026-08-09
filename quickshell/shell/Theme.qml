@@ -7,15 +7,15 @@ import Quickshell
 Singleton {
     id: root
 
-    // ── NieR palette (from Unit-3 / samyns) ─────────────────────
-    readonly property color bg: "#0b0a09"          // near-black
-    readonly property color bgRaised: "#141210"    // raised surfaces
-    readonly property color fg: "#c8b89a"          // sepia text
-    readonly property color fgDim: "#8a7f68"       // dimmed text
-    readonly property color accentRed: "#c87060"
-    readonly property color accentGreen: "#60a880"
-    readonly property color accentBlue: "#6090c8"
-    readonly property color accentGold: "#c8a860"
+    // ── Palette (default NieR sepia, updated by ColorSync on wallpaper change) ──
+    property color bg: "#0b0a09"
+    property color bgRaised: "#141210"
+    property color fg: "#c8b89a"
+    property color fgDim: "#8a7f68"
+    property color accentRed: "#c87060"
+    property color accentGreen: "#60a880"
+    property color accentBlue: "#6090c8"
+    property color accentGold: "#c8a860"
 
     // ── Fonts ───────────────────────────────────────────────────
     readonly property string fontFamily: "Share Tech Mono"

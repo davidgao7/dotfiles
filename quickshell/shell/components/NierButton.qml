@@ -1,4 +1,5 @@
 import QtQuick
+import "../"
 
 // NIER button — fill-slide hover + click flash
 // Usage: NierButton { label: "PLAY"; onClicked: doSomething() }
