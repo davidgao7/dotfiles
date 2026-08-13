@@ -15,6 +15,7 @@ PanelWindow {
     exclusionMode: ExclusionMode.Ignore
     exclusiveZone: 0
     WlrLayershell.layer: WlrLayer.Top
+    mask: Region { item: pill }
 
     property bool _pinned: false
     property bool _hovering: false
