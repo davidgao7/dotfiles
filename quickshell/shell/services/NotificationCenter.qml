@@ -1,27 +1,12 @@
 pragma Singleton
 import QtQuick
 import Quickshell
-import Quickshell.Services.Notifications
 
-// NotificationCenter — replaces swaync
+// NotificationCenter — kept as an empty singleton so Island.qml bindings resolve.
+// Notifications are handled by swaync; quickshell must NOT own the
+// org.freedesktop.Notifications name or swaync fails to start.
 Singleton {
     id: root
 
     property var notifications: []
-
-    NotificationServer {
-        onTrackedNotificationsChanged: {
-            var list = [], all = trackedNotifications
-            for (var i = 0; i < Math.min(all.length, 10); i++) {
-                var n = all[i]
-                list.push({
-                    app: n.appName || "",
-                    summary: n.summary || "",
-                    body: n.body || "",
-                    time: new Date()
-                })
-            }
-            root.notifications = list
-        }
-    }
 }
