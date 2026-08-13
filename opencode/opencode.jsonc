@@ -146,6 +146,17 @@
       "type": "remote",
       "url":"https://mcp.exa.ai/mcp",
       "enabled":true
+    },
+    "github": {
+      "type": "local",
+      "command": ["github-mcp-server", "stdio"],
+      "enabled": true,
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_PERSONAL_ACCESS_TOKEN}",
+        "ALL_PROXY": "socks5://127.0.0.1:10808",
+        "HTTPS_PROXY": "socks5://127.0.0.1:10808",
+        "HTTP_PROXY": "socks5://127.0.0.1:10808"
+      }
     }
   }
 }
