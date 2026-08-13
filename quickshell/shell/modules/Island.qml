@@ -21,12 +21,18 @@ PanelWindow {
     property bool _hovering: false
     property bool expanded: _pinned || _hovering
     property bool _showingWP: false
+    property var currentTime: new Date()
 
     Connections {
         target: MprisService
         function onPlayingChanged() {
             if (!MprisService.playing) root._pinned = false
         }
+    }
+
+    Timer {
+        interval: 1000; repeat: true; running: true
+        onTriggered: root.currentTime = new Date()
     }
 
     Process {
@@ -100,7 +106,7 @@ PanelWindow {
                     }
                 }
                 Text {
-                    text: Qt.formatTime(new Date(), "HH:mm"); color: Theme.fg
+                    text: Qt.formatTime(root.currentTime, "HH:mm"); color: Theme.fg
                     font.family: Theme.fontFamily; font.pixelSize: Theme.sizeSm
                     verticalAlignment: Text.AlignVCenter
                 }
@@ -124,9 +130,9 @@ PanelWindow {
 
                 Column {
                     anchors.verticalCenter: parent.verticalCenter; spacing: 0
-                    Text { text: Qt.formatTime(new Date(), "HH"); color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: Theme.sizeXl }
+                    Text { text: Qt.formatTime(root.currentTime, "HH"); color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: Theme.sizeXl }
                     Text { text: "::"; color: Theme.fgDim; font.family: Theme.fontFamily; font.pixelSize: Theme.sizeSm; anchors.horizontalCenter: parent.horizontalCenter }
-                    Text { text: Qt.formatTime(new Date(), "mm"); color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: Theme.sizeXl }
+                    Text { text: Qt.formatTime(root.currentTime, "mm"); color: Theme.fg; font.family: Theme.fontFamily; font.pixelSize: Theme.sizeXl }
                 }
                 Rectangle { width: 1; height: parent.height; color: Qt.rgba(200/255,184/255,154/255,0.15) }
 
