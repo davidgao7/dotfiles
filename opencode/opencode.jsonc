@@ -11,6 +11,15 @@
       "models": {
         "qwen3-coder": {
           "name": "qwen3-coder:lastest"
+        },
+        "qwen3.5": {
+          "name": "qwen3.5:4b",
+          "id": "qwen3.5:4b",
+          "attachment": true,
+          "modalities": {
+            "input": ["text", "image"],
+            "output": ["text"]
+          }
         }
       }
     },
@@ -40,7 +49,10 @@
       "permission": {
         "edit": "ask",
         "bash": "ask",
-        "webfetch": "ask"
+        "webfetch": "ask",
+        "task": {
+          "vision": "allow"
+        }
       }
     },
     "plan": {
@@ -58,11 +70,31 @@
       "permission": {
         "edit": "ask",
         "bash": "ask",
-        "webfetch": "ask"
+        "webfetch": "ask",
+        "task": {
+          "vision": "allow"
+        }
       }
     }
   },
   "agent": {
+    "security": {
+      "prompt": "{file:./prompts/security.txt}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "webfetch": true,
+        "grep": true,
+        "glob": true,
+        "list": true
+      },
+      "permission": {
+        "edit": "ask",
+        "bash": "ask",
+        "webfetch": "ask"
+      }
+    },
     "code-reviewer": {
       "description": "Reviews code for best practices and potential issues",
       // TODO: switch to opencode zen provider after spend all openrouter credits
@@ -93,6 +125,62 @@
         "edit": "deny",
         "bash": "ask",
         "webfetch": "ask"
+      }
+    },
+    "team-manager": {
+      "description": "MLOps/LLMOps software expert",
+      "prompt": "{file:./prompts/team-management.txt}",
+      "tools": {
+        "write": true,
+        "edit": true,
+        "bash": true,
+        "webfetch": true,
+        "grep": true,
+        "glob": true,
+        "list": true
+      },
+      "permission": {
+        "edit": "ask",
+        "bash": "ask",
+        "webfetch": "allow"
+      }
+    },
+    "vision": {
+      "description": "Vision subagent. Reads and analyzes images using the local Qwen3.5-4B model over Ollama. Use this whenever the user asks about an image, pastes a screenshot, or references an image file. The main agent is text-only and cannot see images, so ALWAYS delegate image understanding to this subagent: pass the image file path in the task, let it read and describe the image, then relay its findings.",
+      "mode": "subagent",
+      "model": "ollama/qwen3.5",
+      "reasoningEffort": "none",
+      "prompt": "{file:./prompts/vision.txt}",
+      "permission": {
+        "read": "allow",
+        "edit": "deny",
+        "bash": "deny",
+        "webfetch": "deny",
+        "external_directory": "allow"
+      }
+    }
+  },
+  "mcp": {
+    "exa": {
+      "type": "remote",
+      "url": "https://mcp.exa.ai/mcp",
+      "enabled": true
+    },
+    "searxng": {
+      "type": "local",
+      "command": [
+        "uvx",
+        "mcpo",
+        "--port",
+        8000,
+        "--",
+        "/Users/tengjungao/Downloads/web-search-lmstudio-mcp-no-limits/.venv/bin/python",
+        "/Users/tengjungao/Downloads/web-search-lmstudio-mcp-no-limits/main.py"
+      ],
+      "enabled": true,
+      "environment": {
+        "SEARXNG_BASE_URL": "http://localhost:8000/search",
+        "PYTHONUNBUFFERED": "1"
       }
     }
   }

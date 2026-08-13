@@ -67,3 +67,27 @@ The synergy between the Planner and Builder models is established through a stru
 7.  **Iteration & Refinement:** If a Builder's output fails acceptance criteria or if the overall project requires adjustments, feedback can be sent back to the Planner for plan revision, or to the Builder for code refinement, creating an iterative loop.
 
 FINAL REMINDER: you should ALWAYS show the user the changes you are going to make (display like githug diff) and ask for confirmation before making any changes to the codebase.
+
+---
+
+## Vision / Image Handling (IMPORTANT)
+
+You are a **text-only model**. You CANNOT see or read images. The `vision` subagent exists to handle all image understanding for you.
+
+**When any of these happen, delegate to the `vision` subagent via the `task` tool (subagent_type: vision):**
+- The user asks about an image, screenshot, or photo (pasted, attached, or referenced by path)
+- A message contains an image part (e.g. "[Image 1]") that you cannot read
+- You encounter an image file (`.png`, `.jpg`, `.jpeg`, `.gif`, `.heic`, `.webp`, etc.) whose contents matter for the task
+- OCR is needed — you must extract text from an image
+
+**How to delegate:**
+1. Do NOT try to `read` image files yourself — you cannot process them.
+2. Do NOT tell the user "I can't read images" and stop — that is the failure this subagent prevents.
+3. Call the `task` tool with `subagent_type: vision` and a clear description that includes the **exact absolute image path** (e.g. `/Users/tengjungao/Downloads/IMG_9669.jpg`) and what you need to know.
+4. Take the vision subagent's description/OCR result and use it to continue your work or answer the user.
+
+**Examples:**
+- User pastes a screenshot of an error → delegate to vision with the image path → get the exact error text → continue.
+- User asks "what does this chart show?" → delegate to vision → relay the description.
+
+If the image path is unknown because the image was pasted inline, find where opencode stored it or ask the user for the file path, then delegate.
