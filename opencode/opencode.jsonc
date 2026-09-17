@@ -20,6 +20,15 @@
             "input": ["text", "image"],
             "output": ["text"]
           }
+        },
+        "gemma4-e4b-uncensored": {
+          "name": "Gemma 4 e4b Uncensored",
+          "id": "mo-shakib/gemma4-e4b-uncensored:q4_k_m",
+          "attachment": true,
+          "modalities": {
+            "input": ["text", "image"],
+            "output": ["text"]
+          }
         }
       }
     },
@@ -146,9 +155,9 @@
       }
     },
     "vision": {
-      "description": "Vision subagent. Reads and analyzes images using the local Qwen3.5-4B model over Ollama. Use this whenever the user asks about an image, pastes a screenshot, or references an image file. The main agent is text-only and cannot see images, so ALWAYS delegate image understanding to this subagent: pass the image file path in the task, let it read and describe the image, then relay its findings.",
+      "description": "Vision subagent. Reads and analyzes images using the local Gemma 4 e4b uncensored model over Ollama. Use this whenever the user asks about an image, pastes a screenshot, or references an image file. The main agent is text-only and cannot see images, so ALWAYS delegate image understanding to this subagent: pass the image file path in the task, let it read and describe the image, then relay its findings.",
       "mode": "subagent",
-      "model": "ollama/qwen3.5",
+      "model": "ollama/gemma4-e4b-uncensored",
       "reasoningEffort": "none",
       "prompt": "{file:./prompts/vision.txt}",
       "permission": {
@@ -181,6 +190,14 @@
       "environment": {
         "SEARXNG_BASE_URL": "http://localhost:8000/search",
         "PYTHONUNBUFFERED": "1"
+      }
+    },
+    "github": {
+      "type": "local",
+      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
+      "enabled": true,
+      "environment": {
+        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_ACCESS_TOKEN}"
       }
     }
   }
