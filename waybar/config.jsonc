@@ -14,7 +14,7 @@
   ],
   "modules-right": [
     "custom/fcitx5",
-    "cpu",
+    "custom/cpu",
     "custom/gpu",
     "custom/network_speed",
     "memory",
@@ -91,8 +91,9 @@
     "on-click": "fcitx5-remote -t",
     "tooltip": true
   },
-  "cpu": {
-    "format": "  {usage}%",
+  "custom/cpu": {
+    "exec": "/home/davidgao/.config/waybar/cpu_status.sh",
+    "return-type": "json",
     "tooltip": true,
     "interval": 1
   },

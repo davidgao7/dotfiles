@@ -59,7 +59,7 @@ window#waybar.hidden {
 #custom-network_speed,
 #custom-notification,
 #custom-fcitx5,
-#cpu,
+#custom-cpu,
 #custom-gpu,
 #tray,
 #memory,
@@ -72,7 +72,7 @@ window#waybar.hidden {
 }
 
 /* ─── Module Accent Colors ─── */
-#cpu               { color: @primary; }
+#custom-cpu        { color: @primary; }
 #custom-gpu         { color: @onSurface; }
 #memory            { color: @tertiary; }
 #clock             { color: @secondary; }
