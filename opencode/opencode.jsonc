@@ -170,34 +170,41 @@
     }
   },
   "mcp": {
-    "exa": {
-      "type": "remote",
-      "url": "https://mcp.exa.ai/mcp",
-      "enabled": true
-    },
-    "searxng": {
-      "type": "local",
-      "command": [
-        "uvx",
-        "mcpo",
-        "--port",
-        8000,
-        "--",
-        "/Users/tengjungao/Downloads/web-search-lmstudio-mcp-no-limits/.venv/bin/python",
-        "/Users/tengjungao/Downloads/web-search-lmstudio-mcp-no-limits/main.py"
-      ],
-      "enabled": true,
-      "environment": {
-        "SEARXNG_BASE_URL": "http://localhost:8000/search",
-        "PYTHONUNBUFFERED": "1"
-      }
-    },
-    "github": {
-      "type": "local",
-      "command": ["npx", "-y", "@modelcontextprotocol/server-github"],
-      "enabled": true,
-      "environment": {
-        "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_ACCESS_TOKEN}"
+    "servers": {
+      "exa": {
+        "type": "remote",
+        "url": "https://mcp.exa.ai/mcp",
+        "oauth": false,
+        "enabled": true
+      },
+      "searxng": {
+        "type": "local",
+        "command": [
+          "uvx",
+          "mcpo",
+          "--port",
+          8000,
+          "--",
+          "/Users/tengjungao/Downloads/web-search-lmstudio-mcp-no-limits/.venv/bin/python",
+          "/Users/tengjungao/Downloads/web-search-lmstudio-mcp-no-limits/main.py"
+        ],
+        "enabled": true,
+        "environment": {
+          "SEARXNG_BASE_URL": "http://localhost:8000/search",
+          "PYTHONUNBUFFERED": "1"
+        }
+      },
+      "github": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@modelcontextprotocol/server-github"
+        ],
+        "enabled": true,
+        "environment": {
+          "GITHUB_PERSONAL_ACCESS_TOKEN": "{env:GITHUB_ACCESS_TOKEN}"
+        }
       }
     }
   }
